@@ -19,7 +19,7 @@ description: Saiyajin's Blog.
 baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
-url: https://0xsaiyajin.github.io
+url: 0xsaiyajin.github.io
 #github_username:  0xSaiyajin
 
 paginate: 4
