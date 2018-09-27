@@ -1,0 +1,7 @@
+navigation:
+  - text: home
+    url: /
+  - text: about
+    url: /about
+  - text: tools
+    url: /tools

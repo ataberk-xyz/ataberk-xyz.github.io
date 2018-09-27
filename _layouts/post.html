@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+<header>
+  <h1 class="post-title">{{ page.title }}</h1>
+</header>
+<div class="content">
+  {% include post-meta.html post=page %}
+  
+  <div class="post-body">
+    {% assign author = site.data.authors[page.author] %}
+    {% if author %}
+    <span><h5>Written by <a href="{{ author.web }}" target="_blank">{{ author.name }}</a></h5></span><br>
+    {% endif %}
+
+    {{ content }}
+    {% include post-tags.html post=page %}
+  </div>
+
+  {% include comments.html %}
+  {% include related_posts.html %}
+</div>
