@@ -15,7 +15,7 @@
 # in the templates via {{ site.myvariable }}.
 title: Saiyajin
 description: Saiyajin's Blog.
-baseurl: 0xsaiyajin.github.io
+baseurl: /
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
 url: ""
