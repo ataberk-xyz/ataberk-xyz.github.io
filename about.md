@@ -23,7 +23,7 @@ about author: <a href="https://github.com/0xSaiyajin" class="btn btn-github"><sp
     </tr>
     <tr>
      <td>RingZer0Team CTF Ranking</td>
-     <th><a href="https://ringzer0team.com/profile/5413/SyraTR">135 / 24361</a></th>
+     <th><a href="https://ringzer0team.com/profile/5413/SyraTR" target="_blank">135 / 24361</a></th>
     </tr>
 </table>
 
