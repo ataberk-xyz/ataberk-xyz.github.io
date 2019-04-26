@@ -29,8 +29,8 @@ Your project structure will look like this:
 ```
 
 Then, you decided to call a function from **b.py** on **a.py** file.
-So, you supposed to create **__init__.py** file before importing **b** module. The **__init__.py** file is necessary for marking the directories on disk as Python package directories.
-Without that file, importing is going to fail. It means that for linking these files you have to append **__init__.py** file to your structure too.
+The **__init__.py** file is necessary for marking the directories on disk as Python package directories. If you try to put module **b** into subdirectory you supposed to append **__init__.pt** file to parent directory.
+Without that file, importing is going to fail. It means that for linking these files you have to append **__init__.py** file to your structure if you want to build a package from your project.
 
 ```
 /test-project
@@ -39,7 +39,7 @@ Without that file, importing is going to fail. It means that for linking these f
    __init__.py
 ```
 
-Now, **a.py** and **b.py** files turned into modules. We can call functions from **a** on **b** and vice versa. Finally, you added example functions to both of them.
+Now, **a.py** and **b.py** files turned into modules. We can call functions from **a** on **b** and vice versa. By the way, it is not necessary to add **__init__.py** file to this examples. Finally, you added example functions to both of them.
 
 ![module a b]({{site.url}}/assets/images/library_hijacking/module_a_b.png)
 
