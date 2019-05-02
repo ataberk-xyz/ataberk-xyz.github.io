@@ -7,7 +7,7 @@ categories: [writeup]
 ---
 
 Ah, we meet again. I was working as a Project Manager in a company. I left the job 2 days ago. In this time, I decided to take OSCP certification.
-So, I have to work hard and try hard for cert. When I was working, I was also interested with Cyber Security.
+So, I have to work hard and try hard for cert. When I was working, I was also interested with Cybersecurity.
 
 Before I left the job, we**(isDebuggerPresent)** joined UTSA Cyber CTF and took 19th place. Our rank is not that bad because we participated in that competition on the first 3 days.
 I am writing a writeup for this challenge because I had a lot of fun solving the question. This question tested my penetration testing skills.
@@ -50,7 +50,7 @@ It interacts with bash. So, it means we can get root easily. Let's check it.
 
 
 Bad luck. Current version is not supporting "interactive" mode. Then, I realized something. If we can run any script which we wrote then we could be able to get root access.
-All we have to do is understanding how nmap scripts are working. 
+All we have to do is to understand how nmap scripts are working. 
 
 Nmap scripts are using ".nse" extension. They are using "Lua" language. We are living in "Computer" era. So, we can access every knowledge with quick search. We need to create three sections for making our script work.
 These are: 
@@ -67,7 +67,7 @@ In the **Head** section, we can identify some fields like "author", "description
 
 ![examplense]({{site.url}}/assets/images/utsalinux2/examplense.png)
 
-Also, we are using **"io"** library for reading some data from file. I picked "/etc/shadow" file for testing that are we able to read root privileged file. If our assumptions are correct, we could be able to do everything on the host.
+Also, we are using **"io"** library for reading some data from file. I picked "/etc/shadow" file to test if we are able to read root privileged file or not. If our assumptions are correct, we could be able to do everything on the host.
 Okay, we are going.
 
 ```nmap --script flag.nse --open 127.0.0.1```
