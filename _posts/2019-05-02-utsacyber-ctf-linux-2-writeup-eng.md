@@ -68,6 +68,7 @@ In the **Head** section, we can identify some fields like "author", "description
 ![examplense]({{site.url}}/assets/images/utsalinux2/examplense.png)
 
 Also, we are using **"io"** library for reading some data from file. I picked "/etc/shadow" file to test if we are able to read root privileged file or not. If our assumptions are correct, we should be able to do everything on the host.
+
 Okay, here we go.
 
 ```nmap --script flag.nse --open 127.0.0.1```
