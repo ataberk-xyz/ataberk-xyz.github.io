@@ -25,7 +25,7 @@ After connecting to SSH service, CSACTF banner welcomes us. The first thing that
 
 ![pslist]({{site.url}}/assets/images/utsalinux2/pslist.png)
 
-Six processes is running. We could be in container structure. We can analyze it with few commands. 
+Six processes are running. We could be in container structure. We can analyze it with few commands. 
 I will pick this one.
 ```cat /proc/<pid>/cgroup```
 
