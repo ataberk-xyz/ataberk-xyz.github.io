@@ -6,12 +6,12 @@ tags: [pentest,privilege-escalation, linux]
 categories: [pentest]
 ---
 
-Greetings. This one is my first blog post about penetration testing. Also, this scenario is pretty CTFish. I encountered with this scenario on **Hack The Box**.
+Greetings. This one is my first blog post about penetration testing. I encountered with this scenario on **Hack The Box**.
 This machine is currently active. Hence, I can't tell its name. 
 
 Before starting, I want to make some explanations.
 
-While I was researching about manipulation of libraries, I saw that people were saying that this method is looked like "DLL Hijacking".
+While I was researching about manipulation of libraries, I saw that people were saying that this method looked like "DLL Hijacking".
 
 At First, we need to know the differences between module and library structures. 
 
