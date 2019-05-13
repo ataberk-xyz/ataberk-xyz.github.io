@@ -186,7 +186,7 @@ Quick analyze of saiyajin.py:
 Cool. We don't have a module to hijack this time. What do we have? Correct! **A library**.
 Actually, libraries are modules too. But, the main difference between them is you can call libraries from anywhere. 
 
-Let's make it more clear. I want you to think about the module example we did. Can we call **b** module from outside of the project folder? Yeah, probably. But we had to move this project folder to where we wanted to call **b** module. Furthermore, if we go to parent directory of **test-project** directory, we will not be able to call **b** module from. If we want to call it from parent directory, we must add one more **__init__.py** file.
+Let's make it more clear. I want you to think about the module example we did. Can we call **b** module from outside of the project folder? Yeah, probably. But we had to move this project folder to where we wanted to call **b** module from. Furthermore, if we go to parent directory of **test-project** directory, we will not be able to call **b** module. If we want to call it from parent directory, we must add one more **__init__.py** file.
 
 It will look like this:
 
