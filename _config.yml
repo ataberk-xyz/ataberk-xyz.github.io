@@ -15,7 +15,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Saiyajin
-description: Never make eye contact with anyone while eating a banana. 
+description: 
+        - Never make eye contact with anyone while eating a banana. 
+        - Goals are like bananas, they come in bunches. 
+        - Where the banana grows man is sensual and cruel.      
+        - An old banana leaf was once young and green. 
+        - Any ape can reach for a banana, but only humans can reach for the stars.
 baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
