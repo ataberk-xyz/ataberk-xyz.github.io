@@ -1,16 +1,16 @@
 ---
 ---
 
-$sidebar-bg-color: #e0e0e0;
-$sidebar-fg-color: #303030;
-$sidebar-title-color: #333333;
+$sidebar-bg-color: #fff;
+$sidebar-fg-color: #4b3832;
+$sidebar-title-color: #4b3832;
 $sidebar-text-color: rgba($sidebar-title-color,1.0);
-$sidebar-link-color: rgba(255,255,255,1.0);
+$sidebar-link-color: #4b3832;
 
-$link-color: #fff;
-$body-bg: #303030;
-$body-muted: #fff;
-$body-color: #fff;
-$heading-color: #268bd2;
-$code-color: #fa4f4a;
+$link-color: #96ceb4;
+$body-bg: #4b3832;
+$body-muted: #dfe3ee;
+$body-color: #fff4e6;
+$heading-color: #ffcc5c;
+$code-color: #96ceb4;
 @import "hydeout";

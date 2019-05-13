@@ -23,7 +23,8 @@
     box-shadow: $default-box-shadow;
 
     &:hover {
-      background-color: $border-color;
+      background-color: #ffcc5c;
+      color: $body-bg;
     }
   }
 }
