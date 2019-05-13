@@ -2,7 +2,7 @@
 layout: post
 title: Python - Module and Library Hijacking [eng]
 author: 0xSaiyajin
-tags: [pentest,privilege-escalation]
+tags: [pentest,privilege-escalation, linux]
 categories: [pentest]
 ---
 
@@ -11,9 +11,9 @@ This machine is currently active. Hence, I can't tell its name.
 
 Before starting, I want to make some explanations.
 
-While I was researching about manipulation of libraries, I saw that people are saying that this method is looks like "DLL Hijacking".
+While I was researching about manipulation of libraries, I saw that people were saying that this method is looked like "DLL Hijacking".
 
-At First, we need to know differences between module and library structures. 
+At First, we need to know the differences between module and library structures. 
 
 
 ## Module Hijacking
@@ -30,7 +30,7 @@ Your project structure will look like this:
 
 Then, you decided to call a function from **b.py** on **a.py** file.
 So, you supposed to create **__init__.py** file before importing **b** module. The **__init__.py** file is necessary for marking the directories on disk as Python package directories.
-Without that file, importing going to fail. It means, you have to append **__init__.py** file to your structure too for linking these files.
+Without that file, importing is going to fail. It means that for linking these files you have to append **__init__.py** file to your structure too.
 
 ```
 /test-project
@@ -67,7 +67,7 @@ Quick analyze of interface.py:
 - We can't change any line of this script. 
 
 
-Okay, stop reading this post for a while. Just think about what we can do with this file for achieving to root privileges.
+Okay, stop reading this post for a while. Just think about what we can do with this file for achieving root privileges.
 
 It just seems like we can only execute it.
 
@@ -141,7 +141,7 @@ Also, if you want to check where are these package files are stored at, then you
 ![libr_python_libraries]({{site.url}}/assets/images/library_hijacking/libr_python_libraries.png)
 
 
-As you see, I used time and sys libraries in my examples. We continue with similar scenario.
+As you see, I used time and sys libraries in my examples. We continue with a similar scenario.
 
 This time, attacker does not know what's going on at the machine. At least he is in the machine.
 He wants to do process monitoring for analyzing the hidden processes. And he uses [pspy](https://github.com/DominicBreuker/pspy) tool.
@@ -168,7 +168,7 @@ We have no permission for appending anything to the script.
 
 ```-rw-r--r-- : chmod 644```
 
-It means that "dumb" root user took lessons from his mistakes. Surprisingly, it looks pretty secure. We should have a look inside this script. 
+It means that "dumb" root user learned his lesson from his mistakes. Surprisingly, it looks pretty secure. We should have a look inside this script. 
 
 ![libr_running_script]({{site.url}}/assets/images/library_hijacking/libr_running_script.png)
 
@@ -186,7 +186,7 @@ Quick analyze of saiyajin.py:
 Cool. We don't have a module to hijack this time. What do we have? Correct! **A library**.
 Actually, libraries are modules too. But, the main difference between them is you can call libraries from anywhere. 
 
-Let's make it more clear. I want you to think about module example we did. Can we call **b** module from outside of the project folder? Yeah, probably. But we had to move this project folder to where we want to call **b** module. Furthermore, if we go to parent directory of **test-project** directory, we will not be able to call **b** module. If we want to call it from parent directory, we must add one more **__init__.py** file.
+Let's make it more clear. I want you to think about the module example we did. Can we call **b** module from outside of the project folder? Yeah, probably. But we had to move this project folder to where we wanted to call **b** module. Furthermore, if we go to parent directory of **test-project** directory, we will not be able to call **b** module from. If we want to call it from parent directory, we must add one more **__init__.py** file.
 
 It will look like this:
 
@@ -222,7 +222,7 @@ To show this example, I will write the output to a text file.
 So, we appended our malicious code to bottom of the **os.py** file.
 
 Have you noticed why I used **system()** method instead of **os.system()** method ?
-Because, writing "os.system()" in it will give error. We are in "os" itself. It will not recognize "os." part. Also, **system()** method defined in here already. So, we should use "system()" instead of "os.system()". In addition, appending ```import os``` line to this file may cause to infinite recursion.
+Because, writing "os.system()" in it will give error. We are in "os" itself. It will not recognize "os." part. Also, **system()** method is already defined in here. So, we should use "system()" instead of "os.system()". In addition, appending ```import os``` line to this file may cause to infinite recursion.
 
 Now, it seems okay.
 
@@ -233,7 +233,7 @@ After waiting a little, we achieved to execute command as root.
 ![libr_priv_esc]({{site.url}}/assets/images/library_hijacking/libr_priv_esc.png)
 
 In this part, we benefited from running cronjob for obtaining root privileges. 
-This scenario is more dangeroues than "module hijacking" scenario. Because, each time you call the **os** module the injected code will be executed. Possibility of calling the **os** module is higher than calling the **b** module. Even, root user may call it.
+This scenario is more dangeroues than "module hijacking" scenario. Because each time you call the **os** module the injected code will be executed. Possibility of calling the **os** module is higher than calling the **b** module. Even root user may call it.
 
 
 ## tl;dr
