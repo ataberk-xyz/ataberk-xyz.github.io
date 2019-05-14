@@ -9,7 +9,7 @@ categories: [pentest]
 Greetings. This one is my first blog post about penetration testing. I encountered with this scenario on **Hack The Box**.
 This machine is currently active. Hence, I can't tell its name. 
 
-Before starting, I want to make some explanations.
+Before we get started, I want to make some explanations.
 
 While I was researching about manipulation of libraries, I saw that people were saying that this method looked like "DLL Hijacking".
 
@@ -62,7 +62,7 @@ As you can see, **interface.py** created by root. Sadly, we can't modify this fi
 Quick analyze of interface.py: 
 
 
-- It is importing "manage.py" file.
+- It imports "manage.py" file.
 - It is using three functions from "manage.py" module.
 - We can't change any line of this script. 
 
@@ -168,11 +168,11 @@ We have no permission for appending anything to the script.
 
 ```-rw-r--r-- : chmod 644```
 
-It means that "dumb" root user learned his lesson from his mistakes. Surprisingly, it looks pretty secure. We should have a look inside this script. 
+It means that root user learned his lesson from his mistakes. Surprisingly, it looks pretty secure. We should have a look inside this script. 
 
 ![libr_running_script]({{site.url}}/assets/images/library_hijacking/libr_running_script.png)
 
-Okay, it's pretty funny. That "dumb" developer might have tried something. But, he may have forgotten to remove this file. 
+Okay, it's pretty funny. That developer might have tried something. But, he may have forgotten to remove this file. 
 
 Quick analyze of saiyajin.py:
 
@@ -205,7 +205,7 @@ After this process, user can call function from **b** module with this way:
 
 ```python -c "import testproject; print testproject.b.examplefunction()"```
 
-But, we don't need all of this. Because, we know that the developer has imported the **os** library in his code. As I said, we don't have a module to hijack this time. Even so, we have a library. When you install Python libraries they are installed with **644** file permission. It means only root user can make changes on these libraries. Other users can only read these files. Sometimes, people may give wrong permissions to Python library folders.
+But, we don't need all of this. Because, we know that the developer has imported the **os** library in his code. As I said, we don't have a module to hijack this time. Even so, we have a library. When you install Python libraries they are installed with **644** file permission. It means that only root user can make changes on these libraries. Other users can only read these files. Sometimes, people may give wrong permissions to Python library folders.
 
 If so, we should check library folders.
 
