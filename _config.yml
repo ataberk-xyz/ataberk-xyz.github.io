@@ -30,6 +30,9 @@ url:
 paginate: 4
 #paginate_path: '/page:num'
 
+
+disqus:
+        shortname: 0xsaiyajin
 # Build settings
 markdown: kramdown
 theme: jekyll-theme-hydeout
