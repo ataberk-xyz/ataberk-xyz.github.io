@@ -125,8 +125,6 @@ Also, I checked "sshauth" directory from website. As I expected, I saw another a
 
 But, the problem with this application is we can't use **/generate** endpoint from this port. It redirects to **404 - Page Not Found** every time. I will keep this information in my mind. Also, when we try to connect that endpoint over SSL, we can see that SSL handshake fails.
 
-![handshake failed]({{site.url}}/assets/images/fortune/handshake_failed.png)
-
 We are continuing to enumeration process.
 
 After searching many directories, I found home directories of three users:
