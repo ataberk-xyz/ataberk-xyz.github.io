@@ -26,6 +26,8 @@ What I learned from this machine:
 + Abusing the authorized\_keys file.
 + Analysis of PostgreSQL dump files.
 
+## Part I
+
 At first, we are starting with port enumeration. 
 
 ```nmap 10.10.10.127 -sC -sV -p-```
@@ -348,3 +350,115 @@ We succeed. User access granted.
 ![gotuser]({{site.url}}/assets/images/fortune/gotuser.png)
 
 Now, we should aim for the root access.
+
+## Part II
+
+At this moment, we should get user shell access on the machine. To achieve this goal, we should generate SSH key pair on local machine and we should put that SSH Public Key into **authorized_keys** on the charlie directory. If we succeed, we will be able to run codes on machine with privileges of **charlie**
+
+```ssh-keygen -f fortune```
+
+```
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in fortune.
+Your public key has been saved in fortune.pub.
+The key fingerprint is:
+[...REDUCTED...]
+The key's randomart image is:
++---[RSA 3072]----+
+|    REDUCTED 	  |
++----[SHA256]-----+
+```
+
+Let's copy the content of SSH public key to the charlie's **authorized_keys** file.
+
+```cat fortune.pub > /mnt/charlie/.ssh/authorized_keys```
+
+We should give necessary permission to SSH private key file.
+
+```chmod 600 fortune```
+
+Next step, connect to SSH service !
+
+Before that I want to show you another interesting file: **mbox**
+
+![mbox]({{site.url}}/assets/images/fortune/mbox.png)
+
+At first glance, I only understood this part:
+
+> BTW: I set the dba password to the same as root.
+
+It says we should find the database password for achieving root access. When I look at this second time, I understand that there is an application named with **pgadmin4**.
+
+Okay, we will keep that information in mind. With current privileges, we can't enumerate the machine properly. 
+
+It's time to connect SSH service.
+
+```ssh -i fortune charlie@10.10.10.127```
+
+![id]({{site.url}}/assets/images/fortune/charlieid.png)
+
+We are in. As I said, we should focus to **pgadmin4** service if we want to gain access as root.
+It took 2-3 hours for me at first time while I was solving this challenge. After enumerating the machine, we can find the directory which we searched for.
+
+![pgadmindir]({{site.url}}/assets/images/fortune/pgadmindir.png)
+
+As you can see, there is a database file in this directory. Maybe, we should analyze that file. 
+First, we have to download it.
+
+```scp -i fortune charlie@10.10.10.127:/var/appsrv/pgadmin4/pgadmin4.db .```
+
+```file pgadmin4.db```
+```
+pgadmin4.db: SQLite 3.x database, last written using SQLite version 3024000
+```
+
+That's great! So, we can analyze that file with importing it to **sqlitebrowser**.
+
+I will show important data which I found from that database file.
+
+Keys table:
+
+![keys]({{site.url}}/assets/images/fortune/keystable.png)
+
+User table:
+
+![user]({{site.url}}/assets/images/fortune/usertable.png)
+
+Also, I extracted password hashed from user table for both user.
+
+```
+charlie: $pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
+bob: $pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
+```
+
+Great, we gathered so many information. We can crack these hashes with two way.
+
+1. John The Ripper
+2. Using the source code of pgadmin4 app.
+
+I don't know how fast you can crack these hashes with John. But I'm sure it will crack them one day. 
+You don't have to use John. 
+
+I searched these hashes on the Google. I found a pastebin page with python script on it.
+
+![pastebin]({{site.url}}/assets/images/fortune/pastebin.png)
+
+So, he is importing **crypto.py** file. I decided to find **crypto.py** file on pgadmin4 application. 
+I found [one](https://github.com/postgres/pgadmin4/blob/master/web/pgadmin/utils/crypto.py).
+
+I copied that file to my local and I tried same steps with that pastebin guy.
+
+![crack]({{site.url}}/assets/images/fortune/crack.png)
+
+It worked like a charm! 
+Password is : ```R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!```
+
+We should change user to root user with ```su root``` command.
+
+![gotroot]({{site.url}}/assets/images/fortune/gotroot.png)
+
+After a long journey, we reached the happy ending.
+
+See you in the next blog post!
