@@ -18,7 +18,7 @@ about author: <a href="https://github.com/0xSaiyajin" class="btn btn-github"><sp
 
 <table>
     <tr>	
-     <td>HackTheBox Ranking</td>
+     <td><a href="https://www.hackthebox.eu/profile/5625">HackTheBox Ranking</a></td>
      <th><img src="https://www.hackthebox.eu/badge/image/5625" alt="Hack The Box"></th>
     </tr>
     <tr>
