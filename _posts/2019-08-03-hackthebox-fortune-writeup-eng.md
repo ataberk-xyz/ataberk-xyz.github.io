@@ -8,7 +8,7 @@ categories: [writeup]
 
 Greetings! With solving **Fortune** machine, I finished half of the number of machines on HackTheBox. At present, **Fortune** has not retired yet. But I decided to write it's writeup. I will share this blog post when the machine is retired. So, if you are reading this blog post right now, it means you are looking into the past.
 
-Everytime I'm making same mistake. I think the best way of writing a writeup is keeping some notes about machine that you're trying to solve. Every time, I forget this. Therefore, I'm solving machine again while I was preparing new blog post. 
+Everytime I'm making the same mistake. I think the best way of writing a writeup is keeping some notes about the machine that you're trying to solve. Every time, I forget this. Therefore, I'm solving the machine again while preparing the new blog post. 
 
 So we're starting..
 
@@ -28,7 +28,7 @@ What I learned from this machine:
 
 ## Part I
 
-At first, we are starting with port enumeration. 
+At first, we will start with port enumeration. 
 
 ```nmap 10.10.10.127 -sC -sV -p-```
 
@@ -59,13 +59,13 @@ Okay, three ports are open:
 + 80
 + 443
 
-Before analyzing these ports, the machine is looking like it has web application on it.
+Before analyzing these ports, the machine looks like it has a web application on it.
 
-We are continuing with connecting HTTP port via browser. When we connect to it, a simple page with some options are greetings us.
+We are continuing with connecting HTTP port via browser. When we connect to it, a simple page with some options will greet us.
 
 ![fortune]({{site.url}}/assets/images/fortune/fortune_http.png)
 
-If we select one of these options and submit, we can see that application is selecting random fortune for us.
+If we select one of these options and submit, we can see that the application is selecting a random fortune for us.
 
 For example:
 
@@ -77,9 +77,9 @@ When we analyze what is running on the background with burp tool, we are detecti
 
 ![fortune select]({{site.url}}/assets/images/fortune/fortune_select.png)
 
-At first look, **db** parameter confused my mind. I thought there could be SQL Injection in here or something like this. For this reason, I wasted my 1 hour on it. After that, I searched about these database names on Google. It led me to a github page about "Fortune Cookie Databases". In README page, I saw OpenBSD tool named with **fortune**. Finally, name of the machine was looking meaningful to me. I installed exact tool and started to working on it.
+At first , **db** parameter confused my mind. I thought there could be SQL Injection in here or something like that. For this reason, I wasted my 1 hour on it. After that, I searched these database names on Google. It led me to a github page about "Fortune Cookie Databases". In README page, I saw OpenBSD tool named with **fortune**. Finally, the name of the machine started to make sense. I installed the exact tool and started to work on it.
 
-We are running that tool with argument as db name which I saw on web application.
+We are running that tool with argument as db name which I saw on the web application.
 
 ```
 fortune zippy
@@ -91,13 +91,13 @@ So what it means if same system is running on the web application?
 
 ![fortune tool]({{site.url}}/assets/images/fortune/fortune_tool.png)
 
-All we have to do was appending a goddamn **PIPE** to our db parameter all this time. I was overthinking about SQL Injection. 
+All we had to do was append a goddamn **PIPE** to our db parameter all this time. I was overthinking about SQL Injection. 
 
 Next step, we are enumerating the system with privileges of **\_fortune** user.
 
 ```uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)```
 
-While I was enumerating the system, I saw another application. It is **sshauth**.
+While I was enumerating the system, I saw another application. It was **sshauth**.
 
 ```db=zippy| ls -la ../sshauth```
 
@@ -121,11 +121,11 @@ If we inspect **sshauthd.py** file, we can see that there is another endpoint: *
 
 ![sshauthd.py]({{site.url}}/assets/images/fortune/sshauthdpy.png)
 
-Also, I checked "sshauth" directory from website. As I expected, I saw another application that we inspected and it is using **/generate** endpoint.
+Also, I checked "sshauth" directory from website. As I expected, I saw another application that we inspected and it was using **/generate** endpoint.
 
 ![sshauthapp.py]({{site.url}}/assets/images/fortune/sshauthapp.png)
 
-But, the problem with this application is we can't use **/generate** endpoint from this port. It redirects to **404 - Page Not Found** every time. I will keep this information in my mind. Also, when we try to connect that endpoint over SSL, we can see that SSL handshake fails.
+But, the problem with this application is that we can't use **/generate** endpoint from this port. It redirects to **404 - Page Not Found** every time. I will keep this information in my mind. Also, when we try to connect that endpoint over SSL, we can see that SSL handshake fails.
 
 We are continuing to enumeration process.
 
@@ -197,7 +197,7 @@ What are we looking for:
 
 If we can find these files, it means that we can generate necessary SSL certificate file. With importing that SSL certificate file to our browser, we can open closed doors.
 
-After digging more I found what I really need in **intermediate** directory.
+After digging more I found what I really needed in the **intermediate** directory.
 
 ```db=|ls -la /home/bob/ca/intermediate/certs```
 
@@ -243,9 +243,9 @@ We are using **openssl** tool for it.
 ```openssl pkcs12 -export -out intermediate.cert.p12 -in intermediate.cert.pem -inkey intermediate.key.pem```
 
 It will ask export password for this process. You can leave it empty or you can fill it.
-I selected "123" as export password. Then, we can see that our signed certification file is generated.
+I used "123" as export password. Then, we can see that our signed certification file is generated.
 
-All we have to do is importing it from browser.
+All we have to do is import it from the browser.
 
 For Mozilla:
 
@@ -254,7 +254,7 @@ For Mozilla:
 3. Click to View Certificates button.
 4. Click to Import button.
 5. Select your "intermediate.cert.p12" file and import.
-6. It will ask for passphrase which you select before.
+6. It will ask for the passphrase which you have selected before.
 
 After these steps, you will see your imported certificate.
 
@@ -269,7 +269,7 @@ With navigating to "https://10.10.10.127/generate" URL, we are encountering with
 
 ![uireq]({{site.url}}/assets/images/fortune/uireq.png)
 
-Finally, we can see that we made a progress.
+Finally, we can see that we made some progress.
 
 ![authpfpage]({{site.url}}/assets/images/fortune/authpfpage.png)
 
@@ -279,11 +279,11 @@ It's saying that, this application created new SSH key pair. We can access to th
 2. Give necessary permission to that file. (chmod 600)
 3. Try to connect SSH service with "nfsuser" user.
 
-We connected to SSH, great! But, we can't use any command.
+We connected to SSH, great! But, we can't use any commands.
 
 ![sshconnected]({{site.url}}/assets/images/fortune/sshconnected.png)
 
-I stucked at this part on my first attempt to solve this machine. After making some researches about authpf service, I saw these lines.
+I got stuck at this part on my first attempt to solve this machine. After making some research about authpf service, I found these lines.
 
 > The authpf(8) utility is a user shell for authenticating gateways. An authenticating gateway is just like a regular network gateway (also known as a router) except that users must first authenticate themselves to it before their traffic is allowed to pass through. When a user's shell is set to /usr/sbin/authpf and they log in using SSH, authpf will make the necessary changes to the active pf(4) ruleset so that the user's traffic is passed through the filter and/or translated using NAT/redirection. Once the user logs out or their session is disconnected, authpf will remove any rules loaded for the user and kill any stateful connections the user has open. Because of this, the ability of the user to pass traffic through the gateway only exists while the user keeps their SSH session open.
  
@@ -389,7 +389,7 @@ At first glance, I only understood this part:
 
 > BTW: I set the dba password to the same as root.
 
-It says we should find the database password for achieving root access. When I look at this second time, I understand that there is an application named with **pgadmin4**.
+It says we should find the database password for achieving root access. When I looked at this a second time, I understood that there was an application named with **pgadmin4**.
 
 Okay, we will keep that information in mind. With current privileges, we can't enumerate the machine properly. 
 
@@ -448,7 +448,7 @@ I searched these hashes on the Google. I found a pastebin page with python scrip
 So, he is importing **crypto.py** file. I decided to find **crypto.py** file on pgadmin4 application. 
 I found [one](https://github.com/postgres/pgadmin4/blob/master/web/pgadmin/utils/crypto.py).
 
-I copied that file to my local and I tried same steps with that pastebin guy.
+I copied that file to my local and I tried the same steps with that pastebin guy.
 
 ![crack]({{site.url}}/assets/images/fortune/crack.png)
 
@@ -459,6 +459,6 @@ We should change user to root user with ```su root``` command.
 
 ![gotroot]({{site.url}}/assets/images/fortune/gotroot.png)
 
-After a long journey, we reached the happy ending.
+After a long journey, we reached a happy ending.
 
 See you in the next blog post!
