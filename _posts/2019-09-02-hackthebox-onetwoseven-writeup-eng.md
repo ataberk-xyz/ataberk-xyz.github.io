@@ -6,7 +6,7 @@ tags: [writeup,ctf,hackthebox]
 categories: [writeup]
 ---
 
-This is the writeup of the **OneTwoSeven** machine from **HackTheBox**.
+This is the write-up of the **OneTwoSeven** machine from **HackTheBox**.
 
 In my opinion, this one is the most educational machine which I had solved. 
 So many different techniques are necessary for solving **OneTwoSeven**.
@@ -117,7 +117,7 @@ The directory structure is shown below:
 ls -la
 drwxr-xr-x    3 0        0            4096 Jun  8 22:09 .
 drwxr-xr-x    3 0        0            4096 Jun  8 22:09 ..
-drwxr-xr-x    2 1003     1003         4096 Feb 15 21:03 public\_html
+drwxr-xr-x    2 1003     1003         4096 Feb 15 21:03 public_html
 sftp> cd public_html/
 sftp> ls -la
 drwxr-xr-x    2 1003     1003         4096 Feb 15 21:03 .
@@ -447,7 +447,7 @@ Okay, cool. We got better shell. But it's not enough. We should beautify it more
 
 ```
 python -c "import pty;pty.spawn('/bin/bash')"
-export TERM=xterm
+export TERM=linux
 ```
 
 Finally, we gained tty shell. Second command is necessary if you want to use clear command on your shell.
