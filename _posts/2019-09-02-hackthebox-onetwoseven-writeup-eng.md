@@ -132,7 +132,7 @@ cd public_html
 put test.php
 ```
 
-After navigating to test.php page through browser is giving **Forbidden** response code. So, we can't upload **.php** file. Probably, **.htaccess** folder blocks it.
+After navigating to test.php page through browser gives **Forbidden** response code. So, we can't upload **.php** file. Probably, **.htaccess** folder blocks it.
 
 I tried to upload **.htaccess** folder too, but got the same response. We have to try to something different.
 
