@@ -175,7 +175,7 @@ version                            Show SFTP version
 ?                                  Synonym for help
 ```
 
-```symlink``` command looks suspicious. If there are lack of security in **chroot** configurations, possibly we can symlink to another files with sftp. We should quickly test which files are accessible. 
+```symlink``` command looks suspicious. If there are lack of security in **chroot** configurations, possibly we can symlink to other files with sftp. We should quickly test which files are accessible. 
 
 ```symlink /etc/passwd passwd```
 
@@ -217,7 +217,7 @@ The second one is **/var/www/html-admin**.
 
 I found these two directories with generating a symbolic link for **/var/www**.
 
-Let's start with the second one, it looks more interesting. When we browse into that file, we can see that there is a **.php.swp** file is lying there. Probably, someone was editing the **login.php** file. Then, some unexpected situation happened and **login.php** file has saved as **login.php.swp** file. 
+Let's start with the second one, it looks more interesting. When we browse into that file, we can see that there is a **.php.swp** file lying there. Probably, someone was editing the **login.php** file. Then, some unexpected situation happened and **login.php** file has saved as **login.php.swp** file. 
 
 After downloading it, all we have to do is run necessary command for checking what is that file keeping.
 
@@ -467,7 +467,7 @@ User www-admin-data may run the following commands on onetwoseven:
 
 Very nice, we can run **/usr/bin/apt-get update** and **/usr/bin/apt-get upgrade** commands with root privileges. That's okay. So, we have to inject something to these commands. This part was pretty tricky for me. I read two articles for this part and I will share these articles at end of this blog post. You should read both of these articles. They contain very cool tricks.
 
-If you check output of **sudo -l** command, you can see that there are some environment variables are usable for setting your local machine as proxy server. These are:
+If you check output of **sudo -l** command, you can see that there are some environment variables usable for setting your local machine as proxy server. These are:
 
 + ftp_proxy
 + http_proxy
@@ -642,7 +642,7 @@ After making these changes, we repack it.
 dpkg-deb -b modified_base_files/ base-files_9.9+devuan2.6_all.deb
 ```
 
-Cool! We have still some works to do. Let's create **Packages**, **Packages.gz** and **Release** files.
+Cool! We still got some work to do. Let's create **Packages**, **Packages.gz** and **Release** files.
 
 #### Packages file:
 
@@ -657,7 +657,7 @@ output:
 06a21aa67d8afc106ac14f037a7b9adeabc04e35c09b5e96057dccc2bb8a3ee3  base-files_9.9+devuan2.6_all.deb
 ```
 
-We have to save these hashes and size value of file into Packages file as shown as below.
+We have to save these hashes and size value of file into Packages file as shown below.
 
 ```
 Package: base-files
@@ -714,7 +714,7 @@ c3946b74c76880a4b71f147714bacbb2a47e112f  Packages.gz
 -rw-r--r-- 1 root root  634 Haz  8 22:31 Packages.gz
 ```
 
-We need to save these hashes and size values of Packages and Packages.gz files into the Release file as shown as below:
+We need to save these hashes and size values of Packages and Packages.gz files into the Release file as shown below:
 
 ```
 Origin: Devuan
@@ -743,7 +743,7 @@ Let's execute ```/usr/bin/apt-get update``` and ```/usr/bin/apt-get upgrade``` c
 
 ![update]({{site.url}}/assets/images/onetwoseven/update.png)
 
-As you see, there is only one application is ready to upgrade.
+As you see, there is only one application ready to upgrade.
 
 > base-files
 
@@ -753,7 +753,7 @@ Connection received. But, **whoami**?
 
 > uid=0(root) gid=0(root) groups=0(root)
 
-As a result of long efforts, we finally achieved to root user. Second part was really hard for me. It took nearly 2 days. I read these articles. I tried to make it work. It was really long process. After working hard, I've reached to happy ending. Also, I scored 5 out of 10 as difficult as user part. Difficulty of root part? Yeah, I scored 8 out of 10.
+As a result of long efforts, we finally achieved to root user. Second part was really hard for me. It took nearly 2 days. I read these articles. I tried to make it work. It was a really long process. After working hard, I've reached to a happy ending. Also, I scored 5 out of 10 as difficult as user part. Difficulty of root part? Yeah, I scored 8 out of 10.
 
 
 Thanks for reading. Cheers!
