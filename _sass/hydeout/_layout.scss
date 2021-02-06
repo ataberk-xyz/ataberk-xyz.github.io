@@ -28,7 +28,7 @@ body {
   /*background-image: linear-gradient(
     to right, #3b5998, #ffcc5c 50%); */
   background-image: linear-gradient(
-    to right, #ffcc5c, #ffcc5f);
+    to right, #000000, #0a0909d7);
   display: flex;
   flex-direction: column;
   min-width: 100vw;
@@ -52,7 +52,8 @@ body {
 
 // Container is flexbox as well -- we want content div to stretch and fill
 .container {
-  flex: 1 1 auto;
+  // flex: 1 1 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -199,7 +200,7 @@ body {
     }
 
     > * {
-      max-width: 38rem;
+      max-width: 42rem;
       padding: 0;
     }
   }

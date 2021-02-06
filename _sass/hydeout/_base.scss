@@ -48,7 +48,7 @@ a {
 }
 p{
   strong{
-    color: #8b9dc3;
+    color: #020204;
   }
 }
 
@@ -102,7 +102,7 @@ button, input[type="submit"] {
   &:hover {
     background: $link-color;
     border-color: $link-color;
-    color: white;
+    color: rgb(0, 0, 0);
     box-shadow: $default-box-shadow;
   }
 }
