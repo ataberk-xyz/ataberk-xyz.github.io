@@ -14,13 +14,9 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Saiyajin
-description: 
-        - Hacker's Playground
-        - Hacker's Playground
-        - Hacker's Playground    
-        - Hacker's Playground
-        - Hacker's Playground
+title: "Hacker's Playground"
+tagline: ataberk-xyz
+description: "Security research, Web3 smart-contract audits, and AI tooling — writeups and notes by Ataberk Yavuzer (ataberk-xyz)."
 baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
