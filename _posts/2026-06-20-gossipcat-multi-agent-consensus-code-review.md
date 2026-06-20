@@ -18,7 +18,7 @@ Gossipcat began as an attempt to remove that patience. The design goal was never
 
 ### 2. What gossipcat is
 
-Gossipcat is an [MCP](https://modelcontextprotocol.io/) server for [Claude Code](https://claude.com/claude-code). When you request a review, it does not pass your diff to one model. It dispatches **several** agents — three or more in a normal configuration, drawn from Claude, Gemini, GPT, Grok, DeepSeek, or a local model running on Ollama — and each reviews the change independently.
+[Gossipcat](https://github.com/gossipcat-ai/gossipcat-ai) is an [MCP](https://modelcontextprotocol.io/) server for [Claude Code](https://claude.com/claude-code). When you request a review, it does not pass your diff to one model. It dispatches **several** agents — three or more in a normal configuration, drawn from Claude, Gemini, GPT, Grok, DeepSeek, or a local model running on Ollama — and each reviews the change independently.
 
 The decisive step is what follows. Each agent then **cross-reviews the others' findings**: it agrees, disagrees, or contributes something the rest missed. The system reconciles the results and labels every finding by its consensus status — six buckets in all:
 
@@ -138,7 +138,7 @@ I make no claim to a long-term roadmap. Gossipcat grows when one of my other pro
 
 ### 9. Conclusion
 
-Gossipcat started from a single dissatisfaction — that AI reviewers are confident and forgetful — and resolved it with a single structural commitment: no claim survives without being checked against the code, and no mistake passes without teaching the system something. The consensus engine, the grounded reward signal, the per-agent scores, and the auto-generated skills are all consequences of that commitment. The further I push the system, the more that one property turns out to be the only one that mattered.
+[Gossipcat](https://github.com/gossipcat-ai/gossipcat-ai) started from a single dissatisfaction — that AI reviewers are confident and forgetful — and resolved it with a single structural commitment: no claim survives without being checked against the code, and no mistake passes without teaching the system something. The consensus engine, the grounded reward signal, the per-agent scores, and the auto-generated skills are all consequences of that commitment. The further I push the system, the more that one property turns out to be the only one that mattered.
 
 If a reader retains one sentence, I would choose this: **do not trust an AI's confidence; require it to earn each claim against the code, and require each mistake to change what happens next.**
 
