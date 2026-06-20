@@ -31,5 +31,5 @@ sidebar_link: true
    <li><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>: a multi-agent code-review orchestrator (TypeScript / MCP) where agents cross-verify each other's findings against real code to filter hallucinations.</li>
 
    <h4>other stuff</h4>
-   Past member of <a href="https://weedsquad.github.io/pages/wall-of-fame.html">WeedSquad</a> and <a href="https://canyoupwn.me/">CanYouPwn.me</a>. On the offensive side I'm comfortable with AD attack vectors like Kerberoasting and NTLM relaying; on the building side, Solidity and Move auditing plus AI-assisted tooling (Claude Code, Cursor).
+   Past member of <a href="https://canyoupwn.me/">CanYouPwn.me</a>. On the offensive side I'm comfortable with AD attack vectors like Kerberoasting and NTLM relaying; on the building side, Solidity and Move auditing plus AI-assisted tooling (Claude Code, Cursor).
 </div>
