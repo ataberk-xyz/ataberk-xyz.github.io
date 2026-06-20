@@ -24,7 +24,7 @@ description:
 baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
-url: 
+url: https://ataberk-xyz.github.io
 #github_username:  0xSaiyajin
 
 paginate: 4

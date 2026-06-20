@@ -1,16 +1,59 @@
 ---
 ---
 
-$sidebar-bg-color: #000000;
-$sidebar-fg-color: #e42727;
+// ── Kami-style palette: bone paper, ink text, a single ink-blue accent ──
+$sidebar-bg-color: #1B365D;
+$sidebar-fg-color: #c9d3e0;
 $sidebar-title-color: #ffffff;
-$sidebar-text-color: rgba($sidebar-title-color,1.0);
-$sidebar-link-color: #e42727;
+$sidebar-text-color: rgba(#ffffff, 0.90);
+$sidebar-link-color: #ffffff;
 
-$link-color: #e42727;
-$body-bg: #ffffff;
-$body-muted: #e42727;
-$body-color: #000000;
-$heading-color: #000000;
-$code-color: #000;
+$link-color: #1B365D;
+$body-bg: #f3f1e9;
+$body-muted: #6f6d66;
+$body-color: #1b1b18;
+$heading-color: #14140f;
+$code-color: #1b1b18;
+
 @import "hydeout";
+
+/* ───────── Kami refinements (applied after the theme) ───────── */
+html,
+body {
+  background: #f3f1e9;
+}
+
+body {
+  font-family: Charter, Georgia, Palatino, "Times New Roman", serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Charter, Georgia, Palatino, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+}
+
+a { color: #1B365D; }
+a:hover { color: #355d8a; }
+
+/* Code: warm ivory surface, monospace face */
+pre, code, kbd, samp {
+  font-family: "JetBrains Mono", "SF Mono", "Fira Code", Consolas, Monaco, monospace;
+}
+
+pre {
+  background: #faf9f5;
+  border: 1px solid #e6e3d8;
+  border-radius: 4px;
+}
+
+/* Post images: subtle editorial frame */
+.content img,
+article img,
+.post img,
+.page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e6e3d8;
+  border-radius: 4px;
+}
