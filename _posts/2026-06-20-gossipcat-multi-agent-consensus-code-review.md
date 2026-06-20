@@ -91,8 +91,6 @@ The clearest evidence comes from gossipcat reviewing *itself* during development
 
 **(v) Six rounds of review before code existed.** The specification for the consensus auto-verify feature passed through six consensus rounds before implementation. Those rounds surfaced more than 21 high-severity defects — among them a phantom type the implementer would otherwise have invented, and a field claimed on a structure that did not possess it. Revision 1 carried four high-severity findings; revision 6 carried none. The feature subsequently shipped at over 1,250 lines with all 50 new tests passing and no regressions.
 
-**(vi) The gate operating in both directions.** The final observation comes, anonymized, from a real **DeFi lending protocol audit**, and it shows confirmation and refutation within a single engagement. The team confirmed a genuine high-severity bug — a bad-debt auction pricing its lot from a manipulable spot price — supported by six passing proof-of-concept tests. In the same session it rejected two confident "critical" findings before submission: a "zero-capital" exploit that collapsed against a flash-loan health check, and a "u32 underflow" that proved to be a test-profile artifact, since the deployed release build enabled overflow checks. A real finding confirmed, two false alarms suppressed, nothing erroneous sent out.
-
 #### Measurements: the live scoreboard
 
 Most agent products never expose how much each agent can be trusted. Gossipcat treats that as a primary readout. The following is its own team, measured on 2026-06-20:
@@ -151,3 +149,63 @@ If a reader retains one sentence, I would choose this: **do not trust an AI's co
 - Every finding must cite a real `file:line`; peers verify it against the source. That mechanical check — not a judge model — is the reward signal. The result is **weightless in-context RL**: no weights are updated, and the policy is a set of markdown skill files.
 - Per-category accuracy scores steer dispatch, and repeated failures synthesize corrective skills. **No agent is exempt** — the 0.93 reviewer is penalized exactly as the 0.39 one is.
 - Install: `npm install -g gossipcat && claude mcp add gossipcat -s user -- gossipcat`, then ask Claude Code to *"set up a gossipcat team for this project."* Source and full documentation: [github.com/gossipcat-ai/gossipcat-ai](https://github.com/gossipcat-ai/gossipcat-ai).
+
+---
+
+### Appendix — a skill file that graduated
+
+The post claims that gossipcat turns an agent's repeated failures into a markdown skill file, and that a skill only counts for anything once it survives a statistical test on its post-bind signals. Here is one such file (frontmatter and key sections, abridged for length): `sonnet-reviewer`'s `trust_boundaries` skill, generated from that agent's own failure history and marked **`status: passed`** on 2026-06-15 by a Wilson one-sample test. Its "Iron Law" is the exact discipline this entire post argues for — never assert that something is absent from a quoted blob; open the file and check. The file below is injected into that agent's prompt for every trust-boundary review.
+
+```markdown
+---
+name: "trust-boundaries-anchor-and-branch-verification"
+category: "trust_boundaries"
+agent: "sonnet-reviewer"
+effectiveness: 0.154
+version: 5
+mode: "contextual"
+status: "passed"
+verdict_method: "wilson_one_sample"
+passed_at: "2026-06-15T21:07:24.181Z"
+baseline_accuracy_hallucinated: 3
+migration_count: 3
+---
+
+## Iron Law
+
+**An absence claim ("X is missing", "not wired", "no method anywhere") is NEVER
+valid from embedded `<anchor>` content alone.** Anchor blocks in your prompt are
+pre-resolved against `project_root` (master HEAD), not against the worktree branch
+under review. You MUST run an independent `file_read` against the `resolutionRoots`
+path before asserting absence. NO EXCEPTIONS.
+
+## Methodology
+
+1. Identify the ref. If `resolutionRoots` contains `.claude/worktrees/agent-*`,
+   the review target is a worktree branch, NOT master.
+2. Treat anchors as hints, not ground truth — they were resolved against master
+   HEAD. Use them to locate symbols, never to prove absence.
+3. For every absence claim, run independent reads. Before emitting "X is missing",
+   `file_read` the file at the worktree path. Read the full method, not the grep line.
+4. Check call sites AND definitions — a symbol can be defined in one file and
+   gated/filtered in its caller.
+5. Check barrel re-exports before asserting a symbol is unexported.
+6. State the ref in the finding — name which path/branch you inspected.
+
+## Anti-Patterns
+
+- **Thought:** "The `<anchor>` block doesn't show the method, so it's missing."
+  **Reality:** Anchors resolve against master HEAD. The PR adds the method on the
+  worktree branch. Always `file_read` the worktree path before claiming absence.
+- **Thought:** "One grep returned no hits, so the symbol isn't wired."
+  **Reality:** Grep scope may exclude the worktree, or the symbol may be re-exported
+  via the barrel. Check definitions, call sites, and the index.
+- **Thought:** "User input flows into a query — this is SQL injection."
+  **Reality:** This project has no SQL database and no HTML templating. Find the
+  actual boundary (path traversal, JSON injection into a ledger, regex DoS).
+
+# … activation triggers, code-path patterns, and the pre-emit quality-gate
+#   checklist trimmed for length …
+```
+
+It is not the only one. Nine skills currently carry `status: passed` — among them `gemini-reviewer`'s `concurrency` (effectiveness **+0.58**), `injection-vectors`, `input-validation`, and `error-handling`, plus `sonnet-reviewer`'s `resource-exhaustion` and `concurrency`. Others sit at `failed` or `inconclusive`, and many more at `pending` — generated, bound, and still accumulating the signals they need to prove out. As the orchestrator said earlier, a single graduation cycle often produces none; nine passed is the slow, cumulative result the post means by *learning from mistakes*.
