@@ -25,10 +25,8 @@
 body {
   color: $sidebar-text-color;
   background-color: $sidebar-bg-color;
-  /*background-image: linear-gradient(
-    to right, #3b5998, #ffcc5c 50%); */
   background-image: linear-gradient(
-    to right, #000000, #0a0909d7);
+    to bottom, #1f3d68, #142a45);
   display: flex;
   flex-direction: column;
   min-width: 100vw;
