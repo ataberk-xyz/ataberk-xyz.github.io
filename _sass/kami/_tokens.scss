@@ -30,8 +30,8 @@
   --mono:  "SF Mono", "SFMono-Regular", ui-monospace, "JetBrains Mono", "Menlo", "Consolas", monospace;
 
   // Rhythm
-  --measure: 44rem;   // prose line length
-  --page:    52rem;   // content column (wide elements: tables, code)
+  --measure: 54rem;   // prose line length
+  --page:    64rem;   // content column (wide elements: tables, code)
   --radius:  6px;
   --rule:    1px solid var(--border);
 }
