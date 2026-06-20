@@ -24,6 +24,7 @@
   --code-bg:       #17171C;
   --code-fg:       #E7E2D6;
   --code-border:   #2A2A31;
+  --code-inline-fg: #5A3E2B;  // inline `code` text
 
   // Type
   --serif: "Charter", "Bitstream Charter", "Cambria", "Georgia", "Times New Roman", serif;
@@ -34,6 +35,29 @@
   --page:    64rem;   // content column (wide elements: tables, code)
   --radius:  6px;
   --rule:    1px solid var(--border);
+}
+
+// ── Dark mode — warm charcoal canvas, lighter ink-blue accent ──
+// Applied when <html data-theme="dark"> (set by the no-FOUC head script).
+html[data-theme="dark"] {
+  --bg:            #1B1A17;  // warm near-black
+  --surface:       #232220;  // cards, blockquote, recessed panels
+  --surface-2:     #2B2825;  // inline code, subtle fills
+  --ink:           #ECE7DC;  // primary text, headings
+  --ink-2:         #C4BEB1;  // secondary text
+  --ink-3:         #9B968B;  // meta, timestamps
+  --ink-4:         #726E65;  // hairline glyphs
+  --border:        #33302B;  // hairline borders
+  --border-strong: #46423A;  // stronger rules
+
+  --accent:        #9DB8E8;  // lifted ink-blue (legible on dark)
+  --accent-2:      #BBD0F0;  // hover
+  --accent-soft:   rgba(157, 184, 232, 0.16);
+
+  --code-bg:       #121116;  // a touch darker than --bg so code reads distinct
+  --code-fg:       #E7E2D6;
+  --code-border:   #2C2A33;
+  --code-inline-fg:#D8A87E;  // warm tan for inline code on dark
 }
 
 // SCSS breakpoints

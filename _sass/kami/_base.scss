@@ -18,6 +18,40 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition: background-color .25s ease, color .25s ease;
+}
+
+// ── Light/dark toggle button (fixed, top-right) ──
+.theme-toggle {
+  position: fixed;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 50;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  -webkit-backdrop-filter: saturate(120%) blur(4px);
+  backdrop-filter: saturate(120%) blur(4px);
+  transition: color .15s ease, border-color .15s ease, background-color .25s ease;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--border-strong); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle svg { width: 1.05rem; height: 1.05rem; display: block; }
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+html[data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+@media (max-width: $bp-mobile) {
+  .theme-toggle { top: 0.6rem; right: 0.6rem; width: 2.2rem; height: 2.2rem; }
 }
 
 h1, h2, h3, h4, h5, h6 {
