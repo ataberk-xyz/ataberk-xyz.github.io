@@ -2,41 +2,28 @@
 layout: default
 ---
 
-<div class="content">
-  {% include pagination-newer.html %}
-
+<div class="post-list">
   {{ content }}
 
   {% for post in paginator.posts %}
-  <article class="post-body">
-    <h2 class="post-title">
-      <a href="{{ site.baseurl }}{{ post.url }}">
-        {{ post.title }}
-      </a>
+  <article class="post-item">
+    <h2 class="post-item-title">
+      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </h2>
+
     {% include post-meta.html post=post %}
 
-    {% if post.excerpt %}
-      {{ post.excerpt }}
-    {% else %}
-      {{ post.content }}
-    {% endif %}
-
-    {% if post.excerpt %}
-      {% comment %}Excerpt may be equal to content. Check.{% endcomment %}
-      {% capture content_words %}
-        {{ post.content | number_of_words }}
-      {% endcapture %}
-      {% capture excerpt_words %}
-        {{ post.excerpt | number_of_words }}
-      {% endcapture %}
-
-      {% if content_words != excerpt_words %}
-        <a href="{{ site.baseurl }}{{ post.url }}">More &hellip;</a>
+    <div class="post-item-excerpt">
+      {% if post.excerpt %}
+        {{ post.excerpt }}
+      {% else %}
+        {{ post.content | strip_html | truncatewords: 45 }}
       {% endif %}
-    {% endif %}
+    </div>
+
+    <a class="read-more" href="{{ site.baseurl }}{{ post.url }}">Read &rarr;</a>
   </article>
   {% endfor %}
 
-  {% include pagination-older.html %}
+  {% include pagination.html %}
 </div>

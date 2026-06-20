@@ -1,0 +1,106 @@
+// ── Components: post list, pagination, tags, share, related ──────
+
+// ── Home post list ──
+.post-list { max-width: var(--measure); margin: 0 auto; }
+.post-item {
+  padding: 1.7rem 0;
+  border-bottom: var(--rule);
+}
+.post-item:first-of-type { padding-top: 0; }
+.post-item-title {
+  font-size: 1.5rem;
+  line-height: 1.2;
+  margin: 0 0 0.55rem;
+}
+.post-item-title a { color: var(--ink); }
+.post-item-title a:hover { color: var(--accent); text-decoration: none; }
+.post-item .post-meta { margin-bottom: 0.7rem; }
+.post-item-excerpt { color: var(--ink-2); font-size: 1rem; }
+.post-item-excerpt p { margin-bottom: 0.6rem; }
+.read-more {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.read-more:hover { text-decoration: none; color: var(--accent-2); }
+
+// ── Pagination ──
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+}
+.pagination a { color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.08em; }
+.pagination .disabled { color: var(--ink-4); text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.08em; }
+.page-count { color: var(--ink-3); }
+
+// ── Tags ──
+.post-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
+.post-tags .tag {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 0.15rem 0.55rem;
+  border-radius: 100px;
+}
+
+// ── Share bar ──
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+.share-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  color: var(--ink-3);
+}
+.share-bar a {
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--border-strong);
+}
+.share-bar a:hover { color: var(--accent); border-bottom-color: var(--accent); text-decoration: none; }
+
+// ── Related posts ──
+.related { max-width: var(--measure); margin: 2.6rem auto 0; padding-top: 1.6rem; border-top: var(--rule); }
+.related-title {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  margin: 0 0 0.9rem;
+}
+.related-list { list-style: none; margin: 0; padding: 0; }
+.related-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px dotted var(--border-strong);
+}
+.related-list li:last-child { border-bottom: 0; }
+.related-list a { color: var(--ink); }
+.related-list a:hover { color: var(--accent); text-decoration: none; }
+.related-date { color: var(--ink-4); font-size: 0.78rem; white-space: nowrap; }
+
+// ── Plain category / page lists ──
+.posts-list { list-style: none; margin: 1rem 0; padding: 0; }
+.posts-list li { padding: 0.4rem 0; border-bottom: 1px dotted var(--border-strong); }
+
+@media (max-width: $bp-mobile) {
+  .post-item-title { font-size: 1.3rem; }
+  .related-list li { flex-direction: column; gap: 0.1rem; }
+}

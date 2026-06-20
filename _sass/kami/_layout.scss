@@ -1,0 +1,79 @@
+// ── Layout: masthead, content column, footer, nav ───────────────
+
+.container {
+  width: 100%;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+// ── Masthead ──
+.masthead {
+  border-bottom: var(--rule);
+  background: var(--bg);
+}
+.masthead-inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 2.6rem 1.5rem 1.6rem;
+  text-align: center;
+}
+.brand {
+  display: inline-block;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.brand:hover { color: var(--accent); text-decoration: none; }
+.brand-tagline {
+  margin: 0.35rem 0 1.25rem;
+  color: var(--ink-3);
+  font-style: italic;
+  font-size: 1.02rem;
+}
+
+// ── Nav ──
+.site-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+}
+.nav-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+}
+.nav-link:hover { color: var(--accent); text-decoration: none; border-bottom-color: var(--border-strong); }
+.nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+// ── Main column ──
+main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; }
+
+// ── Footer ──
+.site-footer {
+  border-top: var(--rule);
+  margin-top: 2rem;
+}
+.footer-inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 1.8rem 1.5rem 2.4rem;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 0.85rem;
+}
+.footer-inner a { color: var(--ink-2); }
+.footer-inner a:hover { color: var(--accent); }
+.footer-sep { margin: 0 0.55rem; color: var(--ink-4); }
+
+@media (max-width: $bp-mobile) {
+  html { font-size: 17px; }
+  .brand { font-size: 1.8rem; }
+  .masthead-inner { padding-top: 2rem; }
+}

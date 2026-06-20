@@ -35,7 +35,8 @@ disqus:
         shortname: 0xsaiyajin
 # Build settings
 markdown: kramdown
-remote_theme: fongandrew/hydeout
+# Bespoke Kami theme — self-contained in _layouts / _includes / _sass.
+# (hydeout remote_theme removed; do not re-add or it will override local layouts)
 plugins:
   - jekyll-feed
   - jekyll-paginate

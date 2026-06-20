@@ -1,0 +1,28 @@
+// ── Syntax highlighting (Rouge) — muted theme on deep-ink code surface ──
+// Matches --code-bg / --code-fg so fenced code blocks read as one surface.
+
+.highlight {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+}
+.highlight pre { background: none; border: 0; }
+
+.highlight {
+  .c, .cm, .c1, .cs, .cd  { color: #6c6f7a; font-style: italic; } // comments
+  .err                    { color: #f2b8b5; }
+  .k, .kn, .kp, .kr, .kd  { color: #9db8e8; }                     // keywords (ink-blue tint)
+  .kt                     { color: #c8a98a; }                     // type
+  .o, .ow                 { color: #c2c0b6; }                     // operators
+  .p                      { color: #b7b5ab; }                     // punctuation
+  .n, .na, .nl, .nx       { color: var(--code-fg); }              // names
+  .nb, .bp                { color: #9db8e8; }                     // builtins
+  .nf, .nc, .nn           { color: #e8c98a; }                     // funcs / classes
+  .nt                     { color: #9db8e8; }                     // html tags
+  .nv, .vi, .vg, .vc      { color: #d7cbb8; }                     // variables
+  .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr, .dl { color: #a8c79a; } // strings
+  .m, .mi, .mf, .mh, .mo, .il { color: #d8a87e; }                 // numbers
+  .gd                     { color: #f2b8b5; }
+  .gi                     { color: #a8c79a; }
+  .gh, .gu                { color: #9db8e8; font-weight: 700; }
+}

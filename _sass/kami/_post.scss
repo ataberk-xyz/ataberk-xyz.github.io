@@ -1,0 +1,141 @@
+// ── Post & page: header, meta, prose ────────────────────────────
+
+.post, .page { max-width: var(--measure); margin: 0 auto; }
+
+.post-header { margin-bottom: 1.8rem; }
+.post-title {
+  font-size: 2.3rem;
+  line-height: 1.14;
+  margin: 0 0 0.7rem;
+  letter-spacing: -0.022em;
+}
+.index .post-title, .page .post-title { margin-top: 0; }
+
+// Meta row (date · categories)
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.9rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+.post-date { text-transform: uppercase; letter-spacing: 0.08em; }
+.post-cats { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
+.post-cats .cat {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 0.12rem 0.5rem;
+  border-radius: 100px;
+}
+.post-cats .cat:hover { text-decoration: none; background: #d9e1ee; }
+
+.post-byline {
+  margin: 0.9rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink-2);
+}
+
+// ── Prose body ──
+.post-body { font-size: 1.06rem; color: var(--ink); }
+.post-body > h2:first-child,
+.post-body > h3:first-child { margin-top: 0; }
+
+.post-body h2 { font-size: 1.62rem; margin-top: 2.6rem; padding-bottom: 0.3rem; border-bottom: var(--rule); }
+.post-body h3 { font-size: 1.3rem; margin-top: 2.1rem; }
+.post-body h4 { font-size: 1.08rem; margin-top: 1.7rem; color: var(--ink-2); }
+
+.post-body a { border-bottom: 1px solid var(--border-strong); }
+.post-body a:hover { border-bottom-color: var(--accent); text-decoration: none; }
+
+.post-body ul, .post-body ol { margin: 0 0 1.2rem; padding-left: 1.4rem; }
+.post-body li { margin: 0.35rem 0; }
+.post-body li::marker { color: var(--ink-4); }
+
+// Blockquote — abstract / pull-quote
+.post-body blockquote {
+  margin: 1.6rem 0;
+  padding: 0.9rem 1.3rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--ink-2);
+  font-style: italic;
+}
+.post-body blockquote p:last-child { margin-bottom: 0; }
+.post-body blockquote strong { color: var(--ink); }
+
+// Inline code
+.post-body :not(pre) > code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--surface-2);
+  color: #5a3e2b;
+  padding: 0.1em 0.38em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+// Code blocks — deep ink surface
+.post-body pre {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.post-body pre code { background: none; border: 0; padding: 0; color: inherit; font-size: inherit; }
+.post-body .highlight { margin: 1.5rem 0; }
+.post-body .highlight pre { margin: 0; }
+
+// Tables — hairline, editorial
+.post-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.6rem 0;
+  font-size: 0.9rem;
+  display: block;
+  overflow-x: auto;
+}
+.post-body th, .post-body td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+.post-body thead th {
+  border-bottom: 2px solid var(--accent);
+  color: var(--ink);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.post-body tbody tr:hover { background: var(--surface); }
+
+// Images in prose — subtle editorial frame
+.post-body img {
+  display: block;
+  margin: 1.5rem auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+// Post footer (tags + share)
+.post-footer { margin-top: 2.5rem; padding-top: 1.4rem; border-top: var(--rule); }
+
+@media (max-width: $bp-mobile) {
+  .post-title { font-size: 1.85rem; }
+  .post-body { font-size: 1.02rem; }
+  .post-body pre { font-size: 0.76rem; }
+}

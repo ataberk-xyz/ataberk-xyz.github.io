@@ -1,0 +1,56 @@
+// ── Base: reset, typography, links ──────────────────────────────
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 18px;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  line-height: 1.72;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--serif);
+  color: var(--ink);
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+  font-weight: 700;
+  margin: 2.4rem 0 0.9rem;
+}
+
+p { margin: 0 0 1.1rem; }
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 2px;
+  transition: color .15s ease, border-color .15s ease;
+}
+a:hover { color: var(--accent-2); text-decoration: underline; }
+
+strong, b { font-weight: 700; color: var(--ink); }
+em, i { font-style: italic; }
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--border-strong);
+  margin: 2.6rem 0;
+}
+
+::selection { background: var(--accent-soft); color: var(--ink); }
+
+img { max-width: 100%; height: auto; }
+
+small { font-size: 0.82em; color: var(--ink-3); }

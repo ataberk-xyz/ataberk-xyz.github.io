@@ -6,10 +6,10 @@ sidebar_link: true
 ---
 
 {% for category in site.categories %}
-  <h3>{{ category[0] }}</h3>
-  <ul>
+  <h3 id="{{ category[0] | slugify }}">{{ category[0] }}</h3>
+  <ul class="posts-list">
     {% for post in category[1] %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a> | {{ post.date | date: "%B %d, %Y"}}</li>
+      <li><a href="{{ post.url }}">{{ post.title }}</a> <small>&middot; {{ post.date | date: "%B %-d, %Y"}}</small></li>
     {% endfor %}
   </ul>
 {% endfor %}

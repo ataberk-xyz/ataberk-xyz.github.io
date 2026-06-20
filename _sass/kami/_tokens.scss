@@ -1,0 +1,41 @@
+// ─────────────────────────────────────────────────────────────
+// Kami design tokens — ink-blue on warm parchment.
+// Warm parchment canvas, single ink-blue accent, serif-led hierarchy.
+// ─────────────────────────────────────────────────────────────
+
+:root {
+  // Foundation
+  --bg:            #FAF7F2;  // warm parchment canvas
+  --surface:       #FFFEFB;  // cards, recessed panels
+  --surface-2:     #F4EFE5;  // inline code, subtle fills
+  --ink:           #1A1916;  // primary text, headings
+  --ink-2:         #4A4640;  // secondary text
+  --ink-3:         #6B6862;  // meta, timestamps
+  --ink-4:         #8A857C;  // hairline glyphs, non-text only
+  --border:        #E8E1D6;  // hairline borders, dividers
+  --border-strong: #D7CEBE;  // stronger rules
+
+  // Accent — one, and only one
+  --accent:        #1B365D;  // ink-blue
+  --accent-2:      #2C4F7C;  // hover / lighter ink-blue
+  --accent-soft:   #E6EAF1;  // pill backgrounds, washes
+
+  // Code surface (deep ink for contrast against parchment)
+  --code-bg:       #17171C;
+  --code-fg:       #E7E2D6;
+  --code-border:   #2A2A31;
+
+  // Type
+  --serif: "Charter", "Bitstream Charter", "Cambria", "Georgia", "Times New Roman", serif;
+  --mono:  "SF Mono", "SFMono-Regular", ui-monospace, "JetBrains Mono", "Menlo", "Consolas", monospace;
+
+  // Rhythm
+  --measure: 44rem;   // prose line length
+  --page:    52rem;   // content column (wide elements: tables, code)
+  --radius:  6px;
+  --rule:    1px solid var(--border);
+}
+
+// SCSS breakpoints
+$bp-tablet: 820px;
+$bp-mobile: 540px;
