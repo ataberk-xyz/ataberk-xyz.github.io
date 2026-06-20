@@ -21,6 +21,7 @@ baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: UA-126239469-1
 url: https://ataberk-xyz.github.io
+future: true   # publish posts dated ahead of the GitHub Pages build clock
 #github_username:  0xSaiyajin
 
 paginate: 4
