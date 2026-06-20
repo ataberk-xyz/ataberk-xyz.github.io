@@ -93,7 +93,7 @@ The clearest evidence comes from gossipcat reviewing *itself* during development
 
 #### Measurements: the live scoreboard
 
-Most agent products never expose how much each agent can be trusted. Gossipcat treats that as a primary readout. The following is its own team, measured on 2026-06-20:
+Most agent products never expose how much each agent can be trusted. Gossipcat treats that as a primary readout. The following is its own team, measured on 2026-06-21:
 
 | Agent | Role | Accuracy | Uniqueness | Reliability | Dispatch wt | Signals | Hallucinations |
 |---|---|---|---|---|---|---|---|
