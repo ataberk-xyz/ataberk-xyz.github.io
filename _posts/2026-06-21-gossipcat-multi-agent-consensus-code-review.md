@@ -31,18 +31,26 @@ The decisive step is what follows. Each agent then **cross-reviews the others' f
 
 A subsequent auto-verify pass stamps each finding's verdict as *confirmed*, *refuted*, or *inconclusive*. You act on CONFIRMED findings and on UNIQUE findings that survive verification; everything else is resolved before it reaches your attention. The empirical payoff is a single number: cross-review with verification takes the 5–10% false-critical rate of a solo reviewer and drives it **below 1%**. That reduction is the entire reason the project exists.
 
-The whole arrangement is a single loop, drawn below.
+Concretely, the system is a portfolio of agents coordinated by the MCP server — six native Claude Code subagents at zero API cost, plus three relay workers on outside APIs — wired into a single learning loop. The architecture, with the actual roster this blog's reviews run on, is below.
 
 <figure class="chart-figure">
-<svg viewBox="0 16 920 388" role="img" aria-label="The gossipcat consensus loop: the orchestrator dispatches reviewers, whose findings pass through cross-review and auto-verification before reaching a human; the verdicts feed competency scores and skill files that steer the next dispatch" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 960 600" role="img" aria-label="Gossipcat architecture: the orchestrator dispatches a consensus round to the gossipcat MCP server, which fans review across nine named agents — six native Claude Code subagents (sonnet-reviewer, fable-reviewer, haiku-researcher, sonnet-designer, opus-implementer, sonnet-implementer) and three relay workers (gemini-reviewer, gemini-tester on Google, deepseek-challenger on DeepSeek). Findings are cross-reviewed and file:line-verified server-side, then synthesized back to the human; verified signals update competency scores and skill files that steer the next selection." xmlns="http://www.w3.org/2000/svg">
 <style>
  svg{font-family:var(--serif,Georgia,serif)}
  .node{fill:var(--surface,#FFFEFB);stroke:var(--border-strong,#D7CEBE);stroke-width:1.5}
  .focal{fill:var(--accent-soft,#E6EAF1);stroke:var(--accent,#1B365D);stroke-width:1.8}
+ .panelbox{fill:var(--surface-2,#F4EFE5);stroke:var(--border,#E8E1D6);stroke-width:1.2}
+ .subbox{fill:var(--surface,#FFFEFB);stroke:var(--border,#E8E1D6);stroke-width:1}
+ .pill{fill:var(--bg,#FAF7F2);stroke:var(--border-strong,#D7CEBE);stroke-width:1}
  .store{fill:var(--surface-2,#F4EFE5);stroke:var(--ink-4,#8A857C);stroke-width:1.2;stroke-dasharray:5 4}
- .nm{fill:var(--ink,#1A1916);font-size:18px;font-weight:600}
- .nmf{fill:var(--accent,#1B365D);font-size:18px;font-weight:600}
- .sub{fill:var(--ink-3,#6B6862);font-family:var(--mono,monospace);font-size:12px}
+ .nm{fill:var(--ink,#1A1916);font-size:17px;font-weight:600}
+ .nmf{fill:var(--accent,#1B365D);font-size:17px;font-weight:600}
+ .snm{fill:var(--ink,#1A1916);font-size:14px;font-weight:600}
+ .sub{fill:var(--ink-3,#6B6862);font-family:var(--mono,monospace);font-size:11.5px}
+ .phdr{fill:var(--accent,#1B365D);font-family:var(--mono,monospace);font-size:12px;letter-spacing:1px}
+ .ghdr{fill:var(--ink-2,#4A4640);font-family:var(--mono,monospace);font-size:11px}
+ .pnm{fill:var(--ink,#1A1916);font-family:var(--mono,monospace);font-size:13px;font-weight:600}
+ .pmod{fill:var(--ink-3,#6B6862);font-family:var(--mono,monospace);font-size:9.5px}
  .ar{stroke:var(--ink-3,#6B6862);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
  .arf{stroke:var(--accent,#1B365D);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
  .arfd{stroke:var(--accent,#1B365D);stroke-width:1.6;fill:none;stroke-dasharray:6 4;stroke-linecap:round;stroke-linejoin:round}
@@ -51,46 +59,81 @@ The whole arrangement is a single loop, drawn below.
  .cap{fill:var(--accent,#1B365D);font-size:12px;font-style:italic}
  .mask{fill:var(--bg,#FAF7F2)}
 </style>
-<rect class="focal" x="48" y="48" width="176" height="68" rx="8"/>
-<rect class="node" x="56" y="172" width="160" height="68" rx="8"/>
-<rect class="node" x="272" y="172" width="160" height="68" rx="8"/>
-<rect class="node" x="488" y="172" width="160" height="68" rx="8"/>
-<rect class="node" x="704" y="172" width="160" height="68" rx="8"/>
-<rect class="store" x="272" y="320" width="376" height="60" rx="8"/>
-<text class="nmf" x="136" y="82" text-anchor="middle">Orchestrator</text>
-<text class="sub" x="136" y="102" text-anchor="middle">dispatch · verify · gate</text>
-<text class="nm" x="136" y="206" text-anchor="middle">Reviewers</text>
-<text class="sub" x="136" y="226" text-anchor="middle">cite file:line</text>
-<text class="nm" x="352" y="206" text-anchor="middle">Cross-review</text>
-<text class="sub" x="352" y="226" text-anchor="middle">confirm · dispute · new</text>
-<text class="nm" x="568" y="206" text-anchor="middle">Auto-verify</text>
-<text class="sub" x="568" y="226" text-anchor="middle">checked vs. source</text>
-<text class="nm" x="784" y="206" text-anchor="middle">Human</text>
-<text class="sub" x="784" y="226" text-anchor="middle">sees CONFIRMED only</text>
-<text class="nm" x="460" y="354" text-anchor="middle">Competency scores + skill files</text>
-<text class="sub" x="460" y="372" text-anchor="middle">the weightless policy</text>
-<line class="ar" x1="136" y1="116" x2="136" y2="170"/>
-<path class="ar" d="M130 161 L136 170 L142 161"/>
-<line class="ar" x1="216" y1="206" x2="270" y2="206"/>
-<path class="ar" d="M261 200 L270 206 L261 212"/>
-<line class="ar" x1="432" y1="206" x2="486" y2="206"/>
-<path class="ar" d="M477 200 L486 206 L477 212"/>
-<line class="ar" x1="648" y1="206" x2="702" y2="206"/>
-<path class="ar" d="M693 200 L702 206 L693 212"/>
-<line class="arf" x1="568" y1="240" x2="568" y2="318"/>
-<path class="arf" d="M562 309 L568 318 L574 309"/>
-<path class="arfd" d="M272 350 C80 350 8 82 48 82"/>
-<path class="arf" d="M39 76 L48 82 L39 88"/>
-<rect class="mask" x="150" y="139" width="60" height="15"/>
-<text class="lab" x="152" y="150" text-anchor="start">dispatch</text>
-<rect class="mask" x="578" y="275" width="54" height="15"/>
-<text class="labf" x="580" y="286" text-anchor="start">signals</text>
-<rect class="mask" x="136" y="277" width="128" height="15"/>
-<text class="labf" x="200" y="288" text-anchor="middle">steer · inject skills</text>
-<rect class="mask" x="720" y="263" width="128" height="15"/>
-<text class="cap" x="784" y="274" text-anchor="middle">&lt; 1% false-critical</text>
+<rect class="node" x="104" y="40" width="312" height="56" rx="8"/>
+<rect class="node" x="556" y="40" width="300" height="56" rx="8"/>
+<text class="nm" x="260" y="66" text-anchor="middle">Orchestrator</text>
+<text class="sub" x="260" y="84" text-anchor="middle">Claude Code · MCP client</text>
+<text class="nm" x="706" y="66" text-anchor="middle">Human</text>
+<text class="sub" x="706" y="84" text-anchor="middle">CONFIRMED only · &lt; 1% false-critical</text>
+<line class="ar" x1="416" y1="68" x2="554" y2="68"/>
+<path class="ar" d="M545 62 L554 68 L545 74"/>
+<rect class="mask" x="438" y="61" width="96" height="14"/>
+<text class="lab" x="486" y="71" text-anchor="middle">verified findings</text>
+<rect class="focal" x="104" y="152" width="752" height="64" rx="8"/>
+<text class="nmf" x="480" y="180" text-anchor="middle">gossipcat MCP server</text>
+<text class="sub" x="480" y="200" text-anchor="middle">selects reviewers · cross-reviews · verifies citations · scores · synthesizes</text>
+<line class="ar" x1="236" y1="96" x2="236" y2="150"/>
+<path class="ar" d="M230 141 L236 150 L242 141"/>
+<line class="ar" x1="300" y1="152" x2="300" y2="98"/>
+<path class="ar" d="M294 107 L300 98 L306 107"/>
+<rect class="mask" x="120" y="119" width="110" height="14"/>
+<text class="lab" x="228" y="129" text-anchor="end">consensus dispatch</text>
+<rect class="mask" x="306" y="119" width="66" height="14"/>
+<text class="lab" x="308" y="129" text-anchor="start">synthesis</text>
+<rect class="panelbox" x="104" y="264" width="752" height="248" rx="10"/>
+<text class="phdr" x="120" y="290" text-anchor="start">AGENT PORTFOLIO · Phase 1 — independent review</text>
+<line class="ar" x1="440" y1="216" x2="440" y2="262"/>
+<path class="ar" d="M434 253 L440 262 L446 253"/>
+<line class="ar" x1="520" y1="264" x2="520" y2="218"/>
+<path class="ar" d="M514 227 L520 218 L526 227"/>
+<rect class="mask" x="350" y="235" width="84" height="14"/>
+<text class="lab" x="432" y="245" text-anchor="end">review tasks</text>
+<rect class="mask" x="526" y="235" width="150" height="14"/>
+<text class="lab" x="528" y="245" text-anchor="start">findings → cross-review</text>
+<rect class="subbox" x="124" y="300" width="480" height="180" rx="8"/>
+<text class="ghdr" x="138" y="322" text-anchor="start">Native Claude Code subagents · 0 API cost</text>
+<rect class="pill" x="134" y="332" width="148" height="48" rx="6"/>
+<rect class="pill" x="290" y="332" width="148" height="48" rx="6"/>
+<rect class="pill" x="446" y="332" width="148" height="48" rx="6"/>
+<rect class="pill" x="134" y="404" width="148" height="48" rx="6"/>
+<rect class="pill" x="290" y="404" width="148" height="48" rx="6"/>
+<rect class="pill" x="446" y="404" width="148" height="48" rx="6"/>
+<text class="pnm" x="208" y="352" text-anchor="middle">sonnet-reviewer</text>
+<text class="pmod" x="208" y="368" text-anchor="middle">claude-sonnet-4-6</text>
+<text class="pnm" x="364" y="352" text-anchor="middle">fable-reviewer</text>
+<text class="pmod" x="364" y="368" text-anchor="middle">claude-fable-5</text>
+<text class="pnm" x="520" y="352" text-anchor="middle">haiku-researcher</text>
+<text class="pmod" x="520" y="368" text-anchor="middle">claude-haiku-4-5</text>
+<text class="pnm" x="208" y="424" text-anchor="middle">sonnet-designer</text>
+<text class="pmod" x="208" y="440" text-anchor="middle">claude-sonnet-4-6</text>
+<text class="pnm" x="364" y="424" text-anchor="middle">opus-implementer</text>
+<text class="pmod" x="364" y="440" text-anchor="middle">claude-opus-4-6</text>
+<text class="pnm" x="520" y="424" text-anchor="middle">sonnet-implementer</text>
+<text class="pmod" x="520" y="440" text-anchor="middle">claude-sonnet-4-6</text>
+<rect class="subbox" x="620" y="300" width="220" height="180" rx="8"/>
+<text class="ghdr" x="634" y="322" text-anchor="start">Relay workers · external API</text>
+<rect class="pill" x="632" y="330" width="196" height="44" rx="6"/>
+<rect class="pill" x="632" y="380" width="196" height="44" rx="6"/>
+<rect class="pill" x="632" y="430" width="196" height="44" rx="6"/>
+<text class="pnm" x="730" y="348" text-anchor="middle">gemini-reviewer</text>
+<text class="pmod" x="730" y="363" text-anchor="middle">gemini-2.5-pro · Google</text>
+<text class="pnm" x="730" y="398" text-anchor="middle">gemini-tester</text>
+<text class="pmod" x="730" y="413" text-anchor="middle">gemini-2.5-pro · Google</text>
+<text class="pnm" x="730" y="448" text-anchor="middle">deepseek-challenger</text>
+<text class="pmod" x="730" y="463" text-anchor="middle">deepseek-chat · DeepSeek</text>
+<rect class="store" x="288" y="524" width="384" height="48" rx="8"/>
+<text class="snm" x="480" y="546" text-anchor="middle">competency scores + skill files</text>
+<text class="sub" x="480" y="563" text-anchor="middle">.gossip/agents/&lt;id&gt;/skills/*.md</text>
+<line class="arf" x1="480" y1="512" x2="480" y2="522"/>
+<path class="arf" d="M474 513 L480 522 L486 513"/>
+<rect class="mask" x="490" y="511" width="112" height="14"/>
+<text class="labf" x="492" y="521" text-anchor="start">verified signals</text>
+<path class="arfd" d="M288 548 H120 Q88 548 88 516 L88 216 Q88 184 104 184"/>
+<path class="arf" d="M95 178 L104 184 L95 190"/>
+<rect class="mask" x="134" y="535" width="132" height="14"/>
+<text class="labf" x="200" y="545" text-anchor="middle">steers next selection</text>
 </svg>
-<figcaption>The gossipcat consensus loop. The <strong>orchestrator</strong> dispatches several reviewers, each grounding every finding in a concrete <code>file:line</code>; the findings pass through <strong>cross-review</strong> — where agents confirm, dispute, or add to one another's claims — and an automated <strong>verification</strong> pass, so only <strong>CONFIRMED</strong> defects reach you, driving the false-critical rate below 1%. The verdicts from each round become grounded signals that update every agent's competency scores and skill files, which in turn steer the next dispatch. No model weights change; the policy <em>is</em> the markdown.</figcaption>
+<figcaption>Gossipcat's architecture, with the roster this blog's reviews actually run on. The <strong>orchestrator</strong> — the Claude Code session — dispatches a consensus round to the <strong>gossipcat MCP server</strong>, which fans review across a fixed portfolio of nine agents: six <strong>native Claude Code subagents</strong> at zero API cost (<code>sonnet-reviewer</code>, <code>fable-reviewer</code>, <code>haiku-researcher</code>, <code>sonnet-designer</code>, <code>opus-implementer</code>, <code>sonnet-implementer</code>) and three <strong>relay workers</strong> on outside APIs (<code>gemini-reviewer</code> and <code>gemini-tester</code> on Google, <code>deepseek-challenger</code> on DeepSeek). Each reviews independently (Phase 1); the server then selects cross-reviewers per finding and verifies every <code>file:line</code> citation against source (Phase 2) before synthesizing the report the orchestrator hands you. The verified outcomes become signals that update each agent's competency scores and skill files — the markdown policy that steers who gets selected next.</figcaption>
 </figure>
 
 ### 3. Design philosophy: verify each premise
