@@ -1,10 +1,9 @@
 {%- comment -%}
-Renders a markdown blob with a Raw <-> Rendered toggle.
-Params:
-  content : the markdown source (usually a {% capture %} blob)
-  title   : short label shown in the toolbar (optional)
+Renders a markdown blob with a Raw / Rendered toggle.
+Params -- content: the markdown source (usually a captured blob);
+title: short label shown in the toolbar (optional).
 Both views are built at site-build time (no client-side markdown lib).
-The first `---`-delimited block is treated as YAML front matter.
+The first triple-dash-delimited block is treated as YAML front matter.
 {%- endcomment -%}
 {%- assign _parts = include.content | split: "---" -%}
 {%- assign _fm = _parts[1] | strip -%}
