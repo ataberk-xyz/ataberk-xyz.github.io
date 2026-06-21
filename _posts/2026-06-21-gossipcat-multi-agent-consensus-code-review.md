@@ -2,7 +2,7 @@
 layout: post
 title: "Gossipcat: Teaching AI Agents to Catch Each Other Lying"
 author: ataberk-xyz
-categories: [projects]
+categories: [ai-research]
 tags: [ai, multi-agent, mcp, claude-code, llm, code-review]
 ---
 
