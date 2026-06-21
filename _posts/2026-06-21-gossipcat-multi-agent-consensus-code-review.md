@@ -277,8 +277,7 @@ If a reader retains one sentence, I would choose this: **do not trust an AI's co
 
 The post claims that gossipcat turns an agent's repeated failures into a markdown skill file, and that a skill only counts for anything once it survives a statistical test on its post-bind signals. Here is one such file (frontmatter and key sections, abridged for length): `sonnet-reviewer`'s `trust_boundaries` skill, generated from that agent's own failure history and marked **`status: passed`** on 2026-06-15 by a Wilson one-sample test. Its "Iron Law" is the exact discipline this entire post argues for — never assert that something is absent from a quoted blob; open the file and check. The file below is injected into that agent's prompt for every trust-boundary review.
 
-```markdown
----
+{% capture skill_md %}---
 name: "trust-boundaries-anchor-and-branch-verification"
 category: "trust_boundaries"
 agent: "sonnet-reviewer"
@@ -325,8 +324,6 @@ path before asserting absence. NO EXCEPTIONS.
   **Reality:** This project has no SQL database and no HTML templating. Find the
   actual boundary (path traversal, JSON injection into a ledger, regex DoS).
 
-# … activation triggers, code-path patterns, and the pre-emit quality-gate
-#   checklist trimmed for length …
-```
+> *… activation triggers, code-path patterns, and the pre-emit quality-gate checklist trimmed for length …*{% endcapture %}{% include md-toggle.html content=skill_md title="sonnet-reviewer · trust_boundaries skill" %}
 
 It is not the only one. Nine skills currently carry `status: passed` — among them `gemini-reviewer`'s `concurrency` (effectiveness **+0.58**), `injection-vectors`, `input-validation`, and `error-handling`, plus `sonnet-reviewer`'s `resource-exhaustion` and `concurrency`. Others sit at `failed` or `inconclusive`, and many more at `pending` — generated, bound, and still accumulating the signals they need to prove out. As the orchestrator said earlier, a single graduation cycle often produces none; nine passed is the slow, cumulative result the post means by *learning from mistakes*.

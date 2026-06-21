@@ -1,0 +1,31 @@
+{%- comment -%}
+Renders a markdown blob with a Raw <-> Rendered toggle.
+Params:
+  content : the markdown source (usually a {% capture %} blob)
+  title   : short label shown in the toolbar (optional)
+Both views are built at site-build time (no client-side markdown lib).
+The first `---`-delimited block is treated as YAML front matter.
+{%- endcomment -%}
+{%- assign _parts = include.content | split: "---" -%}
+{%- assign _fm = _parts[1] | strip -%}
+{%- assign _body = _parts | slice: 2, 50 | join: "---" | strip -%}
+{%- capture _raw_src -%}
+```markdown
+{{ include.content | strip }}
+```
+{%- endcapture -%}
+{%- capture _rendered_src -%}
+```yaml
+{{ _fm }}
+```
+
+{{ _body }}
+{%- endcapture -%}
+<div class="md-toggle" data-md-toggle>
+<div class="md-toggle-bar">
+<span class="md-toggle-name">{{ include.title | default: "markdown" }}</span>
+<button class="md-toggle-btn" type="button" aria-pressed="false" aria-label="Toggle rendered markdown"><span class="md-toggle-state">Rendered view</span></button>
+</div>
+<div class="md-raw" data-md-raw>{{ _raw_src | markdownify }}</div>
+<div class="md-rendered" data-md-rendered hidden>{{ _rendered_src | markdownify }}</div>
+</div>

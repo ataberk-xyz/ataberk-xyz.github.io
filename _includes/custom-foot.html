@@ -1,1 +1,20 @@
 <!-- Optional footer content -->
+<script>
+  (function () {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.md-toggle-btn');
+      if (!btn) return;
+      var wrap = btn.closest('.md-toggle');
+      if (!wrap) return;
+      var raw = wrap.querySelector('[data-md-raw]');
+      var rendered = wrap.querySelector('[data-md-rendered]');
+      if (!raw || !rendered) return;
+      var showRendered = rendered.hasAttribute('hidden');
+      if (showRendered) { rendered.removeAttribute('hidden'); raw.setAttribute('hidden', ''); }
+      else { rendered.setAttribute('hidden', ''); raw.removeAttribute('hidden'); }
+      btn.setAttribute('aria-pressed', showRendered ? 'true' : 'false');
+      var state = btn.querySelector('.md-toggle-state');
+      if (state) state.textContent = showRendered ? 'Raw source' : 'Rendered view';
+    });
+  })();
+</script>
