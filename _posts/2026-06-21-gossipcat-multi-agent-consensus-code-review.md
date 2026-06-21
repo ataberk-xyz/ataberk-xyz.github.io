@@ -31,6 +31,68 @@ The decisive step is what follows. Each agent then **cross-reviews the others' f
 
 A subsequent auto-verify pass stamps each finding's verdict as *confirmed*, *refuted*, or *inconclusive*. You act on CONFIRMED findings and on UNIQUE findings that survive verification; everything else is resolved before it reaches your attention. The empirical payoff is a single number: cross-review with verification takes the 5–10% false-critical rate of a solo reviewer and drives it **below 1%**. That reduction is the entire reason the project exists.
 
+The whole arrangement is a single loop, drawn below.
+
+<figure class="chart-figure">
+<svg viewBox="0 16 920 388" role="img" aria-label="The gossipcat consensus loop: the orchestrator dispatches reviewers, whose findings pass through cross-review and auto-verification before reaching a human; the verdicts feed competency scores and skill files that steer the next dispatch" xmlns="http://www.w3.org/2000/svg">
+<style>
+ svg{font-family:var(--serif,Georgia,serif)}
+ .node{fill:var(--surface,#FFFEFB);stroke:var(--border-strong,#D7CEBE);stroke-width:1.5}
+ .focal{fill:var(--accent-soft,#E6EAF1);stroke:var(--accent,#1B365D);stroke-width:1.8}
+ .store{fill:var(--surface-2,#F4EFE5);stroke:var(--ink-4,#8A857C);stroke-width:1.2;stroke-dasharray:5 4}
+ .nm{fill:var(--ink,#1A1916);font-size:18px;font-weight:600}
+ .nmf{fill:var(--accent,#1B365D);font-size:18px;font-weight:600}
+ .sub{fill:var(--ink-3,#6B6862);font-family:var(--mono,monospace);font-size:12px}
+ .ar{stroke:var(--ink-3,#6B6862);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+ .arf{stroke:var(--accent,#1B365D);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+ .arfd{stroke:var(--accent,#1B365D);stroke-width:1.6;fill:none;stroke-dasharray:6 4;stroke-linecap:round;stroke-linejoin:round}
+ .lab{fill:var(--ink-3,#6B6862);font-family:var(--mono,monospace);font-size:11px}
+ .labf{fill:var(--accent,#1B365D);font-family:var(--mono,monospace);font-size:11px}
+ .cap{fill:var(--accent,#1B365D);font-size:12px;font-style:italic}
+ .mask{fill:var(--bg,#FAF7F2)}
+</style>
+<rect class="focal" x="48" y="48" width="176" height="68" rx="8"/>
+<rect class="node" x="56" y="172" width="160" height="68" rx="8"/>
+<rect class="node" x="272" y="172" width="160" height="68" rx="8"/>
+<rect class="node" x="488" y="172" width="160" height="68" rx="8"/>
+<rect class="node" x="704" y="172" width="160" height="68" rx="8"/>
+<rect class="store" x="272" y="320" width="376" height="60" rx="8"/>
+<text class="nmf" x="136" y="82" text-anchor="middle">Orchestrator</text>
+<text class="sub" x="136" y="102" text-anchor="middle">dispatch · verify · gate</text>
+<text class="nm" x="136" y="206" text-anchor="middle">Reviewers</text>
+<text class="sub" x="136" y="226" text-anchor="middle">cite file:line</text>
+<text class="nm" x="352" y="206" text-anchor="middle">Cross-review</text>
+<text class="sub" x="352" y="226" text-anchor="middle">confirm · dispute · new</text>
+<text class="nm" x="568" y="206" text-anchor="middle">Auto-verify</text>
+<text class="sub" x="568" y="226" text-anchor="middle">checked vs. source</text>
+<text class="nm" x="784" y="206" text-anchor="middle">Human</text>
+<text class="sub" x="784" y="226" text-anchor="middle">sees CONFIRMED only</text>
+<text class="nm" x="460" y="354" text-anchor="middle">Competency scores + skill files</text>
+<text class="sub" x="460" y="372" text-anchor="middle">the weightless policy</text>
+<line class="ar" x1="136" y1="116" x2="136" y2="170"/>
+<path class="ar" d="M130 161 L136 170 L142 161"/>
+<line class="ar" x1="216" y1="206" x2="270" y2="206"/>
+<path class="ar" d="M261 200 L270 206 L261 212"/>
+<line class="ar" x1="432" y1="206" x2="486" y2="206"/>
+<path class="ar" d="M477 200 L486 206 L477 212"/>
+<line class="ar" x1="648" y1="206" x2="702" y2="206"/>
+<path class="ar" d="M693 200 L702 206 L693 212"/>
+<line class="arf" x1="568" y1="240" x2="568" y2="318"/>
+<path class="arf" d="M562 309 L568 318 L574 309"/>
+<path class="arfd" d="M272 350 C80 350 8 82 48 82"/>
+<path class="arf" d="M39 76 L48 82 L39 88"/>
+<rect class="mask" x="150" y="139" width="60" height="15"/>
+<text class="lab" x="152" y="150" text-anchor="start">dispatch</text>
+<rect class="mask" x="578" y="275" width="54" height="15"/>
+<text class="labf" x="580" y="286" text-anchor="start">signals</text>
+<rect class="mask" x="136" y="277" width="128" height="15"/>
+<text class="labf" x="200" y="288" text-anchor="middle">steer · inject skills</text>
+<rect class="mask" x="720" y="263" width="128" height="15"/>
+<text class="cap" x="784" y="274" text-anchor="middle">&lt; 1% false-critical</text>
+</svg>
+<figcaption>The gossipcat consensus loop. The <strong>orchestrator</strong> dispatches several reviewers, each grounding every finding in a concrete <code>file:line</code>; the findings pass through <strong>cross-review</strong> — where agents confirm, dispute, or add to one another's claims — and an automated <strong>verification</strong> pass, so only <strong>CONFIRMED</strong> defects reach you, driving the false-critical rate below 1%. The verdicts from each round become grounded signals that update every agent's competency scores and skill files, which in turn steer the next dispatch. No model weights change; the policy <em>is</em> the markdown.</figcaption>
+</figure>
+
 ### 3. Design philosophy: verify each premise
 
 The principle underneath gossipcat predates it, and it comes from security work rather than from machine learning.
