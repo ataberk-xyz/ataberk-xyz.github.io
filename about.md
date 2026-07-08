@@ -27,6 +27,14 @@ sidebar_link: true
    <li>Mail.ru Hall of Fame: Cross-Site Scripting findings.</li>
    <li>HackingWars CTF #1: finished 1st of 324, hosted by Prodaft.</li>
 
+   <h4>Security advisories</h4>
+   Responsibly disclosed vulnerabilities in widely-used npm packages (credited as reporter):
+   <li><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">install-artifact-from-github</a> &mdash; High (7.5): a network-downloaded native addon is written and loaded with no integrity check, giving arbitrary code execution at install time (CWE-494).</li>
+   <li><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">stream-json</a> &mdash; Moderate (6.2): quadratic-complexity path filters let a small, deeply-nested JSON payload block the event loop for seconds to minutes (CWE-407). Fixed in 3.5.0.</li>
+   <li><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">re2</a> &mdash; Moderate (6.2): a global match on a zero-width pattern never advances, causing an infinite loop with unbounded native memory growth (CWE-835). Fixed in 1.25.2.</li>
+   <li><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">re2</a> &mdash; Moderate (5.7): an attacker-influenced <code>lastIndex</code> on a non-ASCII subject triggers an out-of-bounds heap read and an uncatchable process crash (CWE-125).</li>
+   <li><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">re2</a> &mdash; Moderate (6.2): <code>replace</code> with an output-amplifying template aborts the Node process when the result exceeds V8's maximum string length (CWE-617).</li>
+
    <h4>Open source</h4>
    <li><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>: a multi-agent code-review orchestrator (TypeScript / MCP) where agents cross-verify each other's findings against real code to filter hallucinations.</li>
 
