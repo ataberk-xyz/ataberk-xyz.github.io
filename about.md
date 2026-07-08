@@ -32,38 +32,43 @@ sidebar_link: true
    <div style="overflow-x:auto;">
    <table>
      <thead>
-       <tr><th>Advisory / CVE</th><th>Severity</th><th>Finding type</th><th>Title</th></tr>
+       <tr><th>Package</th><th>Advisory / CVE</th><th>Severity</th><th>Finding type</th><th>Title</th></tr>
      </thead>
      <tbody>
        <tr>
+         <td>install-artifact-from-github</td>
          <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">GHSA-88q3-gch3-5396</a></td>
          <td>High (7.5)</td>
          <td>CWE-494 &mdash; Download of Code Without Integrity Check</td>
-         <td>install-artifact-from-github: network-downloaded native addon loaded without integrity check &rarr; install-time RCE</td>
+         <td>network-downloaded native addon loaded without integrity check &rarr; install-time RCE</td>
        </tr>
        <tr>
+         <td>stream-json</td>
          <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">GHSA-528h-pc64-c93x</a></td>
          <td>Moderate (6.2)</td>
          <td>CWE-407 &mdash; Inefficient Algorithmic Complexity</td>
-         <td>stream-json: quadratic-complexity path filters &rarr; small nested JSON blocks the event loop (DoS). Fixed in 3.5.0</td>
+         <td>quadratic-complexity path filters &rarr; small nested JSON blocks the event loop (DoS). Fixed in 3.5.0</td>
        </tr>
        <tr>
+         <td>re2</td>
          <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">GHSA-6hxr-mr5r-9836</a></td>
          <td>Moderate (6.2)</td>
          <td>CWE-835 &mdash; Infinite Loop</td>
-         <td>re2: zero-width global match never advances &rarr; infinite loop with unbounded native memory growth (DoS). Fixed in 1.25.2</td>
+         <td>zero-width global match never advances &rarr; infinite loop with unbounded native memory growth (DoS). Fixed in 1.25.2</td>
        </tr>
        <tr>
+         <td>re2</td>
          <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">GHSA-ff84-5f28-78qj</a></td>
          <td>Moderate (5.7)</td>
          <td>CWE-125 &mdash; Out-of-bounds Read</td>
-         <td>re2: attacker-influenced <code>lastIndex</code> on a non-ASCII subject &rarr; out-of-bounds heap read and uncatchable crash (DoS)</td>
+         <td>attacker-influenced <code>lastIndex</code> on a non-ASCII subject &rarr; out-of-bounds heap read and uncatchable crash (DoS)</td>
        </tr>
        <tr>
+         <td>re2</td>
          <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">GHSA-8hcv-x26h-mcgp</a></td>
          <td>Moderate (6.2)</td>
          <td>CWE-617 &mdash; Reachable Assertion</td>
-         <td>re2: <code>replace</code> with an output-amplifying template aborts the Node process past V8's max string length (DoS)</td>
+         <td><code>replace</code> with an output-amplifying template aborts the Node process past V8's max string length (DoS)</td>
        </tr>
      </tbody>
    </table>
