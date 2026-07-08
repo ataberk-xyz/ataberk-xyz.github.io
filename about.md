@@ -83,20 +83,60 @@ sidebar_link: true
    <h4>Open source</h4>
    <li><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>: a multi-agent code-review orchestrator (TypeScript / MCP) where agents cross-verify each other's findings against real code to filter hallucinations.</li>
 
+   <style>
+     .skills { margin: 0.6rem 0 1.1rem; }
+     .skill-group { display: flex; gap: 0.85rem; align-items: baseline; flex-wrap: wrap; margin: 0.55rem 0; }
+     .skill-group > .domain {
+       flex: 0 0 9rem;
+       font-variant: small-caps; letter-spacing: 0.045em;
+       color: var(--ink-3); font-size: 0.86rem; font-weight: 600;
+     }
+     .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; flex: 1 1 16rem; }
+     .skill-tags span {
+       display: inline-block; padding: 0.22rem 0.62rem;
+       background: var(--accent-soft); color: var(--accent);
+       border: 1px solid transparent; border-radius: 999px;
+       font-size: 0.82rem; line-height: 1.35;
+       transition: border-color 0.15s ease, transform 0.15s ease;
+     }
+     .skill-tags span:hover { border-color: var(--accent); transform: translateY(-1px); }
+     @media (max-width: 34rem) {
+       .skill-group { flex-direction: column; gap: 0.3rem; }
+       .skill-group > .domain { flex-basis: auto; }
+     }
+   </style>
    <h4>Skills</h4>
-   <div style="overflow-x:auto;">
-   <table>
-     <thead>
-       <tr><th>Domain</th><th>Skills</th></tr>
-     </thead>
-     <tbody>
-       <tr><td>Offensive security</td><td>Internal &amp; external pentest, web application security, Active Directory attacks (Kerberoasting, NTLM relaying, pass-the-hash), phishing &amp; social engineering</td></tr>
-       <tr><td>Smart contract audit</td><td>Solidity / EVM, Move (Aptos, Sui, IOTA), DeFi protocol security, threat modeling</td></tr>
-       <tr><td>Reverse engineering &amp; vuln research</td><td>n-day research, patch diffing, WinDbg, PoC development</td></tr>
-       <tr><td>Languages &amp; tooling</td><td>Python, TypeScript, Solidity, Foundry</td></tr>
-       <tr><td>AI &amp; automation</td><td>Multi-agent orchestration (gossipcat), MCP tooling, AI-assisted development (Claude Code, Cursor)</td></tr>
-     </tbody>
-   </table>
+   <div class="skills">
+     <div class="skill-group">
+       <span class="domain">Offensive</span>
+       <div class="skill-tags">
+         <span>Internal pentest</span><span>External pentest</span><span>Web app security</span><span>Active Directory</span><span>Kerberoasting</span><span>NTLM relaying</span><span>Pass-the-Hash</span><span>Phishing &amp; social engineering</span>
+       </div>
+     </div>
+     <div class="skill-group">
+       <span class="domain">Smart contracts</span>
+       <div class="skill-tags">
+         <span>Solidity</span><span>EVM</span><span>Move</span><span>Aptos</span><span>Sui</span><span>IOTA</span><span>DeFi security</span><span>Threat modeling</span>
+       </div>
+     </div>
+     <div class="skill-group">
+       <span class="domain">Reversing &amp; vuln research</span>
+       <div class="skill-tags">
+         <span>n-day research</span><span>Patch diffing</span><span>WinDbg</span><span>PoC development</span>
+       </div>
+     </div>
+     <div class="skill-group">
+       <span class="domain">Languages &amp; tooling</span>
+       <div class="skill-tags">
+         <span>Python</span><span>TypeScript</span><span>Solidity</span><span>Foundry</span>
+       </div>
+     </div>
+     <div class="skill-group">
+       <span class="domain">AI &amp; automation</span>
+       <div class="skill-tags">
+         <span>Multi-agent orchestration</span><span>gossipcat</span><span>MCP</span><span>Claude Code</span><span>Cursor</span>
+       </div>
+     </div>
    </div>
    <p>Past member of <a href="https://canyoupwn.me/">CanYouPwn.me</a>.</p>
 </div>
