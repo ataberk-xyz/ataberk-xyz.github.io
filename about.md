@@ -83,6 +83,20 @@ sidebar_link: true
    <h4>Open source</h4>
    <li><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>: a multi-agent code-review orchestrator (TypeScript / MCP) where agents cross-verify each other's findings against real code to filter hallucinations.</li>
 
-   <h4>other stuff</h4>
-   Past member of <a href="https://canyoupwn.me/">CanYouPwn.me</a>. On the offensive side I'm comfortable with AD attack vectors like Kerberoasting and NTLM relaying; on the building side, Solidity and Move auditing plus AI-assisted tooling (Claude Code, Cursor).
+   <h4>Skills</h4>
+   <div style="overflow-x:auto;">
+   <table>
+     <thead>
+       <tr><th>Domain</th><th>Skills</th></tr>
+     </thead>
+     <tbody>
+       <tr><td>Offensive security</td><td>Internal &amp; external pentest, web application security, Active Directory attacks (Kerberoasting, NTLM relaying, pass-the-hash), phishing &amp; social engineering</td></tr>
+       <tr><td>Smart contract audit</td><td>Solidity / EVM, Move (Aptos, Sui, IOTA), DeFi protocol security, threat modeling</td></tr>
+       <tr><td>Reverse engineering &amp; vuln research</td><td>n-day research, patch diffing, WinDbg, PoC development</td></tr>
+       <tr><td>Languages &amp; tooling</td><td>Python, TypeScript, Solidity, Foundry</td></tr>
+       <tr><td>AI &amp; automation</td><td>Multi-agent orchestration (gossipcat), MCP tooling, AI-assisted development (Claude Code, Cursor)</td></tr>
+     </tbody>
+   </table>
+   </div>
+   <p>Past member of <a href="https://canyoupwn.me/">CanYouPwn.me</a>.</p>
 </div>
