@@ -23,9 +23,8 @@ sidebar_link: true
 
    <h4>Recognition</h4>
    <li>CVE-2019-1068: n-day research on a Microsoft SQL Server stack overflow (analyzed the bug and wrote a working exploit). <a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">Writeup</a>.</li>
-   <li>T-Mobile Hall of Fame: XSS, SQLi, and RCE findings.</li>
+   <li><a href="https://www.t-mobile.cz/bug-bounty/zed-slavy#:~:text=Ataberk%20Yavuzer%20(0xsaiyajin.github.io)%20%2D%20SQL%20Injection%2C%20Cross%2Dsite%20scripting%20(XSS)%2C%20Remote%20Code%20Execution%20(RCE)">T-Mobile Hall of Fame</a>: XSS, SQLi, and RCE findings.</li>
    <li>Mail.ru Hall of Fame: Cross-Site Scripting findings.</li>
-   <li>HackingWars CTF #1: finished 1st of 324, hosted by Prodaft.</li>
 
    <h4>Security advisories</h4>
    Vulnerabilities I found and responsibly disclosed in widely-used software:
