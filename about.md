@@ -23,13 +23,12 @@ sidebar_link: true
 
    <h4>Recognition</h4>
    <li>CVE-2019-1068: n-day research on a Microsoft SQL Server stack overflow (analyzed the bug and wrote a working exploit). <a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">Writeup</a>.</li>
-   <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a>: stored XSS in Kentico CMS (&le; 12.0.49) via a file upload whose Content-Type is inconsistent with its extension. Fixed in 12.0.50.</li>
    <li>T-Mobile Hall of Fame: XSS, SQLi, and RCE findings.</li>
    <li>Mail.ru Hall of Fame: Cross-Site Scripting findings.</li>
    <li>HackingWars CTF #1: finished 1st of 324, hosted by Prodaft.</li>
 
    <h4>Security advisories</h4>
-   Responsibly disclosed vulnerabilities in widely-used npm packages (credited as reporter):
+   Vulnerabilities I found and responsibly disclosed in widely-used software:
    <div style="overflow-x:auto;">
    <table>
      <thead>
@@ -70,6 +69,13 @@ sidebar_link: true
          <td>Moderate (6.2)</td>
          <td>CWE-617 &mdash; Reachable Assertion</td>
          <td><code>replace</code> with an output-amplifying template aborts the Node process past V8's max string length (DoS)</td>
+       </tr>
+       <tr>
+         <td>Kentico CMS</td>
+         <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a></td>
+         <td>Medium (5.4)</td>
+         <td>CWE-434 &mdash; Unrestricted Upload of File with Dangerous Type</td>
+         <td>file upload whose Content-Type is inconsistent with its extension &rarr; stored XSS (&le; 12.0.49). Fixed in 12.0.50</td>
        </tr>
      </tbody>
    </table>
