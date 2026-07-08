@@ -23,6 +23,7 @@ sidebar_link: true
 
    <h4>Recognition</h4>
    <li>CVE-2019-1068: n-day research on a Microsoft SQL Server stack overflow (analyzed the bug and wrote a working exploit). <a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">Writeup</a>.</li>
+   <li><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a>: stored XSS in Kentico CMS (&le; 12.0.49) via a file upload whose Content-Type is inconsistent with its extension. Fixed in 12.0.50.</li>
    <li>T-Mobile Hall of Fame: XSS, SQLi, and RCE findings.</li>
    <li>Mail.ru Hall of Fame: Cross-Site Scripting findings.</li>
    <li>HackingWars CTF #1: finished 1st of 324, hosted by Prodaft.</li>
