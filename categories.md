@@ -3,9 +3,18 @@ layout: page
 title: Categories
 permalink: /categories
 sidebar_link: true
+kicker: "INDEX · ALL POSTS BY CATEGORY"
 ---
 
+<nav class="cat-filter" aria-label="Filter posts by category">
+  <button class="cat-pill is-active" type="button" data-cat="all" aria-pressed="true">All<span class="cat-count">{{ site.posts | size }}</span></button>
+  {% for category in site.categories %}
+  <button class="cat-pill" type="button" data-cat="{{ category[0] | slugify }}" aria-pressed="false">{{ category[0] }}<span class="cat-count">{{ category[1] | size }}</span></button>
+  {% endfor %}
+</nav>
+
 {% for category in site.categories %}
+<section class="cat-section" data-cat="{{ category[0] | slugify }}">
   <h3 id="{{ category[0] | slugify }}">{{ category[0] }}</h3>
   <div class="ledger-grid">
     {% for post in category[1] %}
@@ -21,4 +30,36 @@ sidebar_link: true
       </article>
     {% endfor %}
   </div>
+</section>
 {% endfor %}
+
+<script>
+  (function () {
+    var pills = document.querySelectorAll('.cat-pill');
+    var sections = document.querySelectorAll('.cat-section');
+
+    function apply(cat, pushHash) {
+      sections.forEach(function (s) {
+        s.hidden = !(cat === 'all' || s.dataset.cat === cat);
+      });
+      pills.forEach(function (p) {
+        var on = p.dataset.cat === cat;
+        p.classList.toggle('is-active', on);
+        p.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      if (pushHash) {
+        history.replaceState(null, '', cat === 'all' ? location.pathname : '#' + cat);
+      }
+    }
+
+    pills.forEach(function (p) {
+      p.addEventListener('click', function () { apply(p.dataset.cat, true); });
+    });
+
+    // deep link: /categories#writeup opens filtered
+    var initial = location.hash.replace('#', '');
+    if (initial && document.querySelector('.cat-section[data-cat="' + initial + '"]')) {
+      apply(initial, false);
+    }
+  })();
+</script>

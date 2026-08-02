@@ -170,3 +170,51 @@
 .cover-hex-fg   { fill: var(--code-fg); opacity: .4; }
 .cover-hex-dim  { fill: var(--accent-on-code); opacity: .3; }
 .cover-hex-hot  { fill: #E8B44F; font-weight: 700; }
+
+// ── Category filter bar ───────────────────────────────────────
+.cat-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--border);
+}
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 0.32rem 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.cat-pill:hover { color: var(--accent); border-color: var(--accent); }
+.cat-pill.is-active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.cat-count {
+  font-size: 0.66rem;
+  color: var(--ink-3);
+  border-left: 1px solid var(--border-strong);
+  padding-left: 0.45rem;
+}
+.cat-pill.is-active .cat-count { color: var(--accent); border-left-color: var(--accent); }
+.cat-section h3 {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 0.9rem;
+}
+.cat-section + .cat-section { margin-top: 2.4rem; }
