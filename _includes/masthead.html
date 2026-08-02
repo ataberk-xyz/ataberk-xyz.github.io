@@ -1,10 +1,29 @@
 <header class="masthead">
   <div class="masthead-inner">
-    <div class="masthead-id">
-      <a class="brand" href="{{ site.baseurl }}/">{{ site.title }}</a>
-      <span class="brand-rule" aria-hidden="true"></span>
-      <p class="brand-status"><i class="live-dot" aria-hidden="true"></i>SECURITY RESEARCH · EXPLOITS · TOOLING</p>
-    </div>
+    <a class="brand-lockup" href="{{ site.baseurl }}/" aria-label="{{ site.title }} — home">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g stroke-width="6.7" stroke-linecap="round" fill="none">
+          <path d="M7.04 23.71 L23.71 7.04" stroke="currentColor"/>
+          <path d="M23.71 7.04 L40.38 23.71" stroke="currentColor"/>
+          <path d="M40.38 23.71 L57.04 7.04" stroke="currentColor"/>
+          <path d="M7.04 23.71 L23.71 40.38" stroke="currentColor"/>
+          <path d="M23.71 23.71 L40.38 40.38" class="mark-hot"/>
+          <path d="M40.38 40.38 L57.04 23.71" stroke="currentColor"/>
+          <path d="M7.04 57.04 L23.71 40.38" stroke="currentColor"/>
+          <path d="M23.71 40.38 L40.38 57.04" stroke="currentColor"/>
+          <path d="M40.38 40.38 L57.04 57.04" stroke="currentColor"/>
+        </g>
+      </svg>
+      <span class="brand">{{ site.title }}</span>
+    </a>
+
     {% include nav-links.html %}
+
+    {% assign latest = site.posts.first %}
+    {% capture latest_no %}{% include post-number.html post=latest %}{% endcapture %}
+    <p class="masthead-issue">
+      <span class="issue-key">ISSUE</span>{{ latest_no }}
+      <span class="issue-sep">·</span>{{ latest.date | date: "%Y" }}
+    </p>
   </div>
 </header>

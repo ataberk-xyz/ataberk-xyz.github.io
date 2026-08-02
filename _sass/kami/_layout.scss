@@ -27,40 +27,36 @@
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
 }
-.masthead-id {
+// left end: the site mark (same maze glyph as the favicon)
+.brand-lockup {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.6rem;
   min-width: 0;
 }
-.brand-rule {
-  width: 1px;
-  align-self: stretch;
-  background: var(--code-border);
-  flex: 0 0 1px;
+.brand-lockup:hover { text-decoration: none; }
+.brand-mark {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 1.5rem;
+  color: var(--accent-on-code);
+  transition: transform 0.25s ease;
 }
-.brand-status {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
+.brand-lockup:hover .brand-mark { transform: rotate(90deg); }
+.mark-hot { stroke: #E8B44F; }
+
+// right end: the edition line — reads from the newest post, so it ages itself
+.masthead-issue {
   margin: 0;
   font-family: var(--mono);
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   color: var(--code-fg);
-  opacity: 0.55;
+  opacity: 0.5;
   white-space: nowrap;
 }
-.live-dot {
-  width: 6px;
-  height: 6px;
-  flex: 0 0 6px;
-  border-radius: 50%;
-  background: #E8B44F;
-  animation: live-pulse 2.6s ease-in-out infinite;
-}
-@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+.issue-key { color: var(--accent-on-code); opacity: 0.85; margin-right: 0.4rem; }
+.issue-sep { opacity: 0.45; margin: 0 0.3rem; }
 .brand {
   display: inline-block;
   font-family: var(--serif);
@@ -220,8 +216,9 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
   .ledger-featured .lf-title { font-size: 2.6rem; }
 }
 @media (max-width: $bp-mobile) {
-  .brand-rule, .brand-status { display: none; }
+  .masthead-issue { display: none; }
   .brand { font-size: 1.15rem; }
+  .brand-mark { width: 1.25rem; height: 1.25rem; flex-basis: 1.25rem; }
   .ledger-grid { grid-template-columns: 1fr; }
   .ledger-featured .lf-title { font-size: 2rem; }
   .ledger-featured .lf-cover .cover { aspect-ratio: 16 / 9; }
