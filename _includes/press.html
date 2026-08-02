@@ -45,9 +45,13 @@
 {%- endcapture -%}
 <div class="press" aria-hidden="true">
   <svg class="press-plate" viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">{{ pr_field }}</svg>
-  <div class="press-lens">
+  <div class="press-lens press-lens-mid">
     <svg viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">{{ pr_field }}</svg>
   </div>
+  <div class="press-lens press-lens-core">
+    <svg viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">{{ pr_field }}</svg>
+  </div>
+  <div class="press-rim"></div>
 </div>
 <script>
   (function () {
