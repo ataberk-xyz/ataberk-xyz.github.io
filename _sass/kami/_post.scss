@@ -11,29 +11,6 @@
 }
 .index .post-title, .page .post-title { margin-top: 0; }
 
-// Meta row (date · categories)
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.55rem 0.9rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
-  color: var(--ink-3);
-}
-.post-date { text-transform: uppercase; letter-spacing: 0.08em; }
-.post-cats { display: inline-flex; flex-wrap: wrap; gap: 0.4rem; }
-.post-cats .cat {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  padding: 0.12rem 0.5rem;
-  border-radius: 100px;
-}
-.post-cats .cat:hover { text-decoration: none; background: #d9e1ee; }
-
 .post-byline {
   margin: 0.9rem 0 0;
   font-size: 0.95rem;

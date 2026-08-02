@@ -1,32 +1,4 @@
-// ── Components: post list, pagination, tags, share, related ──────
-
-// ── Home post list ──
-.post-list { max-width: var(--measure); margin: 0 auto; }
-.post-item {
-  padding: 1.7rem 0;
-  border-bottom: var(--rule);
-}
-.post-item:first-of-type { padding-top: 0; }
-.post-item-title {
-  font-size: 1.5rem;
-  line-height: 1.2;
-  margin: 0 0 0.55rem;
-}
-.post-item-title a { color: var(--ink); }
-.post-item-title a:hover { color: var(--accent); text-decoration: none; }
-.post-item .post-meta { margin-bottom: 0.7rem; }
-.post-item-excerpt { color: var(--ink-2); font-size: 1rem; }
-.post-item-excerpt p { margin-bottom: 0.6rem; }
-.read-more {
-  display: inline-block;
-  margin-top: 0.3rem;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-}
-.read-more:hover { text-decoration: none; color: var(--accent-2); }
+// ── Components: pagination, tags, share, related ──────
 
 // ── Pagination ──
 .pagination {
@@ -172,12 +144,7 @@
 .md-rendered blockquote { margin: 0.8rem 0 0; font-size: 0.88rem; }
 .md-rendered blockquote p { font-size: 0.88rem; }
 
-// ── Plain category / page lists ──
-.posts-list { list-style: none; margin: 1rem 0; padding: 0; }
-.posts-list li { padding: 0.4rem 0; border-bottom: 1px dotted var(--border-strong); }
-
 @media (max-width: $bp-mobile) {
-  .post-item-title { font-size: 1.3rem; }
   .related-list li { flex-direction: column; gap: 0.1rem; }
 }
 
