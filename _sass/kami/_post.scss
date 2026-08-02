@@ -152,8 +152,10 @@
   dt    { color: var(--accent-on-code); letter-spacing: 0.08em; }
   dd    { margin: 0; }
   .dots { flex: 1; border-bottom: 1px dotted var(--code-border); transform: translateY(-3px); }
-  // amber on the always-dark code surface — same hex in both palettes
-  .sev  { color: #E8B44F; }
+  // always-dark surface, so severity uses fixed hexes in both palettes
+  .sev          { color: #E8B44F; }
+  .sev.sev-high { color: #E0655C; font-weight: 700; }
+  .sev.sev-med  { color: #E8B44F; }
 }
 
 // ── Editorial body: drop cap + pull quotes ────────────────────

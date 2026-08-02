@@ -2,10 +2,11 @@
 {%- if L -%}
 <dl class="ledger-block">
   {% if L.target %}<div class="lrow"><dt>TARGET</dt><span class="dots"></span><dd>{{ L.target }}</dd></div>{% endif %}
-  {% if L.severity %}<div class="lrow"><dt>SEVERITY</dt><span class="dots"></span><dd class="sev">{{ L.severity }}</dd></div>{% endif %}
+  {% if L.severity %}{% assign sev_cls = "sev-med" %}{% if L.severity contains "HIGH" or L.severity contains "CRITICAL" %}{% assign sev_cls = "sev-high" %}{% endif %}<div class="lrow"><dt>SEVERITY</dt><span class="dots"></span><dd class="sev {{ sev_cls }}">{{ L.severity }}</dd></div>{% endif %}
   {% if L.vector %}<div class="lrow"><dt>VECTOR</dt><span class="dots"></span><dd>{{ L.vector }}</dd></div>{% endif %}
   {% if L.advisory %}<div class="lrow"><dt>ADVISORY</dt><span class="dots"></span><dd>{{ L.advisory }}</dd></div>{% endif %}
   {% if L.impact %}<div class="lrow"><dt>IMPACT</dt><span class="dots"></span><dd>{{ L.impact }}</dd></div>{% endif %}
   {% if L.status %}<div class="lrow"><dt>STATUS</dt><span class="dots"></span><dd>{{ L.status }}</dd></div>{% endif %}
+  {% if L.method %}<div class="lrow"><dt>METHOD</dt><span class="dots"></span><dd>{{ L.method }}</dd></div>{% endif %}
 </dl>
 {%- endif -%}
