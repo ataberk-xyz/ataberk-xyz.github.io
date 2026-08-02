@@ -35,7 +35,12 @@
 {%- assign cv_qcut = cv_maxq | divided_by: 4 -%}
 {%- assign cv_split = include.split -%}
 {%- assign cv_half = cv_cols | divided_by: 2 -%}
-{%- assign cv_divx = cv_half | times: 8 -%}
+{%- comment -%} split transition: a band ~1/3 of the width where the maze
+  thins out and the dump fades in, so the two halves blend {%- endcomment -%}
+{%- assign cv_bandw = cv_cols | divided_by: 3 -%}
+{%- assign cv_bhalf = cv_bandw | divided_by: 2 -%}
+{%- assign cv_bstart = cv_half | minus: cv_bhalf -%}
+{%- assign cv_bend = cv_bstart | plus: cv_bandw -%}
 {%- assign cv_w = cv_cols | times: 8 -%}
 {%- assign cv_h = cv_rows | times: 8 -%}
 {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
@@ -61,8 +66,17 @@
     {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
     {%- assign cv_d2 = cv_seed | modulo: 10 -%}
     {%- if cv_split -%}
-      {%- comment -%} split mode: left half all lines, right half its hex dump {%- endcomment -%}
-      {%- if cv_c < cv_half -%}{%- assign cv_ismaze = true -%}{%- else -%}{%- assign cv_ismaze = false -%}{%- endif -%}
+      {%- comment -%} lines left, their hex dump right, blended across the band {%- endcomment -%}
+      {%- if cv_c < cv_bstart -%}
+        {%- assign cv_ismaze = true -%}
+      {%- elsif cv_c >= cv_bend -%}
+        {%- assign cv_ismaze = false -%}
+      {%- else -%}
+        {%- assign cv_bpos = cv_c | minus: cv_bstart -%}
+        {%- assign cv_bthr = cv_bpos | times: 10 | divided_by: cv_bandw -%}
+        {%- assign cv_bthr = 10 | minus: cv_bthr -%}
+        {%- if cv_d2 < cv_bthr -%}{%- assign cv_ismaze = true -%}{%- else -%}{%- assign cv_ismaze = false -%}{%- endif -%}
+      {%- endif -%}
     {%- elsif cv_d2 < cv_t -%}
       {%- assign cv_ismaze = true -%}
     {%- else -%}
@@ -87,7 +101,13 @@
       {%- comment -%} dissolved cell: maybe a hex byte {%- endcomment -%}
       {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
       {%- assign cv_gate = cv_seed | modulo: 10 -%}
-      {%- if cv_split -%}{%- assign cv_gatemax = 10 -%}{%- else -%}{%- assign cv_gatemax = 7 -%}{%- endif -%}
+      {%- if cv_split -%}
+        {%- if cv_c >= cv_bend -%}{%- assign cv_gatemax = 10 -%}
+        {%- else -%}
+          {%- assign cv_gpos = cv_c | minus: cv_bstart -%}
+          {%- assign cv_gatemax = cv_gpos | times: 10 | divided_by: cv_bandw | plus: 3 -%}
+        {%- endif -%}
+      {%- else -%}{%- assign cv_gatemax = 7 -%}{%- endif -%}
       {%- if cv_gate < cv_gatemax -%}
         {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
         {%- assign cv_ha = cv_seed | modulo: 10 -%}
@@ -111,7 +131,4 @@
     {%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
-{%- if cv_split %}
-  <line x1="{{ cv_divx }}" y1="2" x2="{{ cv_divx }}" y2="{{ cv_h | minus: 2 }}" class="cover-split-rule"/>
-{%- endif -%}
 </svg>

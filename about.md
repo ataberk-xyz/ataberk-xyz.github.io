@@ -63,14 +63,14 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
        </tr>
        <tr>
          <td>node-re2</td>
-         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">GHSA-6hxr-mr5r-9836</a></td>
+         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
          <td>Moderate (6.2)</td>
          <td>CWE-835 &mdash; Infinite Loop</td>
          <td>zero-width global match never advances &rarr; infinite loop with unbounded native memory growth (DoS). Fixed in 1.25.2</td>
        </tr>
        <tr>
          <td>node-re2</td>
-         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">GHSA-ff84-5f28-78qj</a></td>
+         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
          <td>Moderate (5.7)</td>
          <td>CWE-125 &mdash; Out-of-bounds Read</td>
          <td>attacker-influenced <code>lastIndex</code> on a non-ASCII subject &rarr; out-of-bounds heap read and uncatchable crash (DoS)</td>
