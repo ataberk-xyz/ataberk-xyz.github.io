@@ -87,9 +87,21 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
 </div>
 
 <h2 class="about-h">Skills</h2>
-<div class="about-index">
-  <div class="ai-row"><span class="ai-tag ai-domain">OFFENSIVE</span><span class="ai-fill"></span><span class="ai-val">internal &amp; external pentest · web app security · Active Directory · Kerberoasting · NTLM relaying · Pass-the-Hash · phishing</span></div>
-  <div class="ai-row"><span class="ai-tag ai-domain">CONTRACTS</span><span class="ai-fill"></span><span class="ai-val">Solidity · EVM · Move · Aptos · Sui · IOTA · DeFi security · threat modeling</span></div>
-  <div class="ai-row"><span class="ai-tag ai-domain">RESEARCH</span><span class="ai-fill"></span><span class="ai-val">n-day research · patch diffing · WinDbg · PoC development</span></div>
-  <div class="ai-row"><span class="ai-tag ai-domain">TOOLING</span><span class="ai-fill"></span><span class="ai-val">Python · TypeScript · Foundry · multi-agent orchestration (MCP) · Claude Code</span></div>
-</div>
+<dl class="skill-grid">
+  <div class="sk-row">
+    <dt>Offensive</dt>
+    <dd>Network &amp; web app pentest · Active Directory (Kerberoasting, NTLM relaying, Pass-the-Hash) · phishing &amp; social engineering</dd>
+  </div>
+  <div class="sk-row">
+    <dt>Smart contracts</dt>
+    <dd>Solidity · EVM · Move (Aptos, Sui, IOTA) · DeFi security · threat modeling</dd>
+  </div>
+  <div class="sk-row">
+    <dt>Vuln research</dt>
+    <dd>n-day research · patch diffing · WinDbg · PoC development</dd>
+  </div>
+  <div class="sk-row">
+    <dt>Build &amp; AI</dt>
+    <dd>Python · TypeScript · Foundry · multi-agent orchestration (MCP) · Claude Code</dd>
+  </div>
+</dl>

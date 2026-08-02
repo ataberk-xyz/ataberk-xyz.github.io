@@ -318,3 +318,33 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
   .ai-fill { display: none; }
   .ai-val { text-align: left; }
 }
+
+// ── Skills grid (About) ───────────────────────────────────────
+// label column + freely wrapping values — dotted leaders are for short
+// right-aligned tags, not multi-line lists
+.skill-grid { margin: 0; }
+.sk-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0 1.2rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.sk-row:last-child { border-bottom: 0; }
+.sk-row dt {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.12rem;
+}
+.sk-row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+@media (max-width: $bp-mobile) {
+  .sk-row { grid-template-columns: 1fr; gap: 0.25rem; }
+}
