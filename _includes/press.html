@@ -26,11 +26,13 @@
           {%- assign pr_dir = pr_seed | modulo: 2 -%}
           {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
           {%- assign pr_jit = pr_seed | modulo: 20 -%}
-          {%- assign pr_del = pr_c | times: 18 | plus: pr_jit -%}
+          {%- comment -%} 0–5.6s across the field: the wave crosses in one cycle {%- endcomment -%}
+          {%- assign pr_jitms = pr_jit | times: 9 -%}
+          {%- assign pr_del = pr_c | minus: 1 | times: 180 | plus: pr_jitms -%}
           {%- if pr_dir == 0 -%}
-    <path d="M{{ pr_x0 }} {{ pr_y0 }}L{{ pr_x1 }} {{ pr_y1 }}" style="animation-delay:{{ pr_del }}00ms"/>
+    <path d="M{{ pr_x0 }} {{ pr_y0 }}L{{ pr_x1 }} {{ pr_y1 }}" style="animation-delay:{{ pr_del }}ms"/>
           {%- else -%}
-    <path d="M{{ pr_x0 }} {{ pr_y1 }}L{{ pr_x1 }} {{ pr_y0 }}" style="animation-delay:{{ pr_del }}00ms"/>
+    <path d="M{{ pr_x0 }} {{ pr_y1 }}L{{ pr_x1 }} {{ pr_y0 }}" style="animation-delay:{{ pr_del }}ms"/>
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
