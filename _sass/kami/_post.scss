@@ -164,13 +164,14 @@
   margin: 1.4rem 0 0;
 
   .lrow { display: flex; align-items: baseline; gap: 0.5rem; }
-  dt    { color: var(--accent); letter-spacing: 0.08em; }
+  // block sits on --code-bg (always dark in both palettes) — needs the
+  // fixed on-code accent, not --accent (invisible on dark in light mode)
+  dt    { color: var(--accent-on-code); letter-spacing: 0.08em; }
   dd    { margin: 0; }
   .dots { flex: 1; border-bottom: 1px dotted var(--code-border); transform: translateY(-3px); }
   // amber on the always-dark code surface — same hex in both palettes
   .sev  { color: #E8B44F; }
 }
-// dark mode: --accent is already the lifted blue; block inherits correctly.
 
 // ── Editorial body: drop cap + pull quotes ────────────────────
 .post-body > p:first-of-type::first-letter {

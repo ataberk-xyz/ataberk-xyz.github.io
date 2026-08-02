@@ -190,6 +190,9 @@
   border-radius: var(--radius);
 }
 .cover-bg       { fill: var(--code-bg); }
-.cover-line     { stroke: var(--accent); stroke-width: 1.5; fill: none; opacity: .85; }
-.cover-node     { fill: var(--accent); }
-.cover-node-hot { fill: var(--accent-warn); }
+// cover-bg is always dark, so accent strokes/nodes use --accent-on-code /
+// the fixed amber hex (see .sev in _post.scss for the same precedent) —
+// var(--accent) / var(--accent-warn) go near-invisible on it in light mode.
+.cover-line     { stroke: var(--accent-on-code); stroke-width: 1.5; fill: none; opacity: .85; }
+.cover-node     { fill: var(--accent-on-code); }
+.cover-node-hot { fill: #E8B44F; }
