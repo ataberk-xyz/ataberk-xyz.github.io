@@ -90,12 +90,15 @@
 .nav-link.active { color: var(--accent-on-code); opacity: 1; border-bottom-color: var(--accent-on-code); }
 
 // ── Main column ──
-main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; }
+main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; position: relative; z-index: 1; }
 
 // ── Footer ──
 .site-footer {
   border-top: var(--rule);
   margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
 }
 .footer-inner {
   max-width: var(--measure);

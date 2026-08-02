@@ -8,9 +8,10 @@ html {
   scroll-behavior: smooth;
 }
 
+html { background: var(--bg); }
 body {
   margin: 0;
-  background: var(--bg);
+  background: transparent;
   color: var(--ink);
   font-family: var(--serif);
   line-height: 1.72;
@@ -56,54 +57,48 @@ img { max-width: 100%; height: auto; }
 
 small { font-size: 0.82em; color: var(--ink-3); }
 
-// ── Press: film grain + newsprint halftone ────────────────────
-// The grain BOILS: each step swaps in a differently-seeded noise field,
-// which is what makes it read as film. (Merely translating one tiled
-// field looks static — the tile repeats.) The halftone drifts slowly,
-// the way a printed screen shifts between impressions.
+// ── Press: the roller ─────────────────────────────────────────
+// A halftone field with a slow ink wave sweeping across it — the press
+// roller passing over newsprint. It lives BEHIND everything: cards,
+// covers, masthead and footer all paint their own opaque grounds over it.
 .press {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 .press::before,
 .press::after {
   content: "";
   position: absolute;
-  inset: -60px;
+  inset: 0;
 }
 .press::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  opacity: 0.07;
-  mix-blend-mode: multiply;
-  animation: grain-boil 0.75s steps(1) infinite;
-}
-.press::after {
-  background-image: radial-gradient(currentColor 0.5px, transparent 0.6px);
-  background-size: 4px 4px;
+  background-image: radial-gradient(currentColor 0.6px, transparent 0.8px);
+  background-size: 5px 5px;
   color: var(--ink);
   opacity: 0.05;
-  animation: press-drift 28s ease-in-out infinite;
+}
+.press::after {
+  background-image: linear-gradient(
+    105deg,
+    transparent 35%,
+    color-mix(in srgb, var(--accent) 22%, transparent) 48%,
+    color-mix(in srgb, var(--accent-warn) 14%, transparent) 52%,
+    transparent 65%
+  );
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  animation: press-roller 16s ease-in-out infinite;
 }
 @media (prefers-color-scheme: dark) {
-  // light speckle on ink: screen instead of multiply, and it needs more
-  // presence to register against a near-black page
-  .press::before { opacity: 0.13; mix-blend-mode: screen; }
-  .press::after { opacity: 0.045; }
+  .press::before { opacity: 0.07; }
 }
-@keyframes grain-boil {
-  0%   { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); transform: translate(0, 0); }
-  25%  { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='17' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); transform: translate(-9px, 6px); }
-  50%  { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='42' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); transform: translate(7px, -8px); }
-  75%  { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' seed='91' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E"); transform: translate(-5px, -4px); }
-}
-@keyframes press-drift {
-  0%   { transform: translate(0, 0); }
-  50%  { transform: translate(9px, -6px); }
-  100% { transform: translate(0, 0); }
+@keyframes press-roller {
+  0%   { background-position: 120% 0; }
+  100% { background-position: -60% 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .press::before, .press::after { animation: none; }
+  .press::after { animation: none; opacity: 0.35; }
 }
