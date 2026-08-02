@@ -15,6 +15,8 @@ sidebar_link: true
         <div class="lc-body">
           <p class="no-line">{{ ponum }} · {{ post.date | date: "%Y-%m-%d" }}</p>
           <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+          {% assign lc_dek = post.summary | default: post.description %}
+          {% if lc_dek %}<p class="lc-dek">{{ lc_dek }}</p>{% endif %}
         </div>
       </article>
     {% endfor %}

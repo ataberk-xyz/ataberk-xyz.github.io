@@ -137,6 +137,12 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
     a { color: var(--ink); text-decoration: none; }
     a:hover { color: var(--accent); }
   }
+  .lc-dek {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin: 0.5rem 0 0;
+  }
   .lc-cover { display: block; }
   .lc-cover .cover {
     // 12/7 matches the 24x14 cover grid exactly — no slice-zoom, cells

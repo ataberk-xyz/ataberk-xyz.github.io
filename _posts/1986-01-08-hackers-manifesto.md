@@ -4,6 +4,8 @@ title: "Hacker's Manifesto"
 author: The Mentor
 categories: [manifesto]
 tags: [manifesto]
+summary: "The Mentor's 1986 text, written days after his arrest. Kept here because it still says why curiosity gets mistaken for crime."
+
 ---
 
 The following was written shortly after my arrest...

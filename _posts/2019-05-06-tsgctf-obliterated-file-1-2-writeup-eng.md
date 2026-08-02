@@ -4,6 +4,8 @@ title: TSG CTF - Obliterated File 1-2 Writeup [eng]
 author: 0xSaiyajin
 tags: [writeup,ctf,git,forensics]
 categories: [writeup]
+summary: "Two TSG CTF forensics challenges, both about git internals — recovering a flag from objects a committer thought they had obliterated."
+
 ---
 
 Hello again. We participated to TSG CTF two days ago. The challenges were really hard. Estimated difficulty of TSG CTF was **Intermediate - Hard** on ctftime[dot]org. 

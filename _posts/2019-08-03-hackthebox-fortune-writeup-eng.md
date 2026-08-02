@@ -4,6 +4,8 @@ title: HackTheBox Fortune Writeup [eng]
 author: 0xSaiyajin
 tags: [writeup,ctf]
 categories: [writeup]
+summary: "OpenBSD, so nothing behaves as expected: command injection into an authpf-gated network, an NFS export that leaks a private key, and pgAdmin credentials for the final step."
+
 ---
 
 Greetings! With solving **Fortune** machine, I finished half of the number of machines on HackTheBox. At present, **Fortune** has not retired yet. But I decided to write it's writeup. I will share this blog post when the machine is retired. So, if you are reading this blog post right now, it means you are looking into the past.

@@ -4,6 +4,8 @@ title: "Gossipcat: Teaching AI Agents to Catch Each Other Lying"
 author: ataberk-xyz
 categories: [ai-research]
 tags: [ai, multi-agent, mcp, claude-code, llm, code-review]
+summary: "Single-agent AI review states hallucinations with the same confidence as real findings, and never learns. Gossipcat makes agents verify each other against the source, and turns the verdicts into reward signal."
+
 ---
 
 > **Abstract.** Single-agent AI code review has a structural flaw: it presents hallucinated findings with the same confidence as real ones, and it never learns from being wrong. Gossipcat is an MCP server for Claude Code that attacks both problems with a single mechanism. Several agents review a change independently, then cross-review each other's findings against the source code; the verified outcomes become *grounded* reward signals that reshape how future work is routed and how each agent is prompted. No model weights are updated — the learned policy is a set of markdown files. This post explains why that design works, the engineering problem that nearly sank it, and what the system's own development history reveals about its limits.

@@ -31,7 +31,7 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
    <li><a href="https://www.credly.com/badges/0bff9cfc-f08d-423b-a320-0cdb431e9f45">Offensive Security Certified Professional (OSCP)</a></li>
    <li><a href="https://www.credly.com/badges/c6ffd1d7-b4a0-40ff-9378-3fbc29d64ea1">Offensive Security Web Expert (OSWE)</a></li>
    <li><a href="https://www.credential.net/c96c3313-448d-4518-a39f-ec02cee89478">Certified Red Team Professional (CRTP)</a></li>
-   <li>Certified AI/ML Pentester (C-AI/MLPen)</li>
+   <li><a href="https://pentestingexams.com/certificate-validation">Certified AI/ML Pentester (C-AI/MLPen)</a></li>
 
    <h4>Recognition</h4>
    <li>CVE-2019-1068: n-day research on a Microsoft SQL Server stack overflow (analyzed the bug and wrote a working exploit). <a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">Writeup</a>.</li>
@@ -150,5 +150,4 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
        </div>
      </div>
    </div>
-   <p>Past member of <a href="https://canyoupwn.me/">CanYouPwn.me</a>.</p>
 </div>

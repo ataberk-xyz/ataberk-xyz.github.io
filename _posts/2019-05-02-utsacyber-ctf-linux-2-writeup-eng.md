@@ -4,6 +4,8 @@ title: UTSA Cyber CTF - Linux2 Writeup [eng]
 author: 0xSaiyajin
 tags: [writeup,ctf]
 categories: [writeup]
+summary: "A UTSA Cyber CTF Linux challenge solved with plain enumeration: read the sudo rules, notice the Docker group, and the box hands you root."
+
 ---
 
 Ah, we meet again. I was working as a Project Manager in a company. I left the job 2 days ago. In this time, I decided to take OSCP certification.
