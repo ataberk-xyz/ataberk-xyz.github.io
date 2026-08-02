@@ -6,11 +6,13 @@ sidebar_link: true
 kicker: "INDEX · ALL POSTS BY CATEGORY"
 ---
 
-<nav class="cat-filter" aria-label="Filter posts by category">
-  <button class="cat-pill is-active" type="button" data-cat="all" aria-pressed="true">All<span class="cat-count">{{ site.posts | size }}</span></button>
-  {% for category in site.categories %}
-  <button class="cat-pill" type="button" data-cat="{{ category[0] | slugify }}" aria-pressed="false">{{ category[0] }}<span class="cat-count">{{ category[1] | size }}</span></button>
-  {% endfor %}
+<nav class="cat-index" aria-label="Filter posts by category">
+  <div class="cat-index-cols">
+    <button class="cat-row is-active" type="button" data-cat="all" aria-pressed="true"><span class="cat-name">all</span><span class="cat-fill"></span><span class="cat-count">{{ site.posts | size }}</span></button>
+    {% for category in site.categories %}
+    <button class="cat-row" type="button" data-cat="{{ category[0] | slugify }}" aria-pressed="false"><span class="cat-name">{{ category[0] }}</span><span class="cat-fill"></span><span class="cat-count">{{ category[1] | size }}</span></button>
+    {% endfor %}
+  </div>
 </nav>
 
 {% for category in site.categories %}
@@ -35,7 +37,7 @@ kicker: "INDEX · ALL POSTS BY CATEGORY"
 
 <script>
   (function () {
-    var pills = document.querySelectorAll('.cat-pill');
+    var pills = document.querySelectorAll('.cat-row');
     var sections = document.querySelectorAll('.cat-section');
 
     function apply(cat, pushHash) {
