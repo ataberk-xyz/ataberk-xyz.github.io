@@ -9,7 +9,7 @@
 
 // ── Masthead ──
 .masthead {
-  border-bottom: var(--rule);
+  border-bottom: 3px double var(--accent);
   background: var(--bg);
 }
 .masthead-inner {
@@ -22,16 +22,17 @@
   display: inline-block;
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 2.1rem;
-  letter-spacing: -0.02em;
+  font-size: 1.5rem;
+  letter-spacing: 0.02em;
   color: var(--ink);
 }
 .brand:hover { color: var(--accent); text-decoration: none; }
-.brand-tagline {
-  margin: 0.35rem 0 1.25rem;
+.brand-issue {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
   color: var(--ink-3);
-  font-style: italic;
-  font-size: 1.02rem;
+  margin: 0.15rem 0 0;
 }
 
 // ── Nav ──
@@ -74,7 +75,6 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
 
 @media (max-width: $bp-mobile) {
   html { font-size: 17px; }
-  .brand { font-size: 1.8rem; }
   .masthead-inner { padding-top: 2rem; }
 }
 
