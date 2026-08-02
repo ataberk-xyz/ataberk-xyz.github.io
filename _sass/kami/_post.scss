@@ -139,3 +139,53 @@
   .post-body { font-size: 1.02rem; }
   .post-body pre { font-size: 0.76rem; }
 }
+
+// ── Ledger post header ────────────────────────────────────────
+.post-dek {
+  font-style: italic;
+  color: var(--ink-2);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  margin: 0.6rem 0 0;
+}
+
+// ── Künye (ledger) block ──────────────────────────────────────
+.ledger-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.15rem 1.6rem;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--code-fg);
+  margin: 1.4rem 0 0;
+
+  .lrow { display: flex; align-items: baseline; gap: 0.5rem; }
+  dt    { color: var(--accent); letter-spacing: 0.08em; }
+  dd    { margin: 0; }
+  .dots { flex: 1; border-bottom: 1px dotted var(--code-border); transform: translateY(-3px); }
+  // amber on the always-dark code surface — same hex in both palettes
+  .sev  { color: #E8B44F; }
+}
+// dark mode: --accent is already the lifted blue; block inherits correctly.
+
+// ── Editorial body: drop cap + pull quotes ────────────────────
+.post-body > p:first-of-type::first-letter {
+  float: left;
+  font-size: 3.1em;
+  line-height: 0.85;
+  padding: 0.04em 0.09em 0 0;
+  font-weight: 700;
+  color: var(--accent);
+}
+.post-body blockquote {
+  border-left: 3px solid var(--accent);
+  font-style: italic;
+  font-size: 1.08em;
+}
+@media (max-width: $bp-mobile) {
+  .ledger-block { grid-template-columns: 1fr; }
+}
