@@ -163,10 +163,10 @@
 // var(--accent) / var(--accent-warn) go near-invisible on it in light mode.
 .cover-line,
 .cover-line-dim,
-.cover-line-hot { stroke: var(--accent-on-code); stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.cover-line-hot { stroke: var(--accent-on-code); stroke-width: 1.2; fill: none; stroke-linecap: round; }
 .cover-line-dim { opacity: .3; }
 .cover-line-hot { stroke: #E8B44F; }
-.cover text     { font-family: var(--mono); font-size: 6.4px; }
+.cover text     { font-family: var(--mono); font-size: 4.4px; }
 .cover-hex-fg   { fill: var(--code-fg); opacity: .4; }
 .cover-hex-dim  { fill: var(--accent-on-code); opacity: .3; }
 .cover-hex-hot  { fill: #E8B44F; font-weight: 700; }

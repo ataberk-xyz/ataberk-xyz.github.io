@@ -3,10 +3,10 @@
   no md5 filter (not available on Pages).
   Seed: position-weighted char values of the slug, then an LCG stream
   (seed = seed*1103 + 12345 mod 100003), one digit (mod 10) per draw.
-  A 10x10 maze of / and \ dissolves toward a seed-chosen corner; in the
+  A 15x15 maze of / and \ dissolves toward a seed-chosen corner; in the
   dissolved cells, faint hex bytes surface. Same slug -> same art, forever.
   No sqrt in Liquid: the radial gradient uses a 10-bucket threshold table
-  over squared distance (bucket = q*10/162, q = cr^2+cc^2, max 162).
+  over squared distance (bucket = q*10/392, q = cr^2+cc^2, max 392).
 {%- endcomment -%}
 {%- assign cv_post = include.post -%}
 {%- assign cv_charset = "abcdefghijklmnopqrstuvwxyz0123456789-" | split: "" -%}
@@ -25,20 +25,20 @@
 {%- assign cv_corner = cv_seed | modulo: 4 -%}
 <svg class="cover" viewBox="0 0 120 120" role="img" aria-label="Generative cover art for {{ cv_post.title | escape }}" preserveAspectRatio="xMidYMid slice">
   <rect width="120" height="120" class="cover-bg"/>
-{%- for cv_r in (0..9) -%}
-  {%- for cv_c in (0..9) -%}
+{%- for cv_r in (0..14) -%}
+  {%- for cv_c in (0..14) -%}
     {%- comment -%} corner-transformed coords: (0,0) = fade corner {%- endcomment -%}
-    {%- if cv_corner < 2 -%}{%- assign cv_cr = cv_r -%}{%- else -%}{%- assign cv_cr = 9 | minus: cv_r -%}{%- endif -%}
+    {%- if cv_corner < 2 -%}{%- assign cv_cr = cv_r -%}{%- else -%}{%- assign cv_cr = 14 | minus: cv_r -%}{%- endif -%}
     {%- assign cv_cm = cv_corner | modulo: 2 -%}
-    {%- if cv_cm == 0 -%}{%- assign cv_cc = cv_c -%}{%- else -%}{%- assign cv_cc = 9 | minus: cv_c -%}{%- endif -%}
+    {%- if cv_cm == 0 -%}{%- assign cv_cc = cv_c -%}{%- else -%}{%- assign cv_cc = 14 | minus: cv_c -%}{%- endif -%}
     {%- assign cv_q = cv_cr | times: cv_cr -%}
     {%- assign cv_q2 = cv_cc | times: cv_cc -%}
     {%- assign cv_q = cv_q | plus: cv_q2 -%}
-    {%- assign cv_b = cv_q | times: 10 | divided_by: 162 -%}
+    {%- assign cv_b = cv_q | times: 10 | divided_by: 392 -%}
     {%- if cv_b > 9 -%}{%- assign cv_b = 9 -%}{%- endif -%}
     {%- assign cv_t = cv_thr[cv_b] | plus: 0 -%}
-    {%- assign cv_x0 = cv_c | times: 12 -%}
-    {%- assign cv_y0 = cv_r | times: 12 -%}
+    {%- assign cv_x0 = cv_c | times: 8 -%}
+    {%- assign cv_y0 = cv_r | times: 8 -%}
     {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
     {%- assign cv_dir = cv_seed | modulo: 2 -%}
     {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
@@ -48,13 +48,13 @@
       {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
       {%- assign cv_hot = cv_seed | modulo: 10 -%}
       {%- if cv_hot == 0 -%}{%- assign cv_cls = "cover-line-hot" -%}
-      {%- elsif cv_q > 40 -%}{%- assign cv_cls = "cover-line" -%}
+      {%- elsif cv_q > 97 -%}{%- assign cv_cls = "cover-line" -%}
       {%- else -%}{%- assign cv_cls = "cover-line-dim" -%}{%- endif -%}
       {%- if cv_dir == 0 -%}
-  <path d="M{{ cv_x0 }} {{ cv_y0 }} l12 12" class="{{ cv_cls }}"/>
+  <path d="M{{ cv_x0 }} {{ cv_y0 }} l8 8" class="{{ cv_cls }}"/>
       {%- else -%}
-        {%- assign cv_y1 = cv_y0 | plus: 12 -%}
-  <path d="M{{ cv_x0 }} {{ cv_y1 }} l12 -12" class="{{ cv_cls }}"/>
+        {%- assign cv_y1 = cv_y0 | plus: 8 -%}
+  <path d="M{{ cv_x0 }} {{ cv_y1 }} l8 -8" class="{{ cv_cls }}"/>
       {%- endif -%}
     {%- else -%}
       {%- comment -%} dissolved cell: maybe a hex byte {%- endcomment -%}
@@ -77,7 +77,7 @@
         {%- elsif cv_d3 < 4 -%}{%- assign cv_hcls = "cover-hex-dim" -%}
         {%- else -%}{%- assign cv_hcls = "cover-hex-fg" -%}{%- endif -%}
         {%- assign cv_tx = cv_x0 | plus: 1 -%}
-        {%- assign cv_ty = cv_y0 | plus: 9 -%}
+        {%- assign cv_ty = cv_y0 | plus: 6 -%}
   <text x="{{ cv_tx }}" y="{{ cv_ty }}" class="{{ cv_hcls }}">{{ cv_hexc[cv_i1] }}{{ cv_hexc[cv_i2] }}</text>
       {%- endif -%}
     {%- endif -%}
