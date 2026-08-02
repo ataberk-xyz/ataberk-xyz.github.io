@@ -8,30 +8,70 @@
 }
 
 // ── Masthead ──
+// Dark in BOTH palettes — the bar shares the covers' ink surface, so the
+// masthead reads as the publication's plate rather than page background.
 .masthead {
-  border-bottom: 1px solid var(--border-strong);
-  background: var(--bg);
+  background: var(--code-bg);
+  border-bottom: 1px solid var(--code-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 .masthead-inner {
   max-width: var(--measure);
   margin: 0 auto;
-  padding: 1.25rem 1.5rem;
+  padding: 0.85rem 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
 }
+.masthead-id {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+.brand-rule {
+  width: 1px;
+  align-self: stretch;
+  background: var(--code-border);
+  flex: 0 0 1px;
+}
+.brand-status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--code-fg);
+  opacity: 0.55;
+  white-space: nowrap;
+}
+.live-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: #E8B44F;
+  animation: live-pulse 2.6s ease-in-out infinite;
+}
+@keyframes live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
 .brand {
   display: inline-block;
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   line-height: 1;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: var(--code-fg);
+  white-space: nowrap;
 }
-.brand:hover { color: var(--accent); text-decoration: none; }
+.brand:hover { color: var(--accent-on-code); text-decoration: none; }
 
 // ── Nav ──
 .site-nav {
@@ -39,16 +79,19 @@
   flex-wrap: wrap;
   gap: 0.4rem 1.5rem;
 }
+// every nav item gets the same treatment — no special-cased button
 .nav-link {
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-2);
-  padding-bottom: 2px;
+  color: var(--code-fg);
+  opacity: 0.7;
+  padding-bottom: 3px;
   border-bottom: 2px solid transparent;
 }
-.nav-link:hover { color: var(--accent); text-decoration: none; border-bottom-color: var(--border-strong); }
-.nav-link.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-link:hover { color: var(--accent-on-code); opacity: 1; text-decoration: none; border-bottom-color: var(--code-border); }
+.nav-link.active { color: var(--accent-on-code); opacity: 1; border-bottom-color: var(--accent-on-code); }
 
 // ── Main column ──
 main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; }
@@ -177,6 +220,8 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
   .ledger-featured .lf-title { font-size: 2.6rem; }
 }
 @media (max-width: $bp-mobile) {
+  .brand-rule, .brand-status { display: none; }
+  .brand { font-size: 1.15rem; }
   .ledger-grid { grid-template-columns: 1fr; }
   .ledger-featured .lf-title { font-size: 2rem; }
   .ledger-featured .lf-cover .cover { aspect-ratio: 16 / 9; }
