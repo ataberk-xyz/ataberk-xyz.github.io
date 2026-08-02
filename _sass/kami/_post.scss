@@ -28,6 +28,9 @@
 
 .post-body a { border-bottom: 1px solid var(--border-strong); }
 .post-body a:hover { border-bottom-color: var(--accent); text-decoration: none; }
+// cards embedded in a page body are UI, not prose — no reading underline
+.post-body .ledger-card a,
+.post-body .cat-row { border-bottom: 0; }
 
 .post-body ul, .post-body ol { margin: 0 0 1.2rem; padding-left: 1.4rem; }
 .post-body li { margin: 0.35rem 0; }
