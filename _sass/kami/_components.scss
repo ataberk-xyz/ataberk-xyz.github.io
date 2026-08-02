@@ -72,6 +72,7 @@
 .chart-figure { margin: 1.8rem 0; max-width: 100%; }
 .chart-figure svg { width: 100%; height: auto; display: block; }
 .chart-figure figcaption {
+  font-family: var(--mono);
   margin-top: 0.7rem;
   font-size: 0.85rem;
   line-height: 1.55;
