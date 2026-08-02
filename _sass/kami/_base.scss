@@ -57,10 +57,10 @@ img { max-width: 100%; height: auto; }
 
 small { font-size: 0.82em; color: var(--ink-3); }
 
-// ── Press: the roller ─────────────────────────────────────────
-// A halftone field with a slow ink wave sweeping across it — the press
-// roller passing over newsprint. It lives BEHIND everything: cards,
-// covers, masthead and footer all paint their own opaque grounds over it.
+// ── Press: the column drift ───────────────────────────────────
+// Endless newsprint: setting lines and column rules drifting slowly
+// upward behind the page. It lives BEHIND everything — cards, covers,
+// masthead and footer all paint their own opaque grounds over it.
 .press {
   position: fixed;
   inset: 0;
@@ -68,37 +68,29 @@ small { font-size: 0.82em; color: var(--ink-3); }
   pointer-events: none;
   overflow: hidden;
 }
-.press::before,
-.press::after {
+.press::before {
   content: "";
   position: absolute;
-  inset: 0;
-}
-.press::before {
-  background-image: radial-gradient(currentColor 0.6px, transparent 0.8px);
-  background-size: 5px 5px;
+  inset: -140px 0;
   color: var(--ink);
-  opacity: 0.05;
-}
-.press::after {
-  background-image: linear-gradient(
-    105deg,
-    transparent 35%,
-    color-mix(in srgb, var(--accent) 22%, transparent) 48%,
-    color-mix(in srgb, var(--accent-warn) 14%, transparent) 52%,
-    transparent 65%
-  );
-  background-size: 260% 100%;
-  background-repeat: no-repeat;
-  animation: press-roller 16s ease-in-out infinite;
+  background-image:
+    repeating-linear-gradient(to bottom, currentColor 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px 132px);
+  background-size: 100% 7px, 132px 100%;
+  opacity: 0.055;
+  animation: press-columns 30s linear infinite;
+  // fade the field out top and bottom so it never collides with the
+  // masthead's edge or the footer rule
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
 @media (prefers-color-scheme: dark) {
-  .press::before { opacity: 0.07; }
+  .press::before { opacity: 0.075; }
 }
-@keyframes press-roller {
-  0%   { background-position: 120% 0; }
-  100% { background-position: -60% 0; }
+@keyframes press-columns {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 0 -140px, 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .press::after { animation: none; opacity: 0.35; }
+  .press::before { animation: none; }
 }
