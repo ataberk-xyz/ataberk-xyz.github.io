@@ -12,8 +12,10 @@ sidebar_link: true
       {% capture ponum %}{% include post-number.html post=post %}{% endcapture %}
       <article class="ledger-card">
         <a class="lc-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
-        <p class="no-line">{{ ponum }} · {{ post.date | date: "%Y-%m-%d" }}</p>
-        <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+        <div class="lc-body">
+          <p class="no-line">{{ ponum }} · {{ post.date | date: "%Y-%m-%d" }}</p>
+          <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+        </div>
       </article>
     {% endfor %}
   </div>

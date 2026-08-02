@@ -13,7 +13,8 @@ layout: default
     <div class="lf-text">
       <p class="no-line">{{ ponum }} · {{ pcat | upcase }} · {{ post.date | date: "%Y-%m-%d" }}</p>
       <h2 class="lf-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
-      {% if post.description %}<p class="lf-dek">{{ post.description }}</p>{% endif %}
+      {% if post.description %}{% assign lf_dek = post.description %}{% else %}{% assign lf_dek = post.excerpt | strip_html | normalize_whitespace | truncatewords: 32 %}{% endif %}
+      {% if lf_dek != "" %}<p class="lf-dek">{{ lf_dek }}</p>{% endif %}
       {% assign lf_words = post.content | strip_html | number_of_words %}
       <p class="lf-meta">{{ lf_words | divided_by: 200 | at_least: 1 }} MIN READ{% if post.ledger.severity %} — SEVERITY <span class="sev-warn">{{ post.ledger.severity }}</span>{% endif %}</p>
     </div>
@@ -25,8 +26,10 @@ layout: default
       {% if forloop.first %}<div class="ledger-grid">{% endif %}
     <article class="ledger-card">
       <a class="lc-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
-      <p class="no-line">{{ ponum }} · {{ pcat | upcase }}</p>
-      <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+      <div class="lc-body">
+        <p class="no-line">{{ ponum }} · {{ pcat | upcase }}</p>
+        <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+      </div>
     </article>
     {% endif %}
     {% if forloop.last %}</div>{% endif %}

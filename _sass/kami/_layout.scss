@@ -15,24 +15,25 @@
 .masthead-inner {
   max-width: var(--page);
   margin: 0 auto;
-  padding: 2.6rem 1.5rem 1.6rem;
+  padding: 2.4rem 1.5rem 1.1rem;
   text-align: center;
 }
 .brand {
   display: inline-block;
   font-family: var(--serif);
   font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.02em;
+  font-size: 2.9rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
   color: var(--ink);
 }
 .brand:hover { color: var(--accent); text-decoration: none; }
 .brand-issue {
   font-family: var(--mono);
   font-size: 0.62rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.3em;
   color: var(--ink-3);
-  margin: 0.15rem 0 0;
+  margin: 0.55rem 0 0;
 }
 
 // ── Nav ──
@@ -41,6 +42,9 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.4rem 1.6rem;
+  border-top: 1px solid var(--border-strong);
+  margin-top: 1.1rem;
+  padding-top: 0.7rem;
 }
 .nav-link {
   font-size: 0.78rem;
@@ -90,32 +94,34 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
 
 .ledger-featured {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 2rem;
-  align-items: start;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
   margin: 1.5rem 0 2rem;
 
   .lf-title {
-    font-size: 2.1rem;
-    line-height: 1.12;
-    margin: 0.2rem 0 0;
+    font-size: 3rem;
+    line-height: 1.05;
+    margin: 0.35rem 0 0;
     a { color: var(--ink); text-decoration: none; }
     a:hover { color: var(--accent); }
   }
   .lf-dek {
     font-style: italic;
     color: var(--ink-2);
-    font-size: 1.05rem;
-    margin: 0.6rem 0 0;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    margin: 0.8rem 0 0;
   }
   .lf-meta {
     font-family: var(--mono);
     font-size: 0.7rem;
     letter-spacing: 0.1em;
     color: var(--ink-3);
-    margin-top: 0.9rem;
+    margin-top: 1rem;
   }
   .lf-cover { display: block; }
+  .lf-cover .cover { aspect-ratio: 4 / 3; height: auto; }
 }
 .rule-strong {
   border: 0;
@@ -128,19 +134,38 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
   gap: 1.8rem 2rem;
   margin-bottom: 2rem;
 
+  .ledger-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease;
+  }
+  .ledger-card:hover { border-color: var(--border-strong); }
   .lc-title {
-    font-size: 1.1rem;
-    line-height: 1.25;
-    margin: 0.2rem 0 0;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin: 0.25rem 0 0;
     a { color: var(--ink); text-decoration: none; }
     a:hover { color: var(--accent); }
   }
-  .lc-cover { display: block; margin-bottom: 0.6rem; }
+  .lc-cover { display: block; }
+  .lc-cover .cover {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .lc-body { padding: 0.85rem 1.1rem 1.1rem; }
 }
 @media (max-width: $bp-tablet) {
   .ledger-featured { grid-template-columns: 1fr; }
 }
 @media (max-width: $bp-mobile) {
   .ledger-grid { grid-template-columns: 1fr; }
-  .ledger-featured .lf-title { font-size: 1.6rem; }
+  .ledger-featured .lf-title { font-size: 2rem; }
+  .brand { font-size: 2.1rem; }
 }
