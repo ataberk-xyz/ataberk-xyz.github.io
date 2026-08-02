@@ -13,7 +13,8 @@
 {%- endcomment -%}
 {%- assign cv_post = include.post -%}
 {%- assign cv_charset = "abcdefghijklmnopqrstuvwxyz0123456789-" | split: "" -%}
-{%- assign cv_letters = cv_post.slug | split: "" -%}
+{%- assign cv_slug = cv_post.slug | default: cv_post.name | default: "cover" -%}
+{%- assign cv_letters = cv_slug | split: "" -%}
 {%- assign cv_seed = 7 -%}
 {%- for cv_ch in cv_letters -%}
   {%- assign cv_val = 1 -%}
