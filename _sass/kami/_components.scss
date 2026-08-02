@@ -180,3 +180,16 @@
   .post-item-title { font-size: 1.3rem; }
   .related-list li { flex-direction: column; gap: 0.1rem; }
 }
+
+// ── Generative covers ─────────────────────────────────────────
+.cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius);
+}
+.cover-bg       { fill: var(--code-bg); }
+.cover-line     { stroke: var(--accent); stroke-width: 1.5; fill: none; opacity: .85; }
+.cover-node     { fill: var(--accent); }
+.cover-node-hot { fill: var(--accent-warn); }
