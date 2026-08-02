@@ -2,7 +2,7 @@
 
 .container {
   width: 100%;
-  max-width: var(--page);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -13,7 +13,7 @@
   background: var(--bg);
 }
 .masthead-inner {
-  max-width: var(--page);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -59,7 +59,7 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
   margin-top: 2rem;
 }
 .footer-inner {
-  max-width: var(--page);
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 1.8rem 1.5rem 2.4rem;
   text-align: center;
