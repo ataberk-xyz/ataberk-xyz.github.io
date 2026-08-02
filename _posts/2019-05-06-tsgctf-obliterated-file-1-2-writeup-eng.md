@@ -1,7 +1,7 @@
 ---
 layout: post
 title: TSG CTF - Obliterated File 1-2 Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf,git,forensics]
 categories: [writeup]
 summary: "Two TSG CTF forensics challenges, both about git internals — recovering a flag from objects a committer thought they had obliterated."

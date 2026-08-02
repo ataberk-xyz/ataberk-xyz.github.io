@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HackTheBox Olympus Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf]
 categories: [writeup]
 summary: "Port knocking and a DNS zone transfer open the door; from there Xdebug RCE and a misconfigured Docker socket carry the box to root."

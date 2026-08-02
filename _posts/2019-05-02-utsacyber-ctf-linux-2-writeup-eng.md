@@ -1,7 +1,7 @@
 ---
 layout: post
 title: UTSA Cyber CTF - Linux2 Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf]
 categories: [writeup]
 summary: "A UTSA Cyber CTF Linux challenge solved with plain enumeration: read the sudo rules, notice the Docker group, and the box hands you root."

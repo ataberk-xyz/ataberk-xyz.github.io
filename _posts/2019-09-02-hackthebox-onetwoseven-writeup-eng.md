@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HackTheBox OneTwoSeven Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf,hackthebox]
 categories: [writeup]
 summary: "The most educational box I have solved — an SSH-tunneled admin panel, a hijacked APT repository, and a chain that only works if each step is understood, not copied."

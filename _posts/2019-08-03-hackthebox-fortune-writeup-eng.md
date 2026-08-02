@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HackTheBox Fortune Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf]
 categories: [writeup]
 summary: "OpenBSD, so nothing behaves as expected: command injection into an authpf-gated network, an NFS export that leaks a private key, and pgAdmin credentials for the final step."

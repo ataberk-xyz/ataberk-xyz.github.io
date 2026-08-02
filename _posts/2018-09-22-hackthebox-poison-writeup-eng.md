@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HackTheBox Poison Writeup [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [writeup,ctf]
 categories: [writeup]
 summary: "LFI on a retired HackTheBox machine, turned into a shell through log poisoning — then a base64-encoded secret and a tunneled VNC session for root."

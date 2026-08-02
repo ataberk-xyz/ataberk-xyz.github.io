@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Python - Module and Library Hijacking [eng]
-author: 0xSaiyajin
+author: ataberk-xyz
 tags: [pentest,privilege-escalation, linux]
 categories: [pentest]
 summary: "Module vs library hijacking in Python, and why sys.path order is a privilege escalation primitive when a root process imports the wrong file first."
