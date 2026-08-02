@@ -1,0 +1,14 @@
+{%- comment -%}
+  Chronological issue number: oldest post = N°01.
+  site.posts is newest-first, so number = total - index0.
+{%- endcomment -%}
+{%- assign pn_total = site.posts | size -%}
+{%- assign pn_num = 0 -%}
+{%- for pn_p in site.posts -%}
+  {%- if pn_p.url == include.post.url -%}
+    {%- assign pn_num = pn_total | minus: forloop.index0 -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign pn_pad = pn_num | prepend: '00' | slice: -2, 2 -%}
+N°{{ pn_pad }}
