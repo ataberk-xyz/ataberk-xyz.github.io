@@ -8,147 +8,88 @@ cover_split: true
 kicker: "N°00 · ABOUT · ATABERK YAVUZER"
 description: "Smart contract auditor & offensive security engineer — 7+ years across Web3 and traditional security. I break things, then build tools so they break less."
 ---
-<style>
-   img { display: unset; margin: 0px; }
-   th { text-align: center; }
-</style>
-<div>
-   <dl class="ledger-block">
-     <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk Yavuzer</dd></div>
-     <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Smart Contract Auditor · Offensive Security</dd></div>
-     <div class="lrow"><dt>STACK</dt><span class="dots"></span><dd>Solidity · Move · EVM · Active Directory</dd></div>
-     <div class="lrow"><dt>CERTS</dt><span class="dots"></span><dd>OSCP · OSWE · CRTP · C-AI/MLPen</dd></div>
-     <div class="lrow"><dt>TRACK</dt><span class="dots"></span><dd>ex-Hacken (Principal) · ex-Halborn (Lead)</dd></div>
-     <div class="lrow"><dt>STATUS</dt><span class="dots"></span><dd class="sev">BREAKING THINGS ✓</dd></div>
-   </dl>
 
-   I'm Ataberk, a smart contract auditor and offensive security engineer with 7+ years across Web3 and traditional security. I started out in penetration testing (web apps, internal/external networks, Active Directory) and moved into blockchain security, auditing Solidity and Move smart contracts.
-   <br/><br/>
-   Most recently I was <strong>Principal Smart Contract Auditor at Hacken</strong> (2023&ndash;2026), where I led the auditor team and owned audit delivery across Solidity and Move engagements. Before that I was Lead Offensive Security Engineer at Halborn. Lately I've been building tools like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>.
-   <br/><br/>
-   More detail on my <a href="https://www.linkedin.com/in/ataberkyavuzer/">LinkedIn</a> or <a href="https://github.com/ataberk-xyz">GitHub</a>.
+<dl class="ledger-block">
+  <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk Yavuzer</dd></div>
+  <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Smart Contract Auditor · Offensive Security</dd></div>
+  <div class="lrow"><dt>STACK</dt><span class="dots"></span><dd>Solidity · Move · EVM · Active Directory</dd></div>
+  <div class="lrow"><dt>CERTS</dt><span class="dots"></span><dd>OSCP · OSWE · CRTP · C-AI/MLPen</dd></div>
+  <div class="lrow"><dt>TRACK</dt><span class="dots"></span><dd>ex-Hacken (Principal) · ex-Halborn (Lead)</dd></div>
+  <div class="lrow"><dt>STATUS</dt><span class="dots"></span><dd class="sev">BREAKING THINGS ✓</dd></div>
+</dl>
 
-   <h4>Certifications</h4>
-   <li><a href="https://www.credly.com/badges/0bff9cfc-f08d-423b-a320-0cdb431e9f45">Offensive Security Certified Professional (OSCP)</a></li>
-   <li><a href="https://www.credly.com/badges/c6ffd1d7-b4a0-40ff-9378-3fbc29d64ea1">Offensive Security Web Expert (OSWE)</a></li>
-   <li><a href="https://www.credential.net/c96c3313-448d-4518-a39f-ec02cee89478">Certified Red Team Professional (CRTP)</a></li>
-   <li><a href="https://pentestingexams.com/certificate-validation">Certified AI/ML Pentester (C-AI/MLPen)</a></li>
+<p class="about-intro">I started in penetration testing — web apps, internal and external networks, Active Directory — and moved into blockchain security, auditing Solidity and Move. Most recently <strong>Principal Smart Contract Auditor at Hacken</strong> (2023–2026), leading the auditor team and owning audit delivery; before that Lead Offensive Security Engineer at Halborn. Lately I build tooling like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>.</p>
 
-   <h4>Recognition</h4>
-   <li>CVE-2019-1068: n-day research on a Microsoft SQL Server stack overflow (analyzed the bug and wrote a working exploit). <a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">Writeup</a>.</li>
-   <li><a href="https://www.t-mobile.cz/bug-bounty/zed-slavy#:~:text=Ataberk%20Yavuzer%20(0xsaiyajin.github.io)%20%2D%20SQL%20Injection%2C%20Cross%2Dsite%20scripting%20(XSS)%2C%20Remote%20Code%20Execution%20(RCE)">T-Mobile Hall of Fame</a>: XSS, SQLi, and RCE findings.</li>
-   <li>Mail.ru Hall of Fame: Cross-Site Scripting findings.</li>
+<p class="about-links"><a href="https://www.linkedin.com/in/ataberkyavuzer/">LinkedIn</a> · <a href="https://github.com/ataberk-xyz">GitHub</a></p>
 
-   <h4>Security advisories</h4>
-   Vulnerabilities I found and responsibly disclosed in widely-used software:
-   <div style="overflow-x:auto;">
-   <table>
-     <thead>
-       <tr><th>Package</th><th>Advisory / CVE</th><th>Severity</th><th>Finding type</th><th>Title</th></tr>
-     </thead>
-     <tbody>
-       <tr>
-         <td>install-artifact-from-github</td>
-         <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">GHSA-88q3-gch3-5396</a></td>
-         <td>High (7.5)</td>
-         <td>CWE-494 &mdash; Download of Code Without Integrity Check</td>
-         <td>network-downloaded native addon loaded without integrity check &rarr; install-time RCE</td>
-       </tr>
-       <tr>
-         <td>stream-json</td>
-         <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">GHSA-528h-pc64-c93x</a></td>
-         <td>Moderate (6.2)</td>
-         <td>CWE-407 &mdash; Inefficient Algorithmic Complexity</td>
-         <td>quadratic-complexity path filters &rarr; small nested JSON blocks the event loop (DoS). Fixed in 3.5.0</td>
-       </tr>
-       <tr>
-         <td>node-re2</td>
-         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
-         <td>Moderate (6.2)</td>
-         <td>CWE-835 &mdash; Infinite Loop</td>
-         <td>zero-width global match never advances &rarr; infinite loop with unbounded native memory growth (DoS). Fixed in 1.25.2</td>
-       </tr>
-       <tr>
-         <td>node-re2</td>
-         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
-         <td>Moderate (5.7)</td>
-         <td>CWE-125 &mdash; Out-of-bounds Read</td>
-         <td>attacker-influenced <code>lastIndex</code> on a non-ASCII subject &rarr; out-of-bounds heap read and uncatchable crash (DoS)</td>
-       </tr>
-       <tr>
-         <td>node-re2</td>
-         <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">GHSA-8hcv-x26h-mcgp</a></td>
-         <td>Moderate (6.2)</td>
-         <td>CWE-617 &mdash; Reachable Assertion</td>
-         <td><code>replace</code> with an output-amplifying template aborts the Node process past V8's max string length (DoS)</td>
-       </tr>
-       <tr>
-         <td>Kentico CMS</td>
-         <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a></td>
-         <td>Medium (5.4)</td>
-         <td>CWE-434 &mdash; Unrestricted Upload of File with Dangerous Type</td>
-         <td>file upload whose Content-Type is inconsistent with its extension &rarr; stored XSS (&le; 12.0.49). Fixed in 12.0.50</td>
-       </tr>
-     </tbody>
-   </table>
-   </div>
+<h2 class="about-h">Certifications</h2>
+<div class="about-index">
+  <a class="ai-row" href="https://www.credly.com/badges/0bff9cfc-f08d-423b-a320-0cdb431e9f45"><span class="ai-name">Offensive Security Certified Professional</span><span class="ai-fill"></span><span class="ai-tag">OSCP</span></a>
+  <a class="ai-row" href="https://www.credly.com/badges/c6ffd1d7-b4a0-40ff-9378-3fbc29d64ea1"><span class="ai-name">Offensive Security Web Expert</span><span class="ai-fill"></span><span class="ai-tag">OSWE</span></a>
+  <a class="ai-row" href="https://www.credential.net/c96c3313-448d-4518-a39f-ec02cee89478"><span class="ai-name">Certified Red Team Professional</span><span class="ai-fill"></span><span class="ai-tag">CRTP</span></a>
+  <a class="ai-row" href="https://pentestingexams.com/certificate-validation"><span class="ai-name">Certified AI/ML Pentester</span><span class="ai-fill"></span><span class="ai-tag">C-AI/MLPen</span></a>
+</div>
 
-   <h4>Open source</h4>
-   <li><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>: a multi-agent code-review orchestrator (TypeScript / MCP) where agents cross-verify each other's findings against real code to filter hallucinations.</li>
+<h2 class="about-h">Recognition</h2>
+<div class="about-index">
+  <div class="ai-row"><span class="ai-name">n-day research on a Microsoft SQL Server stack overflow — analyzed the bug, wrote a working exploit (<a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">writeup</a>)</span><span class="ai-fill"></span><span class="ai-tag">CVE-2019-1068</span></div>
+  <div class="ai-row"><span class="ai-name"><a href="https://www.t-mobile.cz/bug-bounty/zed-slavy#:~:text=Ataberk%20Yavuzer%20(0xsaiyajin.github.io)%20%2D%20SQL%20Injection%2C%20Cross%2Dsite%20scripting%20(XSS)%2C%20Remote%20Code%20Execution%20(RCE)">T-Mobile Hall of Fame</a> — XSS, SQLi, RCE</span><span class="ai-fill"></span><span class="ai-tag">HOF</span></div>
+  <div class="ai-row"><span class="ai-name">Mail.ru Hall of Fame — Cross-Site Scripting</span><span class="ai-fill"></span><span class="ai-tag">HOF</span></div>
+  <div class="ai-row"><span class="ai-name"><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a> — multi-agent code-review orchestrator (TypeScript / MCP); agents cross-verify findings against real code to filter hallucinations</span><span class="ai-fill"></span><span class="ai-tag">OSS</span></div>
+</div>
 
-   <style>
-     .skills { margin: 0.6rem 0 1.1rem; }
-     .skill-group { display: flex; gap: 0.85rem; align-items: baseline; flex-wrap: wrap; margin: 0.55rem 0; }
-     .skill-group > .domain {
-       flex: 0 0 9rem;
-       font-variant: small-caps; letter-spacing: 0.045em;
-       color: var(--ink-3); font-size: 0.86rem; font-weight: 600;
-     }
-     .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; flex: 1 1 16rem; }
-     .skill-tags span {
-       display: inline-block; padding: 0.22rem 0.62rem;
-       background: var(--accent-soft); color: var(--accent);
-       border: 1px solid transparent; border-radius: 999px;
-       font-size: 0.82rem; line-height: 1.35;
-       transition: border-color 0.15s ease, transform 0.15s ease;
-     }
-     .skill-tags span:hover { border-color: var(--accent); transform: translateY(-1px); }
-     @media (max-width: 34rem) {
-       .skill-group { flex-direction: column; gap: 0.3rem; }
-       .skill-group > .domain { flex-basis: auto; }
-     }
-   </style>
-   <h4>Skills</h4>
-   <div class="skills">
-     <div class="skill-group">
-       <span class="domain">Offensive</span>
-       <div class="skill-tags">
-         <span>Internal pentest</span><span>External pentest</span><span>Web app security</span><span>Active Directory</span><span>Kerberoasting</span><span>NTLM relaying</span><span>Pass-the-Hash</span><span>Phishing &amp; social engineering</span>
-       </div>
-     </div>
-     <div class="skill-group">
-       <span class="domain">Smart contracts</span>
-       <div class="skill-tags">
-         <span>Solidity</span><span>EVM</span><span>Move</span><span>Aptos</span><span>Sui</span><span>IOTA</span><span>DeFi security</span><span>Threat modeling</span>
-       </div>
-     </div>
-     <div class="skill-group">
-       <span class="domain">Reversing &amp; vuln research</span>
-       <div class="skill-tags">
-         <span>n-day research</span><span>Patch diffing</span><span>WinDbg</span><span>PoC development</span>
-       </div>
-     </div>
-     <div class="skill-group">
-       <span class="domain">Languages &amp; tooling</span>
-       <div class="skill-tags">
-         <span>Python</span><span>TypeScript</span><span>Solidity</span><span>Foundry</span>
-       </div>
-     </div>
-     <div class="skill-group">
-       <span class="domain">AI &amp; automation</span>
-       <div class="skill-tags">
-         <span>Multi-agent orchestration</span><span>gossipcat</span><span>MCP</span><span>Claude Code</span><span>Cursor</span>
-       </div>
-     </div>
-   </div>
+<h2 class="about-h">Security advisories</h2>
+<p class="about-note">Found and responsibly disclosed in widely-used software.</p>
+<div class="adv-wrap">
+<table class="adv">
+  <thead>
+    <tr><th>Package</th><th>Advisory</th><th>Severity</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>install-artifact-from-github</td>
+      <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">GHSA-88q3-gch3-5396</a></td>
+      <td><span class="sv sv-high">HIGH 7.5</span></td>
+      <td><span class="cwe">CWE-494</span> native addon downloaded over the network and loaded with no integrity check → install-time RCE</td>
+    </tr>
+    <tr>
+      <td>stream-json</td>
+      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">GHSA-528h-pc64-c93x</a></td>
+      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="cwe">CWE-407</span> quadratic path filters → a small nested JSON blocks the event loop. Fixed in 3.5.0</td>
+    </tr>
+    <tr>
+      <td>node-re2</td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
+      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="cwe">CWE-835</span> zero-width global match never advances → infinite loop, unbounded native memory. Fixed in 1.25.2</td>
+    </tr>
+    <tr>
+      <td>node-re2</td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
+      <td><span class="sv">MOD 5.7</span></td>
+      <td><span class="cwe">CWE-125</span> attacker-influenced <code>lastIndex</code> on a non-ASCII subject → out-of-bounds heap read, uncatchable crash</td>
+    </tr>
+    <tr>
+      <td>node-re2</td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">GHSA-8hcv-x26h-mcgp</a></td>
+      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="cwe">CWE-617</span> <code>replace</code> with an output-amplifying template aborts Node past V8's max string length</td>
+    </tr>
+    <tr>
+      <td>Kentico CMS</td>
+      <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a></td>
+      <td><span class="sv">MED 5.4</span></td>
+      <td><span class="cwe">CWE-434</span> upload whose Content-Type disagrees with its extension → stored XSS (≤ 12.0.49). Fixed in 12.0.50</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 class="about-h">Skills</h2>
+<div class="about-index">
+  <div class="ai-row"><span class="ai-tag ai-domain">OFFENSIVE</span><span class="ai-fill"></span><span class="ai-val">internal &amp; external pentest · web app security · Active Directory · Kerberoasting · NTLM relaying · Pass-the-Hash · phishing</span></div>
+  <div class="ai-row"><span class="ai-tag ai-domain">CONTRACTS</span><span class="ai-fill"></span><span class="ai-val">Solidity · EVM · Move · Aptos · Sui · IOTA · DeFi security · threat modeling</span></div>
+  <div class="ai-row"><span class="ai-tag ai-domain">RESEARCH</span><span class="ai-fill"></span><span class="ai-val">n-day research · patch diffing · WinDbg · PoC development</span></div>
+  <div class="ai-row"><span class="ai-tag ai-domain">TOOLING</span><span class="ai-fill"></span><span class="ai-val">Python · TypeScript · Foundry · multi-agent orchestration (MCP) · Claude Code</span></div>
 </div>

@@ -224,3 +224,80 @@
 
 @media (max-width: $bp-tablet) { .cat-index-cols { column-count: 2; } }
 @media (max-width: $bp-mobile) { .cat-index-cols { column-count: 1; } }
+
+// ── About / whoami page ───────────────────────────────────────
+.about-intro { margin-top: 1.4rem; }
+.about-links { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; }
+.about-h {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 2.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-strong);
+}
+.about-note { font-size: 0.92rem; color: var(--ink-2); margin: 0 0 0.9rem; }
+
+// dotted-leader index rows — same vocabulary as the categories index
+.about-index { display: flex; flex-direction: column; }
+.ai-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.3rem 0;
+  color: var(--ink);
+  border-bottom: 0;
+}
+a.ai-row:hover { color: var(--accent); text-decoration: none; }
+a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
+.ai-name { font-size: 0.95rem; }
+.ai-val { font-family: var(--mono); font-size: 0.76rem; color: var(--ink-2); text-align: right; }
+.ai-fill { flex: 1 0 1.5rem; border-bottom: 1px dotted var(--border-strong); transform: translateY(-4px); }
+.ai-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.ai-domain { color: var(--accent); letter-spacing: 0.14em; flex: 0 0 auto; }
+
+// advisories table
+.adv-wrap { overflow-x: auto; }
+.adv { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.adv th {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: left;
+  font-weight: 400;
+  padding: 0 0.7rem 0.5rem 0;
+  border-bottom: 1px solid var(--border-strong);
+}
+.adv td {
+  padding: 0.7rem 0.7rem 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.adv td:first-child { font-family: var(--mono); font-size: 0.76rem; white-space: nowrap; }
+.adv td:nth-child(2) { font-family: var(--mono); font-size: 0.74rem; white-space: nowrap; }
+.sv { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--accent-warn); white-space: nowrap; }
+.sv-high { font-weight: 700; }
+.cwe {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--accent);
+  margin-right: 0.4rem;
+  white-space: nowrap;
+}
+
+@media (max-width: $bp-mobile) {
+  .ai-row { flex-wrap: wrap; }
+  .ai-fill { display: none; }
+  .ai-val { text-align: left; }
+}
