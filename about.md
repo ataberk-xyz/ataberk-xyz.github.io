@@ -55,31 +55,31 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
     <tr>
       <td>stream-json</td>
       <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">GHSA-528h-pc64-c93x</a></td>
-      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-407</span> quadratic path filters → a small nested JSON blocks the event loop. Fixed in 3.5.0</td>
     </tr>
     <tr>
       <td>node-re2</td>
       <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
-      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-835</span> zero-width global match never advances → infinite loop, unbounded native memory. Fixed in 1.25.2</td>
     </tr>
     <tr>
       <td>node-re2</td>
       <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
-      <td><span class="sv">MOD 5.7</span></td>
+      <td><span class="sv sv-med">MEDIUM 5.7</span></td>
       <td><span class="cwe">CWE-125</span> attacker-influenced <code>lastIndex</code> on a non-ASCII subject → out-of-bounds heap read, uncatchable crash</td>
     </tr>
     <tr>
       <td>node-re2</td>
       <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">GHSA-8hcv-x26h-mcgp</a></td>
-      <td><span class="sv">MOD 6.2</span></td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-617</span> <code>replace</code> with an output-amplifying template aborts Node past V8's max string length</td>
     </tr>
     <tr>
       <td>Kentico CMS</td>
       <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a></td>
-      <td><span class="sv">MED 5.4</span></td>
+      <td><span class="sv sv-med">MEDIUM 5.4</span></td>
       <td><span class="cwe">CWE-434</span> upload whose Content-Type disagrees with its extension → stored XSS (≤ 12.0.49). Fixed in 12.0.50</td>
     </tr>
   </tbody>

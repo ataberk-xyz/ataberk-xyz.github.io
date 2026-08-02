@@ -19,7 +19,10 @@
   --accent:        #1B365D;  // ink-blue
   --accent-2:      #2C4F7C;  // hover / lighter ink-blue
   --accent-soft:   #E6EAF1;  // pill backgrounds, washes
-  --accent-warn:   #9A6716;  // amber, AA on parchment (severity, warnings)
+  --accent-warn:   #9A6716;  // amber, AA on parchment (warnings)
+  // severity scale — semantic, not decorative (CVSS bands)
+  --sev-high:      #A83A32;  // 7.0–8.9
+  --sev-med:       #9A6716;  // 4.0–6.9 (GitHub calls this "moderate")
 
   // Sunken surfaces (code, ledger block, covers) — dark in BOTH palettes
   --code-bg:       #17171C;
@@ -62,6 +65,8 @@
     --accent-2:      #BBD0F0;  // hover
     --accent-soft:   rgba(157, 184, 232, 0.16);
     --accent-warn:   #E8B44F;  // amber on dark
+    --sev-high:      #E0655C;
+    --sev-med:       #E8B44F;
 
     --code-bg:       #100e0c;  // sunken, a touch darker than --bg
     --code-fg:       #E7E2D6;

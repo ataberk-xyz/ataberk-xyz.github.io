@@ -286,8 +286,25 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
 }
 .adv td:first-child { font-family: var(--mono); font-size: 0.76rem; white-space: nowrap; }
 .adv td:nth-child(2) { font-family: var(--mono); font-size: 0.74rem; white-space: nowrap; }
-.sv { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--accent-warn); white-space: nowrap; }
-.sv-high { font-weight: 700; }
+.sv {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+// the bar carries the level at a glance; the text carries the score
+.sv::before {
+  content: "";
+  width: 3px;
+  height: 0.85em;
+  background: currentColor;
+  border-radius: 1px;
+}
+.sv-high { color: var(--sev-high); font-weight: 700; }
+.sv-med  { color: var(--sev-med); }
 .cwe {
   font-family: var(--mono);
   font-size: 0.68rem;
