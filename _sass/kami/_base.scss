@@ -57,40 +57,43 @@ img { max-width: 100%; height: auto; }
 
 small { font-size: 0.82em; color: var(--ink-3); }
 
-// ── Press: the column drift ───────────────────────────────────
-// Endless newsprint: setting lines and column rules drifting slowly
-// upward behind the page. It lives BEHIND everything — cards, covers,
-// masthead and footer all paint their own opaque grounds over it.
+// ── Press: the weave ──────────────────────────────────────────
+// The covers' diagonal alphabet at page scale: each stroke draws itself,
+// holds, then clears, with the delay set per column so a slow wave walks
+// left to right. Colourless on purpose — it borrows --ink, never the
+// accent, so it stays scenery. Behind everything: cards, covers, the
+// masthead and the footer all paint their own opaque grounds over it.
 .press {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-}
-.press::before {
-  content: "";
-  position: absolute;
-  inset: -140px 0;
   color: var(--ink);
-  background-image:
-    repeating-linear-gradient(to bottom, currentColor 0 1px, transparent 1px 7px),
-    repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px 132px);
-  background-size: 100% 7px, 132px 100%;
-  opacity: 0.055;
-  animation: press-columns 30s linear infinite;
-  // fade the field out top and bottom so it never collides with the
-  // masthead's edge or the footer rule
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
-          mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
-@media (prefers-color-scheme: dark) {
-  .press::before { opacity: 0.075; }
+.press svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
-@keyframes press-columns {
-  from { background-position: 0 0, 0 0; }
-  to   { background-position: 0 -140px, 0 0; }
+.press path {
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  fill: none;
+  opacity: 0.13;
+  stroke-dasharray: 57;      // ≈ the 40px cell's diagonal, so one stroke = one dash
+  stroke-dashoffset: 57;
+  animation: press-weave 11s ease-in-out infinite;
+}
+@media (prefers-color-scheme: dark) { .press path { opacity: 0.16; } }
+@keyframes press-weave {
+  0%   { stroke-dashoffset: 57; }
+  30%  { stroke-dashoffset: 0; }
+  62%  { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -57; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .press::before { animation: none; }
+  .press path { animation: none; stroke-dashoffset: 0; opacity: 0.08; }
 }

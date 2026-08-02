@@ -1,0 +1,39 @@
+{%- comment -%}
+  Background weave: the covers' diagonal alphabet, drawn at page scale.
+  Each stroke draws itself and clears again; the delay is derived from its
+  column, so the wave crosses left to right. Pure Liquid + CSS, no JS.
+  Deterministic (same LCG as cover.html) so the field never reshuffles.
+  Colourless by design — it borrows --ink, never the accent.
+{%- endcomment -%}
+{%- assign pr_seed = 20260802 -%}
+{%- assign pr_cols = 30 -%}
+{%- assign pr_rows = 20 -%}
+{%- assign pr_cell = 40 -%}
+{%- assign pr_w = pr_cols | times: pr_cell -%}
+{%- assign pr_h = pr_rows | times: pr_cell -%}
+<div class="press" aria-hidden="true">
+  <svg viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">
+    {%- for pr_r in (1..pr_rows) -%}
+      {%- assign pr_y0 = pr_r | minus: 1 | times: pr_cell -%}
+      {%- assign pr_y1 = pr_y0 | plus: pr_cell -%}
+      {%- for pr_c in (1..pr_cols) -%}
+        {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign pr_skip = pr_seed | modulo: 10 -%}
+        {%- if pr_skip < 5 -%}
+          {%- assign pr_x0 = pr_c | minus: 1 | times: pr_cell -%}
+          {%- assign pr_x1 = pr_x0 | plus: pr_cell -%}
+          {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+          {%- assign pr_dir = pr_seed | modulo: 2 -%}
+          {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+          {%- assign pr_jit = pr_seed | modulo: 20 -%}
+          {%- assign pr_del = pr_c | times: 18 | plus: pr_jit -%}
+          {%- if pr_dir == 0 -%}
+    <path d="M{{ pr_x0 }} {{ pr_y0 }}L{{ pr_x1 }} {{ pr_y1 }}" style="animation-delay:{{ pr_del }}00ms"/>
+          {%- else -%}
+    <path d="M{{ pr_x0 }} {{ pr_y1 }}L{{ pr_x1 }} {{ pr_y0 }}" style="animation-delay:{{ pr_del }}00ms"/>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </svg>
+</div>
