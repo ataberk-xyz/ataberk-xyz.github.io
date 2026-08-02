@@ -1,10 +1,11 @@
 // ─────────────────────────────────────────────────────────────
-// Kami design tokens — ink-blue on warm parchment.
-// Warm parchment canvas, single ink-blue accent, serif-led hierarchy.
+// Ledger design tokens — one skeleton, two palettes.
+// Light: parchment Ledger (brand bridge to CV/profile).
+// Dark: warm-soot editorial journal. prefers-color-scheme picks.
 // ─────────────────────────────────────────────────────────────
 
 :root {
-  // Foundation
+  // Foundation — parchment Ledger
   --bg:            #FAF7F2;  // warm parchment canvas
   --surface:       #FFFEFB;  // cards, recessed panels
   --surface-2:     #F4EFE5;  // inline code, subtle fills
@@ -15,12 +16,12 @@
   --border:        #E8E1D6;  // hairline borders, dividers
   --border-strong: #D7CEBE;  // stronger rules
 
-  // Accent — one, and only one
   --accent:        #1B365D;  // ink-blue
   --accent-2:      #2C4F7C;  // hover / lighter ink-blue
   --accent-soft:   #E6EAF1;  // pill backgrounds, washes
+  --accent-warn:   #9A6716;  // amber, AA on parchment (severity, warnings)
 
-  // Code surface (deep ink for contrast against parchment)
+  // Sunken surfaces (code, ledger block, covers) — dark in BOTH palettes
   --code-bg:       #17171C;
   --code-fg:       #E7E2D6;
   --code-border:   #2A2A31;
@@ -37,27 +38,29 @@
   --rule:    1px solid var(--border);
 }
 
-// ── Dark mode — warm charcoal canvas, lighter ink-blue accent ──
-// Applied when <html data-theme="dark"> (set by the no-FOUC head script).
-html[data-theme="dark"] {
-  --bg:            #1B1A17;  // warm near-black
-  --surface:       #232220;  // cards, blockquote, recessed panels
-  --surface-2:     #2B2825;  // inline code, subtle fills
-  --ink:           #ECE7DC;  // primary text, headings
-  --ink-2:         #C4BEB1;  // secondary text
-  --ink-3:         #9B968B;  // meta, timestamps
-  --ink-4:         #726E65;  // hairline glyphs
-  --border:        #33302B;  // hairline borders
-  --border-strong: #46423A;  // stronger rules
+// ── Dark palette — warm soot, lifted ink-blue, amber severity ──
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:            #181512;  // warm soot
+    --surface:       #211d19;  // cards, blockquote, recessed panels
+    --surface-2:     #2a2520;  // inline code, subtle fills
+    --ink:           #EDE6DA;  // primary text, headings
+    --ink-2:         #b5aca1;  // secondary text
+    --ink-3:         #8a8078;  // meta, timestamps
+    --ink-4:         #6a625a;  // hairline glyphs
+    --border:        #2e2a25;  // hairline borders
+    --border-strong: #46423A;  // stronger rules
 
-  --accent:        #9DB8E8;  // lifted ink-blue (legible on dark)
-  --accent-2:      #BBD0F0;  // hover
-  --accent-soft:   rgba(157, 184, 232, 0.16);
+    --accent:        #9DB8E8;  // lifted ink-blue
+    --accent-2:      #BBD0F0;  // hover
+    --accent-soft:   rgba(157, 184, 232, 0.16);
+    --accent-warn:   #E8B44F;  // amber on dark
 
-  --code-bg:       #121116;  // a touch darker than --bg so code reads distinct
-  --code-fg:       #E7E2D6;
-  --code-border:   #2C2A33;
-  --code-inline-fg:#D8A87E;  // warm tan for inline code on dark
+    --code-bg:       #100e0c;  // sunken, a touch darker than --bg
+    --code-fg:       #E7E2D6;
+    --code-border:   #2e2a25;
+    --code-inline-fg:#D8A87E;  // warm tan for inline code on dark
+  }
 }
 
 // SCSS breakpoints
