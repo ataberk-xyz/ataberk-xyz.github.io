@@ -6,12 +6,14 @@ layout: page
   {{ content }}
 {% endunless %}
 
-<ul class="posts-list">
+<div class="ledger-grid">
   {% assign category = page.category | default: page.title %}
   {% for post in site.categories[category] %}
-    <li>
-      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-      <small>&nbsp;&middot;&nbsp;{{ post.date | date: "%b %-d, %Y" }}</small>
-    </li>
+    {% capture ponum %}{% include post-number.html post=post %}{% endcapture %}
+    <article class="ledger-card">
+      <a class="lc-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
+      <p class="no-line">{{ ponum }} · {{ post.date | date: "%Y-%m-%d" }}</p>
+      <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+    </article>
   {% endfor %}
-</ul>
+</div>
