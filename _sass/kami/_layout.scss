@@ -87,13 +87,14 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
 
 .ledger-featured {
   margin: 1.2rem 0 2.2rem;
+  text-align: center;
 
   .lf-title {
-    font-size: 3.6rem;
-    line-height: 1.04;
+    font-size: 3.2rem;
+    line-height: 1.05;
     letter-spacing: -0.015em;
-    margin: 0.5rem 0 0;
-    max-width: 46rem;
+    margin: 0.5rem auto 0;
+    max-width: 44rem;
     a { color: var(--ink); text-decoration: none; }
     a:hover { color: var(--accent); }
   }
@@ -102,11 +103,11 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
     color: var(--ink-2);
     font-size: 1.12rem;
     line-height: 1.55;
-    margin: 0.9rem 0 0;
+    margin: 0.9rem auto 0;
     max-width: 38rem;
   }
-  .lf-cover { display: block; margin-top: 1.6rem; }
-  .lf-cover .cover { aspect-ratio: 3 / 1; height: auto; }
+  .lf-cover { display: block; margin: 0 0 1.5rem; }
+  .lf-cover .cover { aspect-ratio: 4 / 1; height: auto; }
 }
 .rule-strong {
   border: 0;

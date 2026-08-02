@@ -10,12 +10,12 @@ layout: default
     {% assign pcat = post.categories | first | default: "writeup" %}
     {% if forloop.first and paginator.page == 1 %}
   <article class="ledger-featured">
+    <a class="lf-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post cols=48 rows=12 %}</a>
     {% assign lf_words = post.content | strip_html | number_of_words %}
     <p class="no-line">{{ ponum }} · {{ pcat | upcase }} · {{ post.date | date: "%Y-%m-%d" }} · {{ lf_words | divided_by: 200 | at_least: 1 }} MIN READ{% if post.ledger.severity %} · SEVERITY <span class="sev-warn">{{ post.ledger.severity }}</span>{% endif %}</p>
     <h2 class="lf-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
     {% if post.description %}{% assign lf_dek = post.description %}{% else %}{% assign lf_dek = post.excerpt | strip_html | normalize_whitespace | truncatewords: 32 %}{% endif %}
     {% if lf_dek != "" %}<p class="lf-dek">{{ lf_dek }}</p>{% endif %}
-    <a class="lf-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post cols=45 rows=15 %}</a>
   </article>
   <hr class="rule-strong"/>
   <div class="ledger-grid">

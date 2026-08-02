@@ -118,6 +118,9 @@
 }
 
 // ── Ledger post header ────────────────────────────────────────
+.post-cover { margin: 0 0 1.8rem; }
+.post-cover .cover { aspect-ratio: 4 / 1; height: auto; }
+
 .post-dek {
   font-style: italic;
   color: var(--ink-2);

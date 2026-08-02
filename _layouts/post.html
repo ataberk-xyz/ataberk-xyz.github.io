@@ -5,6 +5,7 @@ comments: true
 
 <article class="post">
   <header class="post-header">
+    <div class="post-cover">{% include cover.html post=page cols=48 rows=12 %}</div>
     {% capture ponum %}{% include post-number.html post=page %}{% endcapture %}
     {% assign pcat = page.categories | first | default: "writeup" %}
     {% assign p_words = content | strip_html | number_of_words %}
