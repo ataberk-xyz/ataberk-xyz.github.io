@@ -97,3 +97,46 @@ small { font-size: 0.82em; color: var(--ink-3); }
 @media (prefers-reduced-motion: reduce) {
   .press path { animation: none; stroke-dashoffset: 0; opacity: 0.08; }
 }
+
+// The lens: a magnified copy of the same plate, clipped to a soft-edged
+// disc that rides the pointer. The mask feathers outward so magnification
+// reads as a bulge rather than a cut-out circle — a fisheye without the
+// cost of a displacement filter. Only two custom properties change per
+// frame, so it stays on the compositor.
+.press-lens {
+  --mx: -999px;
+  --my: -999px;
+  --r: 120px;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  -webkit-mask-image: radial-gradient(
+    circle at var(--mx) var(--my),
+    #000 0,
+    #000 calc(var(--r) * 0.55),
+    rgba(0, 0, 0, 0.55) calc(var(--r) * 0.78),
+    transparent var(--r)
+  );
+          mask-image: radial-gradient(
+    circle at var(--mx) var(--my),
+    #000 0,
+    #000 calc(var(--r) * 0.55),
+    rgba(0, 0, 0, 0.55) calc(var(--r) * 0.78),
+    transparent var(--r)
+  );
+}
+.press-lens.is-on { opacity: 1; }
+.press-lens svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: var(--mx) var(--my);
+  transform: scale(1.9);
+}
+// inside the lens the strokes sit a touch brighter, the way glass gathers light
+.press-lens path { opacity: 0.2; stroke-width: 1.6; }
+@media (prefers-color-scheme: dark) { .press-lens path { opacity: 0.26; } }
+@media (hover: none) { .press-lens { display: none; } }
+@media (prefers-reduced-motion: reduce) { .press-lens { display: none; } }
