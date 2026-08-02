@@ -4,6 +4,7 @@ title: whoami
 permalink: /about
 sidebar_link: true
 cover_hero: true
+cover_split: true
 kicker: "N°00 · ABOUT · ATABERK YAVUZER"
 description: "Smart contract auditor & offensive security engineer — 7+ years across Web3 and traditional security. I break things, then build tools so they break less."
 ---

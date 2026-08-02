@@ -33,6 +33,9 @@
 {%- assign cv_maxq2 = cv_rm1 | times: cv_rm1 -%}
 {%- assign cv_maxq = cv_maxq | plus: cv_maxq2 -%}
 {%- assign cv_qcut = cv_maxq | divided_by: 4 -%}
+{%- assign cv_split = include.split -%}
+{%- assign cv_half = cv_cols | divided_by: 2 -%}
+{%- assign cv_divx = cv_half | times: 8 -%}
 {%- assign cv_w = cv_cols | times: 8 -%}
 {%- assign cv_h = cv_rows | times: 8 -%}
 {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
@@ -57,11 +60,21 @@
     {%- assign cv_dir = cv_seed | modulo: 2 -%}
     {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
     {%- assign cv_d2 = cv_seed | modulo: 10 -%}
-    {%- if cv_d2 < cv_t -%}
+    {%- if cv_split -%}
+      {%- comment -%} split mode: left half all lines, right half its hex dump {%- endcomment -%}
+      {%- if cv_c < cv_half -%}{%- assign cv_ismaze = true -%}{%- else -%}{%- assign cv_ismaze = false -%}{%- endif -%}
+    {%- elsif cv_d2 < cv_t -%}
+      {%- assign cv_ismaze = true -%}
+    {%- else -%}
+      {%- assign cv_ismaze = false -%}
+    {%- endif -%}
+    {%- if cv_ismaze -%}
       {%- comment -%} maze cell {%- endcomment -%}
       {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
       {%- assign cv_hot = cv_seed | modulo: 10 -%}
       {%- if cv_hot == 0 -%}{%- assign cv_cls = "cover-line-hot" -%}
+      {%- elsif cv_split -%}
+        {%- if cv_hot == 1 -%}{%- assign cv_cls = "cover-line-dim" -%}{%- else -%}{%- assign cv_cls = "cover-line" -%}{%- endif -%}
       {%- elsif cv_q > cv_qcut -%}{%- assign cv_cls = "cover-line" -%}
       {%- else -%}{%- assign cv_cls = "cover-line-dim" -%}{%- endif -%}
       {%- if cv_dir == 0 -%}
@@ -74,7 +87,8 @@
       {%- comment -%} dissolved cell: maybe a hex byte {%- endcomment -%}
       {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
       {%- assign cv_gate = cv_seed | modulo: 10 -%}
-      {%- if cv_gate < 7 -%}
+      {%- if cv_split -%}{%- assign cv_gatemax = 10 -%}{%- else -%}{%- assign cv_gatemax = 7 -%}{%- endif -%}
+      {%- if cv_gate < cv_gatemax -%}
         {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
         {%- assign cv_ha = cv_seed | modulo: 10 -%}
         {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
@@ -97,4 +111,7 @@
     {%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
+{%- if cv_split %}
+  <line x1="{{ cv_divx }}" y1="2" x2="{{ cv_divx }}" y2="{{ cv_h | minus: 2 }}" class="cover-split-rule"/>
+{%- endif -%}
 </svg>
