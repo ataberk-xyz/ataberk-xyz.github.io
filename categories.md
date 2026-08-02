@@ -7,9 +7,14 @@ sidebar_link: true
 
 {% for category in site.categories %}
   <h3 id="{{ category[0] | slugify }}">{{ category[0] }}</h3>
-  <ul class="posts-list">
+  <div class="ledger-grid">
     {% for post in category[1] %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a> <small>&middot; {{ post.date | date: "%B %-d, %Y"}}</small></li>
+      {% capture ponum %}{% include post-number.html post=post %}{% endcapture %}
+      <article class="ledger-card">
+        <a class="lc-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
+        <p class="no-line">{{ ponum }} · {{ post.date | date: "%Y-%m-%d" }}</p>
+        <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+      </article>
     {% endfor %}
-  </ul>
+  </div>
 {% endfor %}
