@@ -2,27 +2,34 @@
 layout: default
 ---
 
-<div class="post-list">
+<div class="ledger-home">
   {{ content }}
 
   {% for post in paginator.posts %}
-  <article class="post-item">
-    <h2 class="post-item-title">
-      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
-    </h2>
-
-    {% include post-meta.html post=post %}
-
-    <div class="post-item-excerpt">
-      {% if post.excerpt %}
-        {{ post.excerpt }}
-      {% else %}
-        {{ post.content | strip_html | truncatewords: 45 }}
-      {% endif %}
+    {% capture ponum %}{% include post-number.html post=post %}{% endcapture %}
+    {% assign pcat = post.categories | first | default: "writeup" %}
+    {% if forloop.first and paginator.page == 1 %}
+  <article class="ledger-featured">
+    <div class="lf-text">
+      <p class="no-line">{{ ponum }} · {{ pcat | upcase }} · {{ post.date | date: "%Y-%m-%d" }}</p>
+      <h2 class="lf-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+      {% if post.description %}<p class="lf-dek">{{ post.description }}</p>{% endif %}
+      {% assign lf_words = post.content | strip_html | number_of_words %}
+      <p class="lf-meta">{{ lf_words | divided_by: 200 | at_least: 1 }} MIN READ{% if post.ledger.severity %} — SEVERITY <span class="sev-warn">{{ post.ledger.severity }}</span>{% endif %}</p>
     </div>
-
-    <a class="read-more" href="{{ site.baseurl }}{{ post.url }}">Read &rarr;</a>
+    <a class="lf-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
   </article>
+  <hr class="rule-strong"/>
+  <div class="ledger-grid">
+    {% else %}
+      {% if forloop.first %}<div class="ledger-grid">{% endif %}
+    <article class="ledger-card">
+      <a class="lc-cover" href="{{ site.baseurl }}{{ post.url }}" aria-hidden="true" tabindex="-1">{% include cover.html post=post %}</a>
+      <p class="no-line">{{ ponum }} · {{ pcat | upcase }}</p>
+      <h3 class="lc-title"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
+    </article>
+    {% endif %}
+    {% if forloop.last %}</div>{% endif %}
   {% endfor %}
 
   {% include pagination.html %}

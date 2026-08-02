@@ -77,3 +77,69 @@ main.container { padding-top: 2.8rem; padding-bottom: 3.5rem; min-height: 50vh; 
   .brand { font-size: 1.8rem; }
   .masthead-inner { padding-top: 2rem; }
 }
+
+// ── Ledger home ───────────────────────────────────────────────
+.no-line {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin: 0 0 0.4rem;
+}
+.sev-warn { color: var(--accent-warn); }
+
+.ledger-featured {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin: 1.5rem 0 2rem;
+
+  .lf-title {
+    font-size: 2.1rem;
+    line-height: 1.12;
+    margin: 0.2rem 0 0;
+    a { color: var(--ink); text-decoration: none; }
+    a:hover { color: var(--accent); }
+  }
+  .lf-dek {
+    font-style: italic;
+    color: var(--ink-2);
+    font-size: 1.05rem;
+    margin: 0.6rem 0 0;
+  }
+  .lf-meta {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-top: 0.9rem;
+  }
+}
+.rule-strong {
+  border: 0;
+  border-top: 1px solid var(--border-strong);
+  margin: 0 0 1.8rem;
+}
+.ledger-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem 2rem;
+  margin-bottom: 2rem;
+
+  .lc-title {
+    font-size: 1.1rem;
+    line-height: 1.25;
+    margin: 0.2rem 0 0;
+    a { color: var(--ink); text-decoration: none; }
+    a:hover { color: var(--accent); }
+  }
+  .lc-cover { display: block; margin-bottom: 0.6rem; }
+}
+@media (max-width: $bp-tablet) {
+  .ledger-featured { grid-template-columns: 1fr; }
+}
+@media (max-width: $bp-mobile) {
+  .ledger-grid { grid-template-columns: 1fr; }
+  .ledger-featured .lf-title { font-size: 1.6rem; }
+}
