@@ -66,7 +66,7 @@ small { font-size: 0.82em; color: var(--ink-3); }
 .press {
   --mx: -999px;
   --my: -999px;
-  --r: 170px;
+  --r: 115px;
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -82,9 +82,11 @@ small { font-size: 0.82em; color: var(--ink-3); }
 }
 .press-plate {
   -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
-    transparent calc(var(--r) * 0.97), #000 var(--r));
+    transparent calc(var(--r) * 0.55), rgba(0, 0, 0, 0.5) calc(var(--r) * 0.82),
+    #000 calc(var(--r) * 1.12));
           mask-image: radial-gradient(circle at var(--mx) var(--my),
-    transparent calc(var(--r) * 0.97), #000 var(--r));
+    transparent calc(var(--r) * 0.55), rgba(0, 0, 0, 0.5) calc(var(--r) * 0.82),
+    #000 calc(var(--r) * 1.12));
 }
 .press path {
   stroke: currentColor;
@@ -128,23 +130,25 @@ small { font-size: 0.82em; color: var(--ink-3); }
 }
 
 // outer shell — the rim barely bends
-.press-lens-mid svg { transform: scale(1.45); }
+.press-lens-mid svg { transform: scale(1.32); }
 .press-lens-mid {
   -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
-    transparent calc(var(--r) * 0.56), #000 calc(var(--r) * 0.62),
-    #000 calc(var(--r) * 0.94), transparent var(--r));
+    transparent calc(var(--r) * 0.3), rgba(0, 0, 0, 0.65) calc(var(--r) * 0.58),
+    rgba(0, 0, 0, 0.5) calc(var(--r) * 0.8), transparent calc(var(--r) * 1.12));
           mask-image: radial-gradient(circle at var(--mx) var(--my),
-    transparent calc(var(--r) * 0.56), #000 calc(var(--r) * 0.62),
-    #000 calc(var(--r) * 0.94), transparent var(--r));
+    transparent calc(var(--r) * 0.3), rgba(0, 0, 0, 0.65) calc(var(--r) * 0.58),
+    rgba(0, 0, 0, 0.5) calc(var(--r) * 0.8), transparent calc(var(--r) * 1.12));
 }
 
 // core — the centre of the sphere, where the bulge is strongest
-.press-lens-core svg { transform: scale(2.6); }
+.press-lens-core svg { transform: scale(2.05); }
 .press-lens-core {
   -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
-    #000 calc(var(--r) * 0.5), transparent calc(var(--r) * 0.6));
+    #000 calc(var(--r) * 0.18), rgba(0, 0, 0, 0.7) calc(var(--r) * 0.45),
+    transparent calc(var(--r) * 0.78));
           mask-image: radial-gradient(circle at var(--mx) var(--my),
-    #000 calc(var(--r) * 0.5), transparent calc(var(--r) * 0.6));
+    #000 calc(var(--r) * 0.18), rgba(0, 0, 0, 0.7) calc(var(--r) * 0.45),
+    transparent calc(var(--r) * 0.78));
 }
 
 .press-lens path { opacity: 0.3; stroke-width: 1.5; }
@@ -160,8 +164,8 @@ small { font-size: 0.82em; color: var(--ink-3); }
   height: calc(var(--r) * 2);
   border-radius: 50%;
   transform: translate3d(calc(var(--mx) - var(--r)), calc(var(--my) - var(--r)), 0);
-  border: 1px solid rgba(127, 127, 127, 0.16);
-  box-shadow: inset 0 0 42px rgba(127, 127, 127, 0.10);
+  border: 0;
+  box-shadow: inset 0 0 34px rgba(127, 127, 127, 0.07);
   opacity: 0;
   transition: opacity 0.35s ease;
 }
