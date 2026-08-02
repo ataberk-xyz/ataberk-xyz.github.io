@@ -158,9 +158,15 @@
   border-radius: var(--radius);
 }
 .cover-bg       { fill: var(--code-bg); }
-// cover-bg is always dark, so accent strokes/nodes use --accent-on-code /
+// cover-bg is always dark, so accent strokes/glyphs use --accent-on-code /
 // the fixed amber hex (see .sev in _post.scss for the same precedent) —
 // var(--accent) / var(--accent-warn) go near-invisible on it in light mode.
-.cover-line     { stroke: var(--accent-on-code); stroke-width: 1.5; fill: none; opacity: .85; }
-.cover-node     { fill: var(--accent-on-code); }
-.cover-node-hot { fill: #E8B44F; }
+.cover-line,
+.cover-line-dim,
+.cover-line-hot { stroke: var(--accent-on-code); stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.cover-line-dim { opacity: .3; }
+.cover-line-hot { stroke: #E8B44F; }
+.cover text     { font-family: var(--mono); font-size: 6.4px; }
+.cover-hex-fg   { fill: var(--code-fg); opacity: .4; }
+.cover-hex-dim  { fill: var(--accent-on-code); opacity: .3; }
+.cover-hex-hot  { fill: #E8B44F; font-weight: 700; }

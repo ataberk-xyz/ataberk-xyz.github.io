@@ -1,77 +1,86 @@
 {%- comment -%}
-  Generative cover art. Pure Liquid, no JS, no md5 filter (not on Pages).
-  Seed: position-weighted char values of the slug. Stream: LCG
-  (seed = seed*1103 + 12345 mod 100003), one digit (mod 10) per draw,
-  collected into string cv_ds → array cv_d of digit chars.
+  Generative cover art v2 — "Dissolve into Hex". Pure Liquid, no JS,
+  no md5 filter (not available on Pages).
+  Seed: position-weighted char values of the slug, then an LCG stream
+  (seed = seed*1103 + 12345 mod 100003), one digit (mod 10) per draw.
+  A 10x10 maze of / and \ dissolves toward a seed-chosen corner; in the
+  dissolved cells, faint hex bytes surface. Same slug -> same art, forever.
+  No sqrt in Liquid: the radial gradient uses a 10-bucket threshold table
+  over squared distance (bucket = q*10/162, q = cr^2+cc^2, max 162).
 {%- endcomment -%}
 {%- assign cv_post = include.post -%}
 {%- assign cv_charset = "abcdefghijklmnopqrstuvwxyz0123456789-" | split: "" -%}
 {%- assign cv_letters = cv_post.slug | split: "" -%}
 {%- assign cv_seed = 7 -%}
-{%- for cv_c in cv_letters -%}
+{%- for cv_ch in cv_letters -%}
   {%- assign cv_val = 1 -%}
   {%- for cv_a in cv_charset -%}
-    {%- if cv_a == cv_c -%}{%- assign cv_val = forloop.index -%}{%- break -%}{%- endif -%}
+    {%- if cv_a == cv_ch -%}{%- assign cv_val = forloop.index -%}{%- break -%}{%- endif -%}
   {%- endfor -%}
   {%- assign cv_seed = cv_seed | times: 31 | plus: cv_val | modulo: 100003 -%}
 {%- endfor -%}
-{%- assign cv_ds = "" -%}
-{%- for cv_i in (1..16) -%}
-  {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
-  {%- assign cv_dig = cv_seed | modulo: 10 -%}
-  {%- assign cv_ds = cv_ds | append: cv_dig -%}
-{%- endfor -%}
-{%- assign cv_d = cv_ds | split: "" -%}
-{%- assign cv_cat = cv_post.categories | first | default: "writeup" -%}
+{%- assign cv_hexc = "0123456789abcdef" | split: "" -%}
+{%- assign cv_thr = "1,3,5,6,7,8,9,10,10,11" | split: "," -%}
+{%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+{%- assign cv_corner = cv_seed | modulo: 4 -%}
 <svg class="cover" viewBox="0 0 120 120" role="img" aria-label="Generative cover art for {{ cv_post.title | escape }}" preserveAspectRatio="xMidYMid slice">
   <rect width="120" height="120" class="cover-bg"/>
-{%- if cv_cat == "ai-research" or cv_cat == "projects" -%}
-  {%- comment -%} Node graph: 5 chained nodes {%- endcomment -%}
-  {%- assign cv_px = 0 -%}{%- assign cv_py = 0 -%}
-  {%- for cv_i in (0..4) -%}
-    {%- assign cv_xi = cv_i | times: 2 -%}
-    {%- assign cv_yi = cv_xi | plus: 1 -%}
-    {%- assign cv_x = cv_d[cv_xi] | plus: 0 | times: 10 | plus: 12 -%}
-    {%- assign cv_y = cv_d[cv_yi] | plus: 0 | times: 10 | plus: 12 -%}
-    {%- unless forloop.first -%}
-  <line x1="{{ cv_px }}" y1="{{ cv_py }}" x2="{{ cv_x }}" y2="{{ cv_y }}" class="cover-line"/>
-    {%- endunless -%}
-  <circle cx="{{ cv_x }}" cy="{{ cv_y }}" r="3" class="cover-node{% if forloop.index == 3 %} cover-node-hot{% endif %}"/>
-    {%- assign cv_px = cv_x -%}{%- assign cv_py = cv_y -%}
+{%- for cv_r in (0..9) -%}
+  {%- for cv_c in (0..9) -%}
+    {%- comment -%} corner-transformed coords: (0,0) = fade corner {%- endcomment -%}
+    {%- if cv_corner < 2 -%}{%- assign cv_cr = cv_r -%}{%- else -%}{%- assign cv_cr = 9 | minus: cv_r -%}{%- endif -%}
+    {%- assign cv_cm = cv_corner | modulo: 2 -%}
+    {%- if cv_cm == 0 -%}{%- assign cv_cc = cv_c -%}{%- else -%}{%- assign cv_cc = 9 | minus: cv_c -%}{%- endif -%}
+    {%- assign cv_q = cv_cr | times: cv_cr -%}
+    {%- assign cv_q2 = cv_cc | times: cv_cc -%}
+    {%- assign cv_q = cv_q | plus: cv_q2 -%}
+    {%- assign cv_b = cv_q | times: 10 | divided_by: 162 -%}
+    {%- if cv_b > 9 -%}{%- assign cv_b = 9 -%}{%- endif -%}
+    {%- assign cv_t = cv_thr[cv_b] | plus: 0 -%}
+    {%- assign cv_x0 = cv_c | times: 12 -%}
+    {%- assign cv_y0 = cv_r | times: 12 -%}
+    {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+    {%- assign cv_dir = cv_seed | modulo: 2 -%}
+    {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+    {%- assign cv_d2 = cv_seed | modulo: 10 -%}
+    {%- if cv_d2 < cv_t -%}
+      {%- comment -%} maze cell {%- endcomment -%}
+      {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+      {%- assign cv_hot = cv_seed | modulo: 10 -%}
+      {%- if cv_hot == 0 -%}{%- assign cv_cls = "cover-line-hot" -%}
+      {%- elsif cv_q > 40 -%}{%- assign cv_cls = "cover-line" -%}
+      {%- else -%}{%- assign cv_cls = "cover-line-dim" -%}{%- endif -%}
+      {%- if cv_dir == 0 -%}
+  <path d="M{{ cv_x0 }} {{ cv_y0 }} l12 12" class="{{ cv_cls }}"/>
+      {%- else -%}
+        {%- assign cv_y1 = cv_y0 | plus: 12 -%}
+  <path d="M{{ cv_x0 }} {{ cv_y1 }} l12 -12" class="{{ cv_cls }}"/>
+      {%- endif -%}
+    {%- else -%}
+      {%- comment -%} dissolved cell: maybe a hex byte {%- endcomment -%}
+      {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+      {%- assign cv_gate = cv_seed | modulo: 10 -%}
+      {%- if cv_gate < 7 -%}
+        {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign cv_ha = cv_seed | modulo: 10 -%}
+        {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign cv_hb = cv_seed | modulo: 10 -%}
+        {%- assign cv_i1 = cv_ha | times: 10 | plus: cv_hb | modulo: 16 -%}
+        {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign cv_ha = cv_seed | modulo: 10 -%}
+        {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign cv_hb = cv_seed | modulo: 10 -%}
+        {%- assign cv_i2 = cv_ha | times: 10 | plus: cv_hb | modulo: 16 -%}
+        {%- assign cv_seed = cv_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign cv_d3 = cv_seed | modulo: 10 -%}
+        {%- if cv_d3 == 0 -%}{%- assign cv_hcls = "cover-hex-hot" -%}
+        {%- elsif cv_d3 < 4 -%}{%- assign cv_hcls = "cover-hex-dim" -%}
+        {%- else -%}{%- assign cv_hcls = "cover-hex-fg" -%}{%- endif -%}
+        {%- assign cv_tx = cv_x0 | plus: 1 -%}
+        {%- assign cv_ty = cv_y0 | plus: 9 -%}
+  <text x="{{ cv_tx }}" y="{{ cv_ty }}" class="{{ cv_hcls }}">{{ cv_hexc[cv_i1] }}{{ cv_hexc[cv_i2] }}</text>
+      {%- endif -%}
+    {%- endif -%}
   {%- endfor -%}
-{%- elsif cv_cat == "vulnerability-research" or cv_cat == "pentest" -%}
-  {%- comment -%} Topographic contours: 4 stacked curves {%- endcomment -%}
-  {%- for cv_i in (0..3) -%}
-    {%- assign cv_o = cv_i | times: 3 -%}
-    {%- assign cv_o1 = cv_o | plus: 1 -%}
-    {%- assign cv_o2 = cv_o | plus: 2 -%}
-    {%- assign cv_t0 = cv_d[cv_o] | plus: 0 -%}
-    {%- assign cv_y1 = cv_i | times: 24 | plus: 16 | plus: cv_t0 -%}
-    {%- assign cv_t1 = cv_d[cv_o1] | plus: 0 -%}
-    {%- assign cv_c1 = cv_t1 | times: 8 | plus: 10 -%}
-    {%- assign cv_t2 = cv_d[cv_o2] | plus: 0 -%}
-    {%- assign cv_y2 = cv_i | times: 24 | plus: 12 | plus: cv_t2 -%}
-  <path d="M8 {{ cv_y1 }} Q 45 {{ cv_c1 }}, 75 {{ cv_y2 }} T 112 {{ cv_y1 }}" class="cover-line"/>
-  {%- endfor -%}
-  {%- assign cv_hx = cv_d[13] | plus: 0 | times: 9 | plus: 12 -%}
-  {%- assign cv_hy = cv_d[14] | plus: 0 | times: 9 | plus: 12 -%}
-  <circle cx="{{ cv_hx }}" cy="{{ cv_hy }}" r="2.5" class="cover-node-hot"/>
-{%- else -%}
-  {%- comment -%} Circuit traces: 3 orthogonal runs, node endpoints {%- endcomment -%}
-  {%- for cv_i in (0..2) -%}
-    {%- assign cv_o = cv_i | times: 5 -%}
-    {%- assign cv_o1 = cv_o | plus: 1 -%}
-    {%- assign cv_o2 = cv_o | plus: 2 -%}
-    {%- assign cv_o3 = cv_o | plus: 3 -%}
-    {%- assign cv_o4 = cv_o | plus: 4 -%}
-    {%- assign cv_x1 = cv_d[cv_o] | plus: 0 | times: 9 | plus: 8 -%}
-    {%- assign cv_y1 = cv_d[cv_o1] | plus: 0 | times: 9 | plus: 8 -%}
-    {%- assign cv_xm = cv_d[cv_o2] | plus: 0 | times: 9 | plus: 8 -%}
-    {%- assign cv_y2 = cv_d[cv_o3] | plus: 0 | times: 9 | plus: 8 -%}
-    {%- assign cv_x2 = cv_d[cv_o4] | plus: 0 | times: 9 | plus: 8 -%}
-  <path d="M{{ cv_x1 }} {{ cv_y1 }} H{{ cv_xm }} V{{ cv_y2 }} H{{ cv_x2 }}" class="cover-line"/>
-  <circle cx="{{ cv_x1 }}" cy="{{ cv_y1 }}" r="2.5" class="cover-node"/>
-  <circle cx="{{ cv_x2 }}" cy="{{ cv_y2 }}" r="2.5" class="cover-node{% if forloop.index == 2 %}-hot{% endif %}"/>
-  {%- endfor -%}
-{%- endif -%}
+{%- endfor -%}
 </svg>
