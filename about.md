@@ -5,12 +5,12 @@ permalink: /about
 sidebar_link: true
 cover_hero: true
 cover_split: true
-kicker: "N°00 · ABOUT · ATABERK YAVUZER"
+kicker: "N°00 · ABOUT · ATABERK"
 description: "Smart contract auditor & offensive security engineer — 7+ years across Web3 and traditional security. I break things, then build tools so they break less."
 ---
 
 <dl class="ledger-block">
-  <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk Yavuzer</dd></div>
+  <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk · ataberk-xyz</dd></div>
   <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Smart Contract Auditor · Offensive Security</dd></div>
   <div class="lrow"><dt>STACK</dt><span class="dots"></span><dd>Solidity · Move · EVM · Active Directory</dd></div>
   <div class="lrow"><dt>CERTS</dt><span class="dots"></span><dd>OSCP · OSWE · CRTP · C-AI/MLPen</dd></div>
@@ -33,7 +33,7 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
 <h2 class="about-h">Recognition</h2>
 <div class="about-index">
   <div class="ai-row"><span class="ai-name">n-day research on a Microsoft SQL Server stack overflow — analyzed the bug, wrote a working exploit (<a href="/vulnerability-research/2021/02/06/discovering-an-undisclosed-stack-overflow-vulnerability-in-mssql-server-cve-2019-1068.html">writeup</a>)</span><span class="ai-fill"></span><span class="ai-tag">CVE-2019-1068</span></div>
-  <div class="ai-row"><span class="ai-name"><a href="https://www.t-mobile.cz/bug-bounty/zed-slavy#:~:text=Ataberk%20Yavuzer%20(0xsaiyajin.github.io)%20%2D%20SQL%20Injection%2C%20Cross%2Dsite%20scripting%20(XSS)%2C%20Remote%20Code%20Execution%20(RCE)">T-Mobile Hall of Fame</a> — XSS, SQLi, RCE</span><span class="ai-fill"></span><span class="ai-tag">HOF</span></div>
+  <div class="ai-row"><span class="ai-name"><a href="https://www.t-mobile.cz/bug-bounty/zed-slavy">T-Mobile Hall of Fame</a> — XSS, SQLi, RCE</span><span class="ai-fill"></span><span class="ai-tag">HOF</span></div>
   <div class="ai-row"><span class="ai-name">Mail.ru Hall of Fame — Cross-Site Scripting</span><span class="ai-fill"></span><span class="ai-tag">HOF</span></div>
   <div class="ai-row"><span class="ai-name"><a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a> — multi-agent code-review orchestrator (TypeScript / MCP); agents cross-verify findings against real code to filter hallucinations</span><span class="ai-fill"></span><span class="ai-tag">OSS</span></div>
 </div>

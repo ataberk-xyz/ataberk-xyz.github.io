@@ -16,7 +16,7 @@
 # in the templates via {{ site.myvariable }}.
 title: "Hacker's Playground"
 tagline: ataberk-xyz
-description: "Security research, Web3 smart-contract audits, and AI tooling — writeups and notes by Ataberk Yavuzer (ataberk-xyz)."
+description: "Security research, Web3 smart-contract audits, and AI tooling — writeups and notes by Ataberk (ataberk-xyz)."
 baseurl: ''
 permalink: /:categories/:year/:month/:day/:title:output_ext
 google_analytics: G-KKCT90Q1BP
