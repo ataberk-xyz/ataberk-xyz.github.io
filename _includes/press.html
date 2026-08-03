@@ -1,13 +1,9 @@
 {%- comment -%}
   Background weave: the covers' diagonal alphabet, drawn at page scale.
   Each stroke draws itself and clears again; the delay is derived from its
-  column, so the wave crosses left to right.
+  column, so the wave crosses left to right. Pure Liquid + CSS, no JS.
   Deterministic (same LCG as cover.html) so the field never reshuffles.
   Colourless by design — it borrows --ink, never the accent.
-
-  The field is captured once and printed twice: the plate, and the copy
-  inside the water bead that magnifies whatever it rests on. One copy is
-  what the animation can afford — three of them stalled it.
 {%- endcomment -%}
 {%- assign pr_seed = 20260802 -%}
 {%- assign pr_cols = 30 -%}
@@ -15,113 +11,31 @@
 {%- assign pr_cell = 40 -%}
 {%- assign pr_w = pr_cols | times: pr_cell -%}
 {%- assign pr_h = pr_rows | times: pr_cell -%}
-{%- capture pr_field -%}
-  {%- for pr_r in (1..pr_rows) -%}
-    {%- assign pr_y0 = pr_r | minus: 1 | times: pr_cell -%}
-    {%- assign pr_y1 = pr_y0 | plus: pr_cell -%}
-    {%- for pr_c in (1..pr_cols) -%}
-      {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
-      {%- assign pr_skip = pr_seed | modulo: 10 -%}
-      {%- if pr_skip < 5 -%}
-        {%- assign pr_x0 = pr_c | minus: 1 | times: pr_cell -%}
-        {%- assign pr_x1 = pr_x0 | plus: pr_cell -%}
-        {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
-        {%- assign pr_dir = pr_seed | modulo: 2 -%}
-        {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
-        {%- assign pr_jit = pr_seed | modulo: 20 -%}
-        {%- comment -%} 0–5.6s across the field: the wave crosses in one cycle {%- endcomment -%}
-        {%- assign pr_jitms = pr_jit | times: 9 -%}
-        {%- assign pr_del = pr_c | minus: 1 | times: 180 | plus: pr_jitms -%}
-        {%- if pr_dir == 0 -%}
-<path d="M{{ pr_x0 }} {{ pr_y0 }}L{{ pr_x1 }} {{ pr_y1 }}" style="animation-delay:{{ pr_del }}ms"/>
-        {%- else -%}
-<path d="M{{ pr_x0 }} {{ pr_y1 }}L{{ pr_x1 }} {{ pr_y0 }}" style="animation-delay:{{ pr_del }}ms"/>
-        {%- endif -%}
-      {%- endif -%}
-    {%- endfor -%}
-  {%- endfor -%}
-{%- endcapture -%}
 <div class="press" aria-hidden="true">
-  <svg class="press-plate" viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">{{ pr_field }}</svg>
-  <div class="press-drop"><canvas></canvas><span class="drop-light"></span></div>
+  <svg viewBox="0 0 {{ pr_w }} {{ pr_h }}" preserveAspectRatio="xMidYMid slice">
+    {%- for pr_r in (1..pr_rows) -%}
+      {%- assign pr_y0 = pr_r | minus: 1 | times: pr_cell -%}
+      {%- assign pr_y1 = pr_y0 | plus: pr_cell -%}
+      {%- for pr_c in (1..pr_cols) -%}
+        {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+        {%- assign pr_skip = pr_seed | modulo: 10 -%}
+        {%- if pr_skip < 5 -%}
+          {%- assign pr_x0 = pr_c | minus: 1 | times: pr_cell -%}
+          {%- assign pr_x1 = pr_x0 | plus: pr_cell -%}
+          {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+          {%- assign pr_dir = pr_seed | modulo: 2 -%}
+          {%- assign pr_seed = pr_seed | times: 1103 | plus: 12345 | modulo: 100003 -%}
+          {%- assign pr_jit = pr_seed | modulo: 20 -%}
+          {%- comment -%} 0–5.6s across the field: the wave crosses in one cycle {%- endcomment -%}
+          {%- assign pr_jitms = pr_jit | times: 9 -%}
+          {%- assign pr_del = pr_c | minus: 1 | times: 180 | plus: pr_jitms -%}
+          {%- if pr_dir == 0 -%}
+    <path d="M{{ pr_x0 }} {{ pr_y0 }}L{{ pr_x1 }} {{ pr_y1 }}" style="animation-delay:{{ pr_del }}ms"/>
+          {%- else -%}
+    <path d="M{{ pr_x0 }} {{ pr_y1 }}L{{ pr_x1 }} {{ pr_y0 }}" style="animation-delay:{{ pr_del }}ms"/>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </svg>
 </div>
-<script>
-  (function () {
-    var press = document.querySelector('.press');
-    if (!press) return;
-    if (!window.matchMedia('(hover: hover)').matches) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var R = 58, ZOOM = 2, CYCLE = 11000, DASH = 57, N = 10;
-    var drop = press.querySelector('.press-drop');
-    var plate = press.querySelector('.press-plate');
-    var cv = drop.querySelector('canvas');
-    var ctx = cv.getContext('2d');
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var segs = [], cx = -999, cy = -999, running = false, ink = '#1A1916';
-
-    function readInk() { ink = getComputedStyle(press).color; }
-
-    // geometry comes from the plate itself, so the bead always matches it
-    function measure() {
-      var vb = plate.viewBox.baseVal, r = plate.getBoundingClientRect();
-      var k = Math.max(r.width / vb.width, r.height / vb.height);   // slice
-      var ox = (r.width - vb.width * k) / 2, oy = (r.height - vb.height * k) / 2;
-      segs = [].map.call(plate.querySelectorAll('path'), function (p) {
-        var m = p.getAttribute('d').match(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/);
-        return { x1: +m[1] * k + ox, y1: +m[2] * k + oy, x2: +m[3] * k + ox, y2: +m[4] * k + oy,
-                 d: parseFloat(getComputedStyle(p).animationDelay) * 1000 || 0 };
-      });
-      cv.width = R * 2 * dpr; cv.height = R * 2 * dpr;
-      cv.style.width = cv.style.height = R * 2 + 'px';
-    }
-
-    // magnification decays toward the rim, so strokes bend and compress there
-    function draw(now) {
-      if (!running) return;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, R * 2, R * 2);
-      ctx.strokeStyle = ink;
-      ctx.lineCap = 'round';
-      ctx.lineWidth = 1.6;
-      ctx.globalAlpha = 0.5;
-      ctx.setLineDash([DASH]);
-      var reach = R / 0.92 + 60;
-      for (var i = 0; i < segs.length; i++) {
-        var s = segs[i];
-        if (Math.min(Math.hypot(s.x1 - cx, s.y1 - cy), Math.hypot(s.x2 - cx, s.y2 - cy)) > reach) continue;
-        var t = ((((now - s.d) % CYCLE) + CYCLE) % CYCLE) / CYCLE;
-        ctx.lineDashOffset = t < 0.3 ? DASH * (1 - t / 0.3) : (t < 0.62 ? 0 : -DASH * ((t - 0.62) / 0.38));
-        ctx.beginPath();
-        for (var k = 0; k <= N; k++) {
-          var px = s.x1 + (s.x2 - s.x1) * k / N, py = s.y1 + (s.y2 - s.y1) * k / N;
-          var dx = px - cx, dy = py - cy, d = Math.hypot(dx, dy) || 0.001;
-          var f = Math.sin(Math.min(d / (R / ZOOM * 1.35), 1) * Math.PI / 2);
-          var mag = ZOOM - (ZOOM - 0.92) * f;
-          k ? ctx.lineTo(R + dx * mag, R + dy * mag) : ctx.moveTo(R + dx * mag, R + dy * mag);
-        }
-        ctx.stroke();
-      }
-      requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('mousemove', function (e) {
-      cx = e.clientX; cy = e.clientY;
-      press.style.setProperty('--mx', cx + 'px');
-      press.style.setProperty('--my', cy + 'px');
-      if (!running) {
-        if (!segs.length) { measure(); readInk(); }
-        running = true;
-        press.classList.add('is-wet');
-        requestAnimationFrame(draw);
-      }
-    }, { passive: true });
-
-    document.addEventListener('mouseleave', function () {
-      running = false;
-      press.classList.remove('is-wet');
-    });
-    window.addEventListener('resize', function () { segs = []; measure(); }, { passive: true });
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readInk);
-  })();
-</script>
