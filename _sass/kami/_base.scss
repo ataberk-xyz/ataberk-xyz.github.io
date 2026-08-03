@@ -64,6 +64,9 @@ small { font-size: 0.82em; color: var(--ink-3); }
 // accent, so it stays scenery. Behind everything: cards, covers, the
 // masthead and the footer all paint their own opaque grounds over it.
 .press {
+  --mx: -300px;
+  --my: -300px;
+  --dr: 56px;   // droplet radius
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -96,4 +99,72 @@ small { font-size: 0.82em; color: var(--ink-3); }
 }
 @media (prefers-reduced-motion: reduce) {
   .press path { animation: none; stroke-dashoffset: 0; opacity: 0.08; }
+}
+
+// ── The droplet ───────────────────────────────────────────────
+// A bead of water resting on the page: the weave beneath it is magnified,
+// the rim darkens, one specular catches the light and a soft shadow falls
+// to the lower right. Only two custom properties change per frame, and the
+// plate is punched where the bead sits so nothing doubles up.
+.press-plate {
+  -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my),
+    transparent calc(var(--dr) - 0.5px), #000 calc(var(--dr) + 0.5px));
+          mask-image: radial-gradient(circle at var(--mx) var(--my),
+    transparent calc(var(--dr) - 0.5px), #000 calc(var(--dr) + 0.5px));
+}
+.press-drop {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--dr) * 2);
+  height: calc(var(--dr) * 2);
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  transform: translate3d(calc(var(--mx) - var(--dr)), calc(var(--my) - var(--dr)), 0);
+  box-shadow:
+    inset 0 0 0 1px rgba(120, 110, 95, 0.32),
+    inset 2px 3px 5px rgba(255, 255, 255, 0.28),
+    inset -4px -6px 10px rgba(120, 110, 95, 0.13),
+    1px 4px 9px rgba(90, 80, 65, 0.15);
+}
+.press.is-wet .press-drop { opacity: 1; }
+.press-drop svg {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  transform-origin: var(--mx) var(--my);
+  transform: translate3d(calc(var(--dr) - var(--mx)), calc(var(--dr) - var(--my)), 0) scale(1.75);
+}
+.press-drop path { opacity: 0.5; stroke-width: 1.5; }
+.drop-light {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 33% 27%, rgba(255, 255, 255, 0.92) 0 3%, rgba(255, 255, 255, 0.3) 6.5%, transparent 13%),
+    radial-gradient(circle at 68% 76%, rgba(255, 255, 255, 0.2) 0 4%, transparent 12%),
+    radial-gradient(circle at 50% 50%, transparent 74%, rgba(120, 110, 95, 0.1) 92%, rgba(120, 110, 95, 0.2) 100%);
+}
+@media (prefers-color-scheme: dark) {
+  .press-drop {
+    box-shadow:
+      inset 0 0 0 1px rgba(237, 230, 218, 0.16),
+      inset 2px 3px 6px rgba(255, 255, 255, 0.12),
+      inset -4px -6px 12px rgba(0, 0, 0, 0.35),
+      1px 4px 10px rgba(0, 0, 0, 0.4);
+  }
+  .press-drop path { opacity: 0.6; }
+  .drop-light {
+    background:
+      radial-gradient(circle at 33% 27%, rgba(255, 255, 255, 0.75) 0 2.5%, rgba(255, 255, 255, 0.22) 6%, transparent 13%),
+      radial-gradient(circle at 68% 76%, rgba(255, 255, 255, 0.14) 0 4%, transparent 12%),
+      radial-gradient(circle at 50% 50%, transparent 74%, rgba(0, 0, 0, 0.18) 94%, rgba(0, 0, 0, 0.3) 100%);
+  }
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .press-drop { display: none; }
+  .press-plate { -webkit-mask-image: none; mask-image: none; }
 }
