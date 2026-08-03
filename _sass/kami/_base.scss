@@ -97,3 +97,15 @@ small { font-size: 0.82em; color: var(--ink-3); }
 @media (prefers-reduced-motion: reduce) {
   .press path { animation: none; stroke-dashoffset: 0; opacity: 0.08; }
 }
+
+// a flipped cell holds still and reads a little louder while it is wrong
+.press path.is-flipped {
+  animation: none;
+  stroke-dashoffset: 0;
+  opacity: 0.3;
+}
+.press path.is-hot { stroke: #E8B44F; opacity: 0.42; }
+@media (prefers-color-scheme: dark) {
+  .press path.is-flipped { opacity: 0.34; }
+  .press path.is-hot { opacity: 0.5; }
+}

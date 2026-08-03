@@ -3,7 +3,10 @@
   Each stroke draws itself and clears again; the delay is derived from its
   column, so the wave crosses left to right. Pure Liquid + CSS, no JS.
   Deterministic (same LCG as cover.html) so the field never reshuffles.
-  Colourless by design — it borrows --ink, never the accent.
+  Colourless by design — it borrows --ink, never the accent, except for the
+  odd bit that flips: every few seconds a stroke or two inverts its diagonal
+  and a few of those come back amber, like corrupted cells in the field.
+  The glitch touches existing strokes only — no copies, no per-frame work.
 {%- endcomment -%}
 {%- assign pr_seed = 20260802 -%}
 {%- assign pr_cols = 30 -%}
@@ -39,3 +42,37 @@
     {%- endfor -%}
   </svg>
 </div>
+<script>
+  (function () {
+    var press = document.querySelector('.press');
+    if (!press) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var paths = press.querySelectorAll('path');
+    if (!paths.length) return;
+
+    function flip() {
+      if (document.hidden) return;
+      var n = 1 + (Math.random() * 3 | 0);
+      for (var i = 0; i < n; i++) {
+        var p = paths[(Math.random() * paths.length) | 0];
+        if (p.dataset.glitching) continue;
+        var d = p.getAttribute('d');
+        var m = d.match(/M([\d.]+) ([\d.]+)L([\d.]+) ([\d.]+)/);
+        if (!m) continue;
+        p.dataset.glitching = '1';
+        p.dataset.d = d;
+        p.setAttribute('d', 'M' + m[1] + ' ' + m[4] + 'L' + m[3] + ' ' + m[2]);
+        p.classList.add('is-flipped');
+        if (Math.random() < 0.35) p.classList.add('is-hot');
+        (function (el) {
+          setTimeout(function () {
+            el.setAttribute('d', el.dataset.d);
+            el.classList.remove('is-flipped', 'is-hot');
+            delete el.dataset.glitching;
+          }, 180 + Math.random() * 460);
+        })(p);
+      }
+    }
+    setInterval(flip, 1400);
+  })();
+</script>
