@@ -1,20 +1,20 @@
 // ─────────────────────────────────────────────────────────────
 // Ledger design tokens — one skeleton, two palettes.
-// Light: parchment Ledger (brand bridge to CV/profile).
-// Dark: warm-soot editorial journal. prefers-color-scheme picks.
+// Light: neutral paper.
+// Dark: neutral ink. prefers-color-scheme picks.
 // ─────────────────────────────────────────────────────────────
 
 :root {
   // Foundation — parchment Ledger
-  --bg:            #FAF7F2;  // warm parchment canvas
-  --surface:       #FFFEFB;  // cards, recessed panels
-  --surface-2:     #F4EFE5;  // inline code, subtle fills
-  --ink:           #1A1916;  // primary text, headings
-  --ink-2:         #4A4640;  // secondary text
-  --ink-3:         #6B6862;  // meta, timestamps
-  --ink-4:         #8A857C;  // hairline glyphs, non-text only
-  --border:        #E8E1D6;  // hairline borders, dividers
-  --border-strong: #D7CEBE;  // stronger rules
+  --bg:            #F6F6F5;  // neutral paper canvas
+  --surface:       #FFFFFF;  // cards, recessed panels
+  --surface-2:     #EDEDEC;  // inline code, subtle fills
+  --ink:           #1A1A1A;  // primary text, headings
+  --ink-2:         #4A4A4A;  // secondary text
+  --ink-3:         #6B6B6B;  // meta, timestamps
+  --ink-4:         #8A8A8A;  // hairline glyphs, non-text only
+  --border:        #E3E3E2;  // hairline borders, dividers
+  --border-strong: #CFCFCE;  // stronger rules
 
   --accent:        #1B365D;  // ink-blue
   --accent-2:      #2C4F7C;  // hover / lighter ink-blue
@@ -25,12 +25,12 @@
   --sev-med:       #9A6716;  // 4.0–6.9 (GitHub calls this "moderate")
 
   // Sunken surfaces (code, ledger block, covers) — dark in BOTH palettes
-  --code-bg:       #17171C;
-  --code-fg:       #E7E2D6;
+  --code-bg:       #141416;
+  --code-fg:       #E8E8E8;
   --code-border:   #2A2A31;
   --code-inline-fg: #5A3E2B;  // inline `code` text
   // Accent for text/strokes drawn on the sunken code surface. --accent itself
-  // flips to near-invisible dark-on-dark in light mode (#1B365D on #17171C
+  // flips to near-invisible dark-on-dark in light mode (#1B365D on #141416
   // ≈ 1.5:1), so anything painted on --code-bg needs this instead. --code-bg
   // is dark in BOTH palettes, so this single value is correct for both too —
   // it happens to equal dark mode's --accent, which is why the dark block
@@ -51,15 +51,15 @@
 // ── Dark palette — warm soot, lifted ink-blue, amber severity ──
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:            #181512;  // warm soot
-    --surface:       #211d19;  // cards, blockquote, recessed panels
-    --surface-2:     #2a2520;  // inline code, subtle fills
-    --ink:           #EDE6DA;  // primary text, headings
-    --ink-2:         #b5aca1;  // secondary text
-    --ink-3:         #8a8078;  // meta, timestamps
-    --ink-4:         #6a625a;  // hairline glyphs
-    --border:        #2e2a25;  // hairline borders
-    --border-strong: #46423A;  // stronger rules
+    --bg:            #161616;  // neutral ink canvas
+    --surface:       #1E1E1E;  // cards, blockquote, recessed panels
+    --surface-2:     #262626;  // inline code, subtle fills
+    --ink:           #EDEDED;  // primary text, headings
+    --ink-2:         #B4B4B4;  // secondary text
+    --ink-3:         #8A8A8A;  // meta, timestamps
+    --ink-4:         #666666;  // hairline glyphs
+    --border:        #2C2C2C;  // hairline borders
+    --border-strong: #454545;  // stronger rules
 
     --accent:        #9DB8E8;  // lifted ink-blue
     --accent-2:      #BBD0F0;  // hover
@@ -68,9 +68,9 @@
     --sev-high:      #E0655C;
     --sev-med:       #E8B44F;
 
-    --code-bg:       #100e0c;  // sunken, a touch darker than --bg
-    --code-fg:       #E7E2D6;
-    --code-border:   #2e2a25;
+    --code-bg:       #0E0E0E;  // sunken, a touch darker than --bg
+    --code-fg:       #E8E8E8;
+    --code-border:   #2C2C2C;
     --code-inline-fg:#D8A87E;  // warm tan for inline code on dark
   }
 }
