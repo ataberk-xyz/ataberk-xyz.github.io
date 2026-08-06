@@ -12,7 +12,10 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
 <dl class="ledger-block">
   <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk · ataberk-xyz</dd></div>
   <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Senior Security Engineer @ Midas</dd></div>
-  <div class="lrow"><dt>STACK</dt><span class="dots"></span><dd>Solidity · Move · EVM · Active Directory</dd></div>
+  <div class="lrow"><dt>CONTRACTS</dt><span class="dots"></span><dd>Solidity · EVM · Move (Aptos, Sui)</dd></div>
+  <div class="lrow"><dt>OFFENSIVE</dt><span class="dots"></span><dd>Active Directory · web &amp; network</dd></div>
+  <div class="lrow"><dt>LLM &amp; AGENTS</dt><span class="dots"></span><dd>gossipcat · MCP · Claude Code · LLM &amp; agent pentest</dd></div>
+  <div class="lrow"><dt>TOOLING</dt><span class="dots"></span><dd>Foundry · Python · TypeScript</dd></div>
   <div class="lrow"><dt>CERTS</dt><span class="dots"></span><dd>OSCP · OSWE · CRTP · C-AI/MLPen</dd></div>
   <div class="lrow"><dt>TRACK</dt><span class="dots"></span><dd>ex-Hacken (Principal) · ex-Halborn (Lead)</dd></div>
   <div class="lrow"><dt>SINCE</dt><span class="dots"></span><dd>August 2026 · İstanbul</dd></div>
@@ -91,18 +94,18 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
 <dl class="skill-grid">
   <div class="sk-row">
     <dt>Offensive</dt>
-    <dd>Network &amp; web app pentest · Active Directory (Kerberoasting, NTLM relaying, Pass-the-Hash) · phishing &amp; social engineering</dd>
+    <dd>Internal &amp; external pentest · Active Directory attack paths (Kerberoasting, NTLM relaying, Pass-the-Hash) · phishing &amp; social engineering</dd>
   </div>
   <div class="sk-row">
     <dt>Smart contracts</dt>
-    <dd>Solidity · EVM · Move (Aptos, Sui, IOTA) · DeFi security · threat modeling</dd>
+    <dd>Audit delivery · DeFi threat modeling · invariant &amp; PoC development</dd>
   </div>
   <div class="sk-row">
     <dt>Vuln research</dt>
-    <dd>n-day research · patch diffing · WinDbg · PoC development</dd>
+    <dd>n-day research · patch diffing · fuzzing &amp; crash minimisation · coordinated disclosure</dd>
   </div>
   <div class="sk-row">
-    <dt>Build &amp; AI</dt>
-    <dd>Python · TypeScript · Foundry · multi-agent orchestration (MCP) · Claude Code</dd>
+    <dt>Orchestration</dt>
+    <dd>Multi-agent review pipelines · consensus verification &amp; hallucination filtering</dd>
   </div>
 </dl>
