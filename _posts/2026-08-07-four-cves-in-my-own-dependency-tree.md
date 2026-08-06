@@ -124,19 +124,15 @@ The division of labour is clearest here. The orchestrator read the filter code a
 
 ---
 
-### Two further lessons
+### One further lesson
 
 **Audit the marshalling layer, not the engine.** re2 is installed *to avoid* ReDoS, and that reputation is precisely why its hand-written C++ N-API layer is not examined. The engine core held. Every defect was in the binding, where the wrapper reintroduced the class the engine exists to prevent. This generalises to any FFI or WASM layer marshalling attacker-controlled strings between runtimes.
 
-**Disclosure has a human-only step.** Private reporting was enabled on both repositories, but `POST /repos/{owner}/{repo}/security-advisories` is restricted to maintainers and returns 403 to anyone else. An orchestrator can prepare the complete advisory; a human must submit it through the web form.
-
 ### The division of labour
 
-The orchestrator dispatched review across the code paths, read them, reproduced findings on clean installs, and cross-checked claims that a single measurement would otherwise have carried. I chose the target, judged severity, minimised the crash, decided what was worth reporting, and submitted each advisory. Two of the four defects were reached by fuzzing, one by reading index-conversion arithmetic and one by reading filter code; none was produced by the orchestration unaided, and this post does not claim otherwise.
+The orchestrator dispatched review, reproduced findings on clean installs, and held claims against controls. I chose the target, judged severity, minimised the crash and wrote the advisories. Two defects came from fuzzing and two from reading; none was produced by the orchestration unaided, and this post does not claim otherwise.
 
-The refutation step is the part of that loop I would defend most. On stream-json four candidates were examined and one was reported. Prototype pollution in the assembler was refuted, since bracket `__proto__` assignment re-parents the local object only and yields no global gadget. A deep-nesting stack overflow was refuted, as parser and assembler are both iterative. Unbounded string buffering was refuted, given the documented `packStrings:false` escape hatch.
-
-The same pass identified a measurement artifact before it reached anyone: a synchronous fuzzing loop starves the event loop, keeps stream callbacks alive, and produces an OOM indistinguishable from a leak. Drained between iterations, the test remains flat at 4MB. Three refutations and one artifact are four items that did not arrive in a maintainer's inbox as noise, which is as much of the value as the four that shipped.
+The refutations are the part I would defend most. On stream-json, four candidates were examined and one was reported: prototype pollution, a deep-nesting stack overflow and unbounded string buffering were each refuted, and a measurement artifact — a synchronous fuzzing loop starving the event loop and faking a leak — was caught before it reached anyone. Four items that never arrived in a maintainer's inbox as noise, which is as much of the value as the four that shipped.
 
 The scoreboard is correspondingly modest. All four findings are Medium, all four are denial-of-service class, and none is remote code execution — the write-primitive audit found no out-of-bounds write anywhere in node-re2, so the ceiling for this class is denial of service with a weak read. The outcome is four CVE identifiers and credit in the advisories. gossipcat's own dependency pin moved 1.25.0 → 1.26.1 in PR #699, which closed the loop: the tree I set out to audit was the tree that required patching.
 
@@ -145,5 +141,3 @@ The scoreboard is correspondingly modest. All four findings are Medium, all four
 Four advisories, all patched upstream, in packages that were already in my tree before I looked at them. That last part is the finding that outlasts the four CVE identifiers: I had installed `re2` precisely because it is the safe choice, and it was the component whose binding layer needed the fixes. A dependency is not audited because its reputation is good; it is audited because someone read it.
 
 The method carried further than the target. Both re2 defects came from questions that can be asked of any native binding without knowing the codebase: *which of the paths that walk this structure fails to share its siblings' guard*, and *what unit does this validator measure compared with what the consumer walks by*. The stream-json defect came from the same habit applied to cost — the quantity that was expensive was not the quantity anything bounded. Those questions transfer; the specific bugs do not.
-
-What did not transfer to the orchestration is judgment. It reproduced findings on clean installs, held a measurement against a control, and refuted three candidates that would otherwise have gone out. Choosing what deserved a maintainer's attention, scoring it, and pasting the report into a form that no API will accept on my behalf stayed with me — and I would not want that part automated.
