@@ -6,19 +6,20 @@ sidebar_link: true
 cover_hero: true
 cover_split: true
 kicker: "N°00 · ABOUT · ATABERK"
-description: "Smart contract auditor & offensive security engineer — 7+ years across Web3 and traditional security. I break things, then build tools so they break less."
+description: "Senior Security Engineer at Midas. 7+ years across Web3 and traditional security — smart contract audits, offensive security, and the tooling in between. I break things, then build tools so they break less."
 ---
 
 <dl class="ledger-block">
   <div class="lrow"><dt>OPERATOR</dt><span class="dots"></span><dd>Ataberk · ataberk-xyz</dd></div>
-  <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Smart Contract Auditor · Offensive Security</dd></div>
+  <div class="lrow"><dt>ROLE</dt><span class="dots"></span><dd>Senior Security Engineer @ Midas</dd></div>
   <div class="lrow"><dt>STACK</dt><span class="dots"></span><dd>Solidity · Move · EVM · Active Directory</dd></div>
   <div class="lrow"><dt>CERTS</dt><span class="dots"></span><dd>OSCP · OSWE · CRTP · C-AI/MLPen</dd></div>
   <div class="lrow"><dt>TRACK</dt><span class="dots"></span><dd>ex-Hacken (Principal) · ex-Halborn (Lead)</dd></div>
+  <div class="lrow"><dt>SINCE</dt><span class="dots"></span><dd>August 2026 · İstanbul</dd></div>
   <div class="lrow"><dt>STATUS</dt><span class="dots"></span><dd class="sev">BREAKING THINGS ✓</dd></div>
 </dl>
 
-<p class="about-intro">I started in penetration testing — web apps, internal and external networks, Active Directory — and moved into blockchain security, auditing Solidity and Move. Most recently <strong>Principal Smart Contract Auditor at Hacken</strong> (2023–2026), leading the auditor team and owning audit delivery; before that Lead Offensive Security Engineer at Halborn. Lately I build tooling like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>.</p>
+<p class="about-intro">I'm a <strong>Senior Security Engineer at Midas</strong>, where the work sits where smart contracts meet everything around them — infrastructure, keys, pipelines. I got here through penetration testing (web apps, internal and external networks, Active Directory), then blockchain security: <strong>Principal Smart Contract Auditor at Hacken</strong> (2023–2026), leading the auditor team and owning audit delivery, and Lead Offensive Security Engineer at Halborn before that. Alongside it I build tooling like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a> — and point it at my own dependencies.</p>
 
 <p class="about-links"><a href="https://www.linkedin.com/in/ataberkyavuzer/">LinkedIn</a> · <a href="https://github.com/ataberk-xyz">GitHub</a></p>
 
