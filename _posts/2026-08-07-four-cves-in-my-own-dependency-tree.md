@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Orchestration, Episode 1: Four CVEs in the Tree I Was Standing On"
+title: "AI Orchestration, Episode 1: Four CVEs in the Tree I Was Standing On"
 author: ataberk-xyz
 categories: [ai-research]
 tags: [orchestration, gossipcat, npm, cve, fuzzing, supply-chain]
