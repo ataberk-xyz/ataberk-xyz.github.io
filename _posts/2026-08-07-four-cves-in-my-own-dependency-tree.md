@@ -9,7 +9,7 @@ ledger:
   severity: "MEDIUM 6.2"
   vector: "CWE-835 · CWE-125 · CWE-617 · CWE-407"
   advisory: "CVE-2026-68499 · 67550 · 71430 · 71429"
-  impact: "event-loop DoS, uncatchable crash, bounded heap read"
+  impact: "event-loop DoS, process-level crash, bounded heap read"
   status: "PATCHED — re2 1.25.2, stream-json 3.5.0"
   method: "dependency-tree audit → orchestrated review + fuzzing"
 summary: "I pointed my own multi-agent review system at my own dependency tree — re2 and stream-json, about 12.1M npm downloads a week between them. Four accepted advisories came out, and this is the honest account of how, including the parts where the process nearly threw a finding away."
@@ -73,7 +73,7 @@ re.lastIndex = 3;               // 3 <= byteLen(4) passes; there are only 2 real
 re.exec('éé');                  // ASAN: heap-buffer-overflow READ
 ```
 
-On the shipped binary a large non-ASCII subject drives the counter well past the buffer into unmapped memory and terminates the process with an uncatchable SIGSEGV. The same `lastIndex` against an ASCII subject returns normally, which locates the cause in the unit mismatch rather than in the size. A bounded information leak is also reachable, but the over-reads I demonstrated returned zeros, so I reported the crash as the operative impact and said so in the advisory.
+On the shipped binary a large non-ASCII subject drives the counter well past the buffer into unmapped memory and terminates the process with a SIGSEGV that no JavaScript handler can intercept. The same `lastIndex` against an ASCII subject returns normally, which locates the cause in the unit mismatch rather than in the size. A bounded information leak is also reachable, but the over-reads I demonstrated returned zeros, so I reported the crash as the operative impact and said so in the advisory.
 
 The defect survived because ASCII is safe: byte length equals character count, the guard is correct by coincidence, and ordinary tests pass. CVE-2026-67550, CWE-125, Medium 5.7, also fixed in 1.25.2.
 
@@ -83,7 +83,7 @@ This is the weakest case for orchestration in the set, and it should be stated a
 
 ---
 
-### An uncatchable abort in Replace
+### A process abort in Replace
 
 A crash-fuzzer reached the third defect within approximately 150 cases, watching the real binary for exit 134. Reproducing it took substantially longer, for two reasons. The PRNG was seeded from `process.pid`, so no run replayed another. The crash log also truncated the input at 400 characters when the crash required 89KB of it; the failure was input-*size* dependent, and the size had been discarded. Minimisation was similarly misleading: emoji, named groups and the sticky flag all appeared essential, and none were.
 
@@ -93,7 +93,7 @@ The minimised case is a single line:
 "a".repeat(50000).replace(new RE2("a", "g"), "$'");   // SIGABRT
 ```
 
-`WrappedRE2::Replace` calls `.ToLocalChecked()` without checking the empty `MaybeLocal` that V8 returns when a string exceeds `String::kMaxLength`. An output-amplifying template — `$'` or `` $` `` — grows output to O(input²); past the limit the result is `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` and **SIGABRT, uncatchable**. 30k succeeds and 40k crashes, which is where N²/2 crosses 536M.
+`WrappedRE2::Replace` calls `.ToLocalChecked()` without checking the empty `MaybeLocal` that V8 returns when a string exceeds `String::kMaxLength`. An output-amplifying template — `$'` or `` $` `` — grows output to O(input²); past the limit the result is `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` and **SIGABRT** — a process-level abort rather than a JavaScript exception, so `try`/`catch` cannot contain it. 30k succeeds and 40k crashes, which is where N²/2 crosses 536M.
 
 The comparison is what makes this a defect rather than a documented limit: the native engine throws a catchable `RangeError` on the same input, where re2 aborts. The orchestrator reproduced the minimised case on a clean install of the then-current published version as well as on the repository's own, confirming the abort was not local to my tree. The C++ source-audit agents were queued for this target and never dispatched, because fuzzing reached it first. CVE-2026-71430, CWE-617, Medium 6.2.
 
