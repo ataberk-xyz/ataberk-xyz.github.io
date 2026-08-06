@@ -140,4 +140,10 @@ The same pass identified a measurement artifact before it reached anyone: a sync
 
 The scoreboard is correspondingly modest. All four findings are Medium, all four are denial-of-service class, and none is remote code execution — the write-primitive audit found no out-of-bounds write anywhere in node-re2, so the ceiling for this class is denial of service with a weak read. The outcome is four CVE identifiers and credit in the advisories. gossipcat's own dependency pin moved 1.25.0 → 1.26.1 in PR #699, which closed the loop: the tree I set out to audit was the tree that required patching.
 
-Episode 2 remains on the same dependency tree and moves one link further down it.
+### What the exercise produced
+
+Four advisories, all patched upstream, in packages that were already in my tree before I looked at them. That last part is the finding that outlasts the four CVE identifiers: I had installed `re2` precisely because it is the safe choice, and it was the component whose binding layer needed the fixes. A dependency is not audited because its reputation is good; it is audited because someone read it.
+
+The method carried further than the target. Both re2 defects came from questions that can be asked of any native binding without knowing the codebase: *which of the paths that walk this structure fails to share its siblings' guard*, and *what unit does this validator measure compared with what the consumer walks by*. The stream-json defect came from the same habit applied to cost — the quantity that was expensive was not the quantity anything bounded. Those questions transfer; the specific bugs do not.
+
+What did not transfer to the orchestration is judgment. It reproduced findings on clean installs, held a measurement against a control, and refuted three candidates that would otherwise have gone out. Choosing what deserved a maintainer's attention, scoring it, and pasting the report into a form that no API will accept on my behalf stayed with me — and I would not want that part automated.
