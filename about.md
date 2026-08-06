@@ -54,7 +54,7 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
     </tr>
     <tr>
       <td>stream-json</td>
-      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">GHSA-528h-pc64-c93x</a></td>
+      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">CVE-2026-71429</a></td>
       <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-407</span> quadratic path filters → a small nested JSON blocks the event loop. Fixed in 3.5.0</td>
     </tr>
@@ -72,7 +72,7 @@ description: "Smart contract auditor & offensive security engineer — 7+ years 
     </tr>
     <tr>
       <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">GHSA-8hcv-x26h-mcgp</a></td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">CVE-2026-71430</a></td>
       <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-617</span> <code>replace</code> with an output-amplifying template aborts Node past V8's max string length</td>
     </tr>
