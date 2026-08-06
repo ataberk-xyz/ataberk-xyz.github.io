@@ -6,7 +6,7 @@ sidebar_link: true
 cover_hero: true
 cover_split: true
 kicker: "N°00 · ABOUT · ATABERK"
-description: "Senior Security Engineer at Midas. 7+ years across Web3 and traditional security — smart contract audits, offensive security, and the tooling in between. I break things, then build tools so they break less."
+description: "Senior Security Engineer at Midas. 7+ years across smart contract audits and offensive security. I break things, then build tools so they break less."
 ---
 
 <dl class="ledger-block">
@@ -19,7 +19,7 @@ description: "Senior Security Engineer at Midas. 7+ years across Web3 and tradit
   <div class="lrow"><dt>STATUS</dt><span class="dots"></span><dd class="sev">BREAKING THINGS ✓</dd></div>
 </dl>
 
-<p class="about-intro">I'm a <strong>Senior Security Engineer at Midas</strong>, where the work sits where smart contracts meet everything around them — infrastructure, keys, pipelines. I got here through penetration testing (web apps, internal and external networks, Active Directory), then blockchain security: <strong>Principal Smart Contract Auditor at Hacken</strong> (2023–2026), leading the auditor team and owning audit delivery, and Lead Offensive Security Engineer at Halborn before that. Alongside it I build tooling like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a> — and point it at my own dependencies.</p>
+<p class="about-intro">I'm a Senior Security Engineer at <strong>Midas</strong>. Before that, Principal Smart Contract Auditor at Hacken (2023–2026) and Lead Offensive Security Engineer at Halborn. I started out in penetration testing — web apps, networks, Active Directory — and moved into smart contract security. I also build tooling like <a href="https://github.com/gossipcat-ai/gossipcat-ai">gossipcat-ai</a>.</p>
 
 <p class="about-links"><a href="https://www.linkedin.com/in/ataberkyavuzer/">LinkedIn</a> · <a href="https://github.com/ataberk-xyz">GitHub</a></p>
 
