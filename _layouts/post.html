@@ -6,10 +6,18 @@ comments: true
 <article class="post">
   <header class="post-header">
     <div class="post-cover">{% include cover.html post=page cols=48 rows=12 %}</div>
-    {% capture ponum %}{% include post-number.html post=page %}{% endcapture %}
+    {% capture t_url %}{% include translation-url.html post=page %}{% endcapture %}
+    {% assign t_url = t_url | strip %}
+    {%- comment -%} TR docs aren't in site.posts: the issue N° comes from
+        the EN counterpart so both languages share a number. {%- endcomment -%}
+    {% assign num_post = page %}
+    {% if page.lang == "tr" and t_url != "" %}
+      {% for np in site.posts %}{% if np.url == t_url %}{% assign num_post = np %}{% break %}{% endif %}{% endfor %}
+    {% endif %}
+    {% capture ponum %}{% include post-number.html post=num_post %}{% endcapture %}
     {% assign pcat = page.categories | first | default: "writeup" %}
     {% assign p_words = content | strip_html | number_of_words %}
-    <p class="no-line">{{ ponum }} · {{ pcat | upcase }} · {{ page.date | date: "%Y-%m-%d" }} · {{ p_words | divided_by: 200 | at_least: 1 }} MIN</p>
+    <p class="no-line">{{ ponum }} · {{ pcat | upcase }} · {{ page.date | date: "%Y-%m-%d" }} · {{ p_words | divided_by: 200 | at_least: 1 }} MIN{% if t_url != "" %} · {% if page.lang == "tr" %}<a href="{{ site.baseurl }}{{ t_url }}">EN</a> · <span class="lang-active">TR</span>{% else %}<span class="lang-active">EN</span> · <a href="{{ site.baseurl }}{{ t_url }}">TR</a>{% endif %}{% endif %}</p>
     <h1 class="post-title">{{ page.title }}</h1>
     {% assign p_dek = page.summary | default: page.description %}{% if p_dek %}<p class="post-dek">{{ p_dek }}</p>{% endif %}
     {% assign author = site.data.authors[page.author] %}

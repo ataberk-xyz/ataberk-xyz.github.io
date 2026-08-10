@@ -348,3 +348,10 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
 @media (max-width: $bp-mobile) {
   .sk-row { grid-template-columns: 1fr; gap: 0.25rem; }
 }
+
+// Language pair in the post meta line: links inherit the theme link style,
+// the current language is inert emphasized text. No pills.
+.post-header .lang-active {
+  color: var(--ink);
+  font-weight: 700;
+}
