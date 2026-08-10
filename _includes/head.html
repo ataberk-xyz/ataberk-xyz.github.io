@@ -38,6 +38,24 @@
   <!-- RSS -->
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS" href="{{ site.baseurl }}/feed.xml" />
 
+  {%- comment -%} hreflang pair — only on posts that have a counterpart.
+      EN is x-default. Absolute URLs via site.url (must stay set in config;
+      a blank url was the old sitewide-404 root cause). {%- endcomment -%}
+  {% if page.layout == 'post' %}
+    {% capture hl_t %}{% include translation-url.html post=page %}{% endcapture %}
+    {% assign hl_t = hl_t | strip %}
+    {% if hl_t != "" %}
+      {% if page.lang == "tr" %}
+        {% assign hl_en = hl_t %}{% assign hl_tr = page.url %}
+      {% else %}
+        {% assign hl_en = page.url %}{% assign hl_tr = hl_t %}
+      {% endif %}
+  <link rel="alternate" hreflang="en" href="{{ site.url }}{{ site.baseurl }}{{ hl_en }}" />
+  <link rel="alternate" hreflang="tr" href="{{ site.url }}{{ site.baseurl }}{{ hl_tr }}" />
+  <link rel="alternate" hreflang="x-default" href="{{ site.url }}{{ site.baseurl }}{{ hl_en }}" />
+    {% endif %}
+  {% endif %}
+
   {% include google-analytics.html %}
   {% include custom-head.html %}
 </head>
