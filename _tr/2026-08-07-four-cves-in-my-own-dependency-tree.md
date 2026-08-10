@@ -32,7 +32,7 @@ Atıfla ilgili bir not düşmek gerekir. re2 bulgularında hangi oturumun hangi 
 
 ### Global match döngüsünde ilerlemeyen bir cursor
 
-ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` üzerinde yirmi bir dakika boyunca meşgul kalmış ve 2.5GB tutmaktaydı. Ne bir sanitizer raporu ne de bir crash vardı; dolayısıyla çalıştırma, yavaş bir testten ayırt edilemiyordu.
+ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` üzerinde yirmi bir dakika boyunca meşguldü ve 2.5GB tutuyordu. Ne bir sanitizer raporu ne de bir crash vardı; dolayısıyla çalıştırma, yavaş bir testten ayırt edilemiyordu.
 
 Takılan process'in sample'lanması belirsizliği giderdi: stack, sıkı bir döngü içinde `WrappedRE2::Match` → `RE2::Match` → `DFA::Search` gösteriyordu. Nedeni `match.cc`'deki dört satırdır:
 
@@ -43,7 +43,7 @@ while (re2->regexp.Match(str, byteIndex, str.size, anchor, &match, 1)) {
 }
 ```
 
-Cursor, az önce bulunan match'in uzunluğu kadar ilerlemektedir. Zero-width match'in uzunluğu olmadığından cursor yerinden kımıldamaz ve aynı match süresiz olarak döndürülürken `groups` bir `std::vector<StringPiece>`'i büyütmeye devam eder.
+Cursor, az önce bulunan match'in uzunluğu kadar ilerler. Zero-width match'in uzunluğu olmadığından cursor yerinden kımıldamaz ve aynı match süresiz olarak döndürülürken `groups` bir `std::vector<StringPiece>`'i büyütmeye devam eder.
 
 Patolojik desen tesadüfiydi. Boş string'i match edebilen herhangi bir global RE2 bunu yeniden üretir:
 
@@ -54,9 +54,9 @@ const RE2 = require('re2');
 
 Yayınlanan binary'de bu, yaklaşık dört saniye içinde 736MB'tan 3.7GB'a çıkar ve süreci ancak dışarıdan gelen bir `SIGKILL` sonlandırır. Çağrı senkron ve native olduğu için thread'i tutar; bu nedenle `try`/`catch`, `AbortController` ve JS timer'larının tamamı işlevsiz kalır — timer'lar, tetiklenmek için hiç sıra bulamadıklarından. V8 aynı deseni 0ms'de işler.
 
-Bellek büyümesi, yüklü bir makinenin en kolay uydurabildiği ölçümdür; bu nedenle rakam tek başına kabul edilmedi. Orkestratör vakayı, boş string'i match edemeyen `a+` kontrolüne karşı yeniden çalıştırdı ve her process'i kendi resident set'i için sample'ladı: bug 3860MB'a tırmanırken kontrol 44MB'ta sabit kaldı. Orkestratör ayrıca döngüyü, en son yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan derlenmiş bir build üzerinde yeniden doğrulamıştır. Dosyalama ve gönderim bana aitti.
+Bellek büyümesi, yüklü bir makinenin en kolay uydurabildiği ölçümdür; bu nedenle rakam tek başına kabul edilmedi. Orkestratör vakayı, boş string'i match edemeyen `a+` kontrolüne karşı yeniden çalıştırdı ve her process'i kendi resident set'i için sample'ladı: bug 3860MB'a tırmanırken kontrol 44MB'ta sabit kaldı. Orkestratör ayrıca döngüyü, en son yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan derlenmiş bir build üzerinde yeniden doğruladı. Dosyalama ve gönderim bana aitti.
 
-node-re2 bu vakayı başka yerlerde zaten ele almaktadır. Üç yol bir subject boyunca cursor ile ilerler: `split.cc` zero-width match'te bir code point ilerler, `exec` ise `lastIndex` üzerinden ilerler. Guard'ı yalnızca global `Match` yolu atlar. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
+node-re2 bu vakayı başka yerlerde zaten ele alır. Üç yol bir subject boyunca cursor ile ilerler: `split.cc` zero-width match'te bir code point ilerler, `exec` ise `lastIndex` üzerinden ilerler. Guard'ı yalnızca global `Match` yolu atlar. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
 
 > **Ders: aynı yapıyı kat eden alternatif yollar tek tek incelenmelidir.** Bir yapı birden fazla yerde kat ediliyorsa, bu yolların advance ve termination logic'leri karşılaştırılmalıdır. Diğer yolların taşıdığı guard'ı taşımayan yol, bug'ın bulunduğu yoldur; sıfır uzunluklu elemanlar da bunun klasik tetikleyicisidir.
 
@@ -142,4 +142,4 @@ Skor tablosu da buna göre mütevazıdır. Dört bulgunun dördü Medium, dörd�
 
 Dördü de upstream'de yamalanmış dört advisory; hepsi de bakmadan çok önce zaten ağacımda olan paketlerde. Bu son kısım, dört CVE tanımlayıcısından daha uzun ömürlü bulgudur: `re2`'yi tam da güvenli seçim olduğu için kurmuştum ve düzeltmeye ihtiyaç duyan binding layer'a sahip bileşen o çıktı. Bir dependency, itibarı iyi olduğu için denetlenmez; biri oturup okuduğu için denetlenir.
 
-Yöntem hedeften daha uzağa taşındı. Her iki re2 bug'ı da, codebase'i bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerindeki guard'ı taşımamaktadır* ve *bu validator, consumer'ın kat ettiği şeye kıyasla hangi birimi ölçüyor*. stream-json bug'ı da aynı alışkanlığın maliyete uygulanmış hâlinden geldi — pahalı olan nicelik, herhangi bir şeyin sınırladığı nicelik değildi. Bu sorular taşınır; belirli bug'lar taşınmaz.
+Yöntem hedeften daha uzağa taşındı. Her iki re2 bug'ı da, codebase'i bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerindeki guard'ı taşımıyor* ve *bu validator, consumer'ın kat ettiği şeye kıyasla hangi birimi ölçüyor*. stream-json bug'ı da aynı alışkanlığın maliyete uygulanmış hâlinden geldi — pahalı olan nicelik, herhangi bir şeyin sınırladığı nicelik değildi. Bu sorular taşınır; belirli bug'lar taşınmaz.
