@@ -143,3 +143,12 @@ Skor tablosu da buna göre mütevazıdır. Dört bulgunun dördü Medium, dörd�
 Dördü de upstream'de yamalanmış dört advisory; hepsi de bakmadan çok önce zaten ağacımda olan paketlerde. Asıl kalıcı bulgu, dört CVE tanımlayıcısından daha uzun ömürlüdür ve tek cümleye sığar: bir dependency, itibarı iyi olduğu için denetlenmez; biri oturup okuduğu için denetlenir.
 
 Yöntem hedeften daha uzağa taşındı. Her iki re2 bug'ı da, codebase'i bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerindeki guard'ı taşımıyor* ve *bu validator, consumer'ın kat ettiği şeye kıyasla hangi birimi ölçüyor*. stream-json bug'ı da aynı alışkanlığın maliyete uygulanmış hâlinden geldi — pahalı olan nicelik, herhangi bir şeyin sınırladığı nicelik değildi. Bu sorular taşınır; belirli bug'lar taşınmaz.
+
+---
+
+### Kaynaklar
+
+- **[CVE-2026-68499](https://www.cve.org/CVERecord?id=CVE-2026-68499)** · [GHSA-6hxr-mr5r-9836](https://github.com/advisories/GHSA-6hxr-mr5r-9836) — re2: global `String.prototype.match` with an empty-matchable pattern never advances → infinite loop with unbounded native memory growth (DoS). CWE-835, Medium 6.2. 1.25.2'de düzeltildi.
+- **[CVE-2026-67550](https://www.cve.org/CVERecord?id=CVE-2026-67550)** · [GHSA-ff84-5f28-78qj](https://github.com/advisories/GHSA-ff84-5f28-78qj) — re2: out-of-bounds heap read in `exec`/`test`/`match` via attacker-influenced `lastIndex` on a non-ASCII subject → uncatchable process crash (DoS). CWE-125, Medium 5.7. 1.25.2'de düzeltildi.
+- **[CVE-2026-71430](https://www.cve.org/CVERecord?id=CVE-2026-71430)** · [GHSA-8hcv-x26h-mcgp](https://github.com/advisories/GHSA-8hcv-x26h-mcgp) — node-re2: `String.prototype.replace(re2, template)` aborts the Node process (uncatchable `ToLocalChecked` on an empty `MaybeLocal`) when the result exceeds V8's max string length. CWE-617, Medium 6.2. 1.25.2'de düzeltildi.
+- **[CVE-2026-71429](https://www.cve.org/CVERecord?id=CVE-2026-71429)** · [GHSA-528h-pc64-c93x](https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x) — stream-json: `pick`/`ignore`/`filter`/`replace` filters are O(depth²) on nested input — small crafted JSON blocks the event loop for seconds→minutes (DoS). CWE-407, Medium 6.2. 3.5.0'de düzeltildi.

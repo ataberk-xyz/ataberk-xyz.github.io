@@ -141,3 +141,12 @@ The scoreboard is correspondingly modest. All four findings are Medium, all four
 Four advisories, all patched upstream, in packages that were already in my tree before I looked at them. That last part is the finding that outlasts the four CVE identifiers: I had installed `re2` precisely because it is the safe choice, and it was the component whose binding layer needed the fixes. A dependency is not audited because its reputation is good; it is audited because someone read it.
 
 The method carried further than the target. Both re2 defects came from questions that can be asked of any native binding without knowing the codebase: *which of the paths that walk this structure fails to share its siblings' guard*, and *what unit does this validator measure compared with what the consumer walks by*. The stream-json defect came from the same habit applied to cost — the quantity that was expensive was not the quantity anything bounded. Those questions transfer; the specific bugs do not.
+
+---
+
+### References
+
+- **[CVE-2026-68499](https://www.cve.org/CVERecord?id=CVE-2026-68499)** · [GHSA-6hxr-mr5r-9836](https://github.com/advisories/GHSA-6hxr-mr5r-9836) — re2: global `String.prototype.match` with an empty-matchable pattern never advances → infinite loop with unbounded native memory growth (DoS). CWE-835, Medium 6.2. Fixed in 1.25.2.
+- **[CVE-2026-67550](https://www.cve.org/CVERecord?id=CVE-2026-67550)** · [GHSA-ff84-5f28-78qj](https://github.com/advisories/GHSA-ff84-5f28-78qj) — re2: out-of-bounds heap read in `exec`/`test`/`match` via attacker-influenced `lastIndex` on a non-ASCII subject → uncatchable process crash (DoS). CWE-125, Medium 5.7. Fixed in 1.25.2.
+- **[CVE-2026-71430](https://www.cve.org/CVERecord?id=CVE-2026-71430)** · [GHSA-8hcv-x26h-mcgp](https://github.com/advisories/GHSA-8hcv-x26h-mcgp) — node-re2: `String.prototype.replace(re2, template)` aborts the Node process (uncatchable `ToLocalChecked` on an empty `MaybeLocal`) when the result exceeds V8's max string length. CWE-617, Medium 6.2. Fixed in 1.25.2.
+- **[CVE-2026-71429](https://www.cve.org/CVERecord?id=CVE-2026-71429)** · [GHSA-528h-pc64-c93x](https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x) — stream-json: `pick`/`ignore`/`filter`/`replace` filters are O(depth²) on nested input — small crafted JSON blocks the event loop for seconds→minutes (DoS). CWE-407, Medium 6.2. Fixed in 3.5.0.
