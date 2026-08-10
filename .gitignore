@@ -3,3 +3,5 @@ _site
 .jekyll-metadata
 .superpowers/
 .gstack/
+Gemfile.lock
+_site_repro/
