@@ -1,7 +1,7 @@
 ---
 layout: post
 lang: tr
-title: "AI Orkestrasyonu, Bölüm 1: Bindiğim Daldaki Dört CVE"
+title: "AI Orchestration, Episode 1: Four CVEs in the Tree I Was Standing On"
 date: 2026-08-07
 permalink: /tr/ai-research/2026/08/07/four-cves-in-my-own-dependency-tree.html
 author: ataberk-xyz
@@ -15,7 +15,7 @@ ledger:
   impact: "event-loop DoS, process-level crash, bounded heap read"
   status: "PATCHED — re2 1.25.2, stream-json 3.5.0"
   method: "dependency-tree audit → orchestrated review + fuzzing"
-summary: "Kendi geliştirdiğim multi-agent review sistemi, kendi dependency tree'me — haftada toplam yaklaşık 12,1 milyon npm indirmesi olan re2 ve stream-json paketlerine — yöneltildi. Sonuçta kabul edilen dört advisory yayımlandı; bu yazı, sürecin bir bulguyu az kalsın elden çıkardığı anlar dahil, işin nasıl yürüdüğünün dürüst bir anlatısıdır."
+summary: "Kendi geliştirdiğim multi-agent review sistemini kendi dependency tree'me — haftada toplam yaklaşık 12,1 milyon npm indirmesi olan re2 ve stream-json paketlerine — yönelttim. Kabul edilen dört advisory çıktı; bu yazı, sürecin bir bulguyu az kalsın elden çıkardığı anlar dahil, işin nasıl yürüdüğünün dürüst bir anlatısı."
 ---
 
 > **Gösteri amaçlı örnekler yerine gerçek hedeflere uygulanan AI orkestrasyonu üzerine bir serinin 1. Bölümü.**
@@ -34,7 +34,7 @@ Atıfla ilgili bir not düşmek gerekir. re2 bulgularında hangi oturumun hangi 
 
 ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` üzerinde yirmi bir dakika boyunca meşguldü ve 2.5GB tutuyordu. Ne bir sanitizer raporu ne de bir crash vardı; dolayısıyla çalıştırma, yavaş bir testten ayırt edilemiyordu.
 
-Takılan process'in sample'lanması belirsizliği giderdi: stack, sıkı bir döngü içinde `WrappedRE2::Match` → `RE2::Match` → `DFA::Search` gösteriyordu. Nedeni `match.cc`'deki dört satırdır:
+Takılan process'in sample'lanması belirsizliği giderdi: stack, sıkı bir döngü içinde `WrappedRE2::Match` → `RE2::Match` → `DFA::Search` gösteriyordu. Nedeni `match.cc`'deki şu dört satır:
 
 ```cpp
 while (re2->regexp.Match(str, byteIndex, str.size, anchor, &match, 1)) {
@@ -54,9 +54,9 @@ const RE2 = require('re2');
 
 Yayınlanan binary'de bu, yaklaşık dört saniye içinde 736MB'tan 3.7GB'a çıkar ve süreci ancak dışarıdan gelen bir `SIGKILL` sonlandırır. Çağrı senkron ve native olduğu için thread'i tutar; bu nedenle `try`/`catch`, `AbortController` ve JS timer'larının tamamı işlevsiz kalır — timer'lar, tetiklenmek için hiç sıra bulamadıklarından. V8 aynı deseni 0ms'de işler.
 
-Bellek büyümesi, yüklü bir makinenin en kolay uydurabildiği ölçümdür; bu nedenle rakam tek başına kabul edilmedi. Orkestratör vakayı, boş string'i match edemeyen `a+` kontrolüne karşı yeniden çalıştırdı ve her process'i kendi resident set'i için sample'ladı: bug 3860MB'a tırmanırken kontrol 44MB'ta sabit kaldı. Orkestratör ayrıca döngüyü, en son yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan derlenmiş bir build üzerinde yeniden doğruladı. Dosyalama ve gönderim bana aitti.
+Bellek büyümesi, yüklü bir makinenin en kolay uydurabildiği ölçümdür; bu nedenle rakam tek başına kabul edilmedi. Orkestratör vakayı, boş string'i match edemeyen `a+` kontrolüne karşı yeniden çalıştırdı ve her process'in resident set'ini ayrı ayrı sample'ladı: bug 3860MB'a tırmanırken kontrol 44MB'ta sabit kaldı. Ayrıca döngüyü, en son yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan derlenmiş bir build üzerinde yeniden doğruladı. Dosyalama ve gönderim bana aitti.
 
-node-re2 bu vakayı başka yerlerde zaten ele alır. Üç yol bir subject boyunca cursor ile ilerler: `split.cc` zero-width match'te bir code point ilerler, `exec` ise `lastIndex` üzerinden ilerler. Guard'ı yalnızca global `Match` yolu atlar. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
+node-re2 bu vakayı başka yerlerde zaten ele alır. Üç yol bir subject'i cursor ile kat eder: `split.cc` zero-width match'te bir code point ilerler, `exec` ise `lastIndex` üzerinden ilerler. Guard'ı yalnızca global `Match` yolu atlar. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
 
 > **Ders: aynı yapıyı kat eden alternatif yollar tek tek incelenmelidir.** Bir yapı birden fazla yerde kat ediliyorsa, bu yolların advance ve termination logic'leri karşılaştırılmalıdır. Diğer yolların taşıdığı guard'ı taşımayan yol, bug'ın bulunduğu yoldur; sıfır uzunluklu elemanlar da bunun klasik tetikleyicisidir.
 
@@ -64,7 +64,7 @@ node-re2 bu vakayı başka yerlerde zaten ele alır. Üç yol bir subject boyunc
 
 ### Bir character index'ini doğrulayan byte uzunluğu
 
-Fuzzer ikinci bug'ı bulmadı, bulamazdı da. Ona ulaşmak, `re.lastIndex`'in belirli ve yanlış bir değere set edilmesini gerektirir; rastgele girdi üreten bir mekanizmanın o property'ye dokunmak için hiçbir nedeni yoktur. byte-character dönüşüm aritmetiğinin okunması, bug'ı dakikalar içinde yerine oturttu.
+Fuzzer ikinci bug'ı bulmadı, bulamazdı da. Ona ulaşmak, `re.lastIndex`'in belirli ve yanlış bir değere set edilmesini gerektirir; rastgele girdi üreten bir mekanizmanın o property'ye dokunmak için hiçbir nedeni yoktur. byte-character dönüşüm aritmetiğini okumak bug'ı dakikalar içinde ortaya çıkardı.
 
 `lastIndex` kullanıcı tarafından herhangi bir pozitif tam sayıya set edilebilir. `prepareArgument`, subject'in **UTF-8 byte** sayısını uzunluk olarak saklar; `setIndex` ise kullanıcının **UTF-16** index'ini bu byte sayısına karşı doğrular. ASCII olmayan her subject'te byte sayısı character sayısını aştığından, ikisinin arasına düşen bir index doğrulamadan geçer. Ardından `getUtf16PositionByCounter` o kadar character'ı buffer boyunca hiçbir bounds check yapmadan kat eder.
 
@@ -87,7 +87,7 @@ Bu, kümedeki orkestrasyon açısından en zayıf vakadır ve olduğu gibi ifade
 
 ### Replace'te process seviyesinde bir abort
 
-Bir crash-fuzzer üçüncü bug'a yaklaşık 150 vaka içinde ulaştı; gerçek binary'yi exit 134 için izliyordu. Onu yeniden üretmek iki nedenle epeyce daha uzun sürdü. PRNG `process.pid`'den seed'leniyordu, dolayısıyla hiçbir çalıştırma bir öncekini replay etmedi. Crash log'u da, crash 89KB'lik girdi gerektirirken girdiyi 400 character'da kesiyordu; arıza girdi-*boyutuna* bağlıydı ve boyut tam da atılmıştı. Minimize etme de benzer şekilde yanıltıcıydı: emoji, named group'lar ve sticky flag'in hepsi olmazsa olmaz gibi görünüyordu, hiçbiri değildi.
+Bir crash-fuzzer üçüncü bug'a yaklaşık 150 vaka içinde ulaştı; gerçek binary'yi exit 134 için izliyordu. Onu yeniden üretmek iki nedenle epeyce daha uzun sürdü. PRNG `process.pid`'den seed'leniyordu, dolayısıyla hiçbir çalıştırma bir öncekini replay etmedi. Crash log'u da, crash 89KB'lik girdi gerektirirken girdiyi 400 character'da kesiyordu; arıza girdinin *boyutuna* bağlıydı ve atılan şey tam da boyuttu. Minimize etme de benzer şekilde yanıltıcıydı: emoji, named group'lar ve sticky flag'in hepsi olmazsa olmaz gibi görünüyordu, hiçbiri değildi.
 
 Minimize edilmiş vaka tek satırdır:
 
@@ -95,7 +95,7 @@ Minimize edilmiş vaka tek satırdır:
 "a".repeat(50000).replace(new RE2("a", "g"), "$'");   // SIGABRT
 ```
 
-`WrappedRE2::Replace`, bir string `String::kMaxLength`'i aştığında V8'in döndürdüğü boş `MaybeLocal`'ı kontrol etmeden `.ToLocalChecked()` çağırır. Çıktıyı büyüten bir template — `$'` ya da `` $` `` — çıktıyı O(input²)'ye şişirir; sınır aşıldığında sonuç `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` ve **SIGABRT** olur — bir JavaScript exception'ı değil, process seviyesinde bir abort; bu nedenle `try`/`catch` onu tutamaz. 30k geçer, 40k crash olur; bu da N²/2'nin 536M'yi geçtiği noktadır.
+`WrappedRE2::Replace`, bir string `String::kMaxLength`'i aştığında V8'in döndürdüğü boş `MaybeLocal`'ı kontrol etmeden `.ToLocalChecked()` çağırır. Çıktıyı büyüten bir template — `$'` ya da `` $` `` — onu O(input²)'ye şişirir; sınır aşıldığında sonuç `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` ve **SIGABRT** olur — bir JavaScript exception'ı değil, process seviyesinde bir abort; bu nedenle `try`/`catch` onu tutamaz. 30k geçer, 40k crash olur; bu da N²/2'nin 536M'yi geçtiği noktadır.
 
 Bunu belgelenmiş bir sınır değil de bir bug yapan şey karşılaştırmadır: aynı girdide native engine yakalanabilir bir `RangeError` fırlatır, re2 ise abort eder. Orkestratör minimize edilmiş vakayı hem o günkü güncel yayımlanan sürümün temiz bir kurulumunda hem de deponun kendi sürümünde yeniden üretti ve abort'un kendi ağacıma özgü olmadığını doğruladı. C++ kaynak-denetim ajanları bu hedef için sıraya alınmıştı ama hiç dispatch edilmedi, çünkü fuzzing oraya önce ulaştı. CVE-2026-71430, CWE-617, Medium 6.2.
 
@@ -118,9 +118,9 @@ Bunu belgelenmiş bir sınır değil de bir bug yapan şey karşılaştırmadır
 
 Her katlamada yaklaşık 4×; beklenen eğri. Bir-iki megabyte dakikalara ulaşır. Çözüm ucuzdur: birleştirilmiş path cache'lenir ve push ile pop'ta güncellenir.
 
-Bug hayatta kaldı çünkü maliyeti *yapının* bir fonksiyonudur, oysa input guard'ları *byte'a* göre yazılır. 360KB'lik bir payload, endpoint'i koruyan size limiti her neyse onu geçer ve o yol boyunca derinliği sınırlayan hiçbir şey yoktur.
+Bu bug, maliyeti *yapının* bir fonksiyonu olduğu, input guard'ları ise *byte'a* göre yazıldığı için ayakta kaldı. 360KB'lik bir payload, endpoint'i koruyan size limiti her neyse onu geçer ve o yol boyunca derinliği sınırlayan hiçbir şey yoktur.
 
-İş bölümü en net burada görünür. Orkestratör filtre kodunu okudu ve taşınabilir bir proof of concept'i temiz bir `stream-json@3.4.0`'a karşı yeniden çalıştırdı; bu, tek bir şüpheli zamanlama değil, yukarıdaki tabloyu üretti. Severity'i belirledim ve raporu 7.5 High olarak gönderdim; maintainer Medium 6.2 olarak yayımladı ve düşük skor savunulabilir, çünkü erişilebilirlik, derecelendirmemin hesaba katmadığı bir biçimde saldırgan kontrolündeki bir dokümana bağlıdır. CVE-2026-71429, CWE-407.
+Roller burada en belirgin biçimde ayrışır. Orkestratör filtre kodunu okudu ve taşınabilir bir proof of concept'i temiz bir `stream-json@3.4.0`'a karşı yeniden çalıştırdı; bu, tek bir şüpheli zamanlama değil, yukarıdaki tabloyu üretti. Severity'i belirledim ve raporu 7.5 High olarak gönderdim; maintainer Medium 6.2 olarak yayımladı ve düşük skor savunulabilir, çünkü erişilebilirlik, derecelendirmemin hesaba katmadığı bir biçimde saldırgan kontrolündeki bir dokümana bağlıdır. CVE-2026-71429, CWE-407.
 
 > **Ders: maliyet modelinin hangi boyutta olduğu kontrol edilmelidir.** Pahalı olan nicelik, validator'ların sınırladığı nicelik değilse, o validator'lar süsten ibarettir.
 
@@ -128,7 +128,7 @@ Bug hayatta kaldı çünkü maliyeti *yapının* bir fonksiyonudur, oysa input g
 
 ### Bir ders daha
 
-**Engine'i değil, marshalling layer'ını denetleyin.** re2, ReDoS'tan *kaçınmak için* kurulur ve tam da bu itibar, onun elle yazılmış C++ N-API layer'ının incelenmemesinin nedenidir. Engine çekirdeği sağlam durdu. Bütün bug'lar binding'deydi; wrapper orada, engine'in önlemek için var olduğu sınıfı yeniden ortaya çıkarıyordu. Bu, runtime'lar arasında saldırgan kontrolündeki string'leri marshal eden her FFI ya da WASM layer'ı için genellenebilir.
+**Engine'i değil, marshalling layer'ını denetleyin.** re2, ReDoS'tan *kaçınmak için* kurulur; elle yazılmış C++ N-API layer'ının hiç incelenmemesi de işte bu itibardan ileri gelir. Engine çekirdeği sağlam durdu. Bütün bug'lar binding'deydi; wrapper orada, engine'in önlemek için var olduğu sınıfı yeniden ortaya çıkarıyordu. Bu, runtime'lar arasında saldırgan kontrolündeki string'leri marshal eden her FFI ya da WASM layer'ı için genellenebilir.
 
 ### İş bölümü
 
@@ -140,6 +140,6 @@ Skor tablosu da buna göre mütevazıdır. Dört bulgunun dördü Medium, dörd�
 
 ### Egzersizin ürettikleri
 
-Dördü de upstream'de yamalanmış dört advisory; hepsi de bakmadan çok önce zaten ağacımda olan paketlerde. Bu son kısım, dört CVE tanımlayıcısından daha uzun ömürlü bulgudur: `re2`'yi tam da güvenli seçim olduğu için kurmuştum ve düzeltmeye ihtiyaç duyan binding layer'a sahip bileşen o çıktı. Bir dependency, itibarı iyi olduğu için denetlenmez; biri oturup okuduğu için denetlenir.
+Dördü de upstream'de yamalanmış dört advisory; hepsi de bakmadan çok önce zaten ağacımda olan paketlerde. Asıl kalıcı bulgu, dört CVE tanımlayıcısından daha uzun ömürlüdür ve tek cümleye sığar: bir dependency, itibarı iyi olduğu için denetlenmez; biri oturup okuduğu için denetlenir.
 
 Yöntem hedeften daha uzağa taşındı. Her iki re2 bug'ı da, codebase'i bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerindeki guard'ı taşımıyor* ve *bu validator, consumer'ın kat ettiği şeye kıyasla hangi birimi ölçüyor*. stream-json bug'ı da aynı alışkanlığın maliyete uygulanmış hâlinden geldi — pahalı olan nicelik, herhangi bir şeyin sınırladığı nicelik değildi. Bu sorular taşınır; belirli bug'lar taşınmaz.
