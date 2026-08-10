@@ -18,7 +18,7 @@ summary: "I pointed my own multi-agent review system at my own dependency tree â
 
 > **Episode 1 of a series on AI orchestration applied to real targets rather than demonstrations.**
 
-### The question
+### The starting point
 
 The result first. Four findings in two npm packages that carry roughly **12.1M downloads a week** between them, all four accepted by the maintainer, published and patched. All four are rated Medium, and all four are denial-of-service class.
 

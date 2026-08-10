@@ -20,7 +20,7 @@ summary: "Kendi geliştirdiğim multi-agent review sistemi, kendi dependency tre
 
 > **Gösteri amaçlı örnekler yerine gerçek hedeflere uygulanan AI orkestrasyonu üzerine bir serinin 1. Bölümü.**
 
-### Soru
+### Başlangıç noktası
 
 Bu çalışmada, haftalık toplam indirme hacmi yaklaşık 12,1 milyon olan iki npm paketinde (re2, stream-json) dört güvenlik zafiyeti tespit edilmiştir. Bulguların tamamı maintainer tarafından doğrulanmış, advisory'leri yayımlanmış ve ilgili sürümlerde yamalanmıştır. Dört bulgu da Medium önem derecesinde olup denial-of-service sınıfındadır.
 
