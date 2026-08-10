@@ -1,0 +1,17 @@
+{%- comment -%}
+  Prints the URL of include.post's counterpart in the other language, or
+  nothing. Pairing key: identical filename in _posts/ and _tr/. Output has
+  no baseurl prefix; callers capture and strip (see post.html, head.html).
+{%- endcomment -%}
+{%- assign tu_name = include.post.path | split: "/" | last -%}
+{%- if include.post.lang == "tr" -%}
+  {%- for tu_p in site.posts -%}
+    {%- assign tu_pname = tu_p.path | split: "/" | last -%}
+    {%- if tu_pname == tu_name -%}{{ tu_p.url }}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- for tu_d in site.tr -%}
+    {%- assign tu_dname = tu_d.path | split: "/" | last -%}
+    {%- if tu_dname == tu_name -%}{{ tu_d.url }}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
