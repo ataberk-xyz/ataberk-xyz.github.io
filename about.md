@@ -52,7 +52,7 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
   <tbody>
     <tr>
       <td>install-artifact-from-github</td>
-      <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">GHSA-88q3-gch3-5396</a></td>
+      <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">CVE-2026-73864</a></td>
       <td><span class="sv sv-high">HIGH 7.5</span></td>
       <td><span class="cwe">CWE-494</span> native addon downloaded over the network and loaded with no integrity check → install-time RCE</td>
     </tr>
@@ -82,7 +82,7 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
     </tr>
     <tr>
       <td>Kentico CMS</td>
-      <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a></td>
+      <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a> · <a href="https://gist.github.com/ataberk-xyz/54a783f6bbd4e7b213c1680a84cc290a">PoC</a></td>
       <td><span class="sv sv-med">MEDIUM 5.4</span></td>
       <td><span class="cwe">CWE-434</span> upload whose Content-Type disagrees with its extension → stored XSS (≤ 12.0.49). Fixed in 12.0.50</td>
     </tr>
