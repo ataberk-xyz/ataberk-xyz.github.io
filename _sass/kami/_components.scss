@@ -352,10 +352,17 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
     border-radius: 2px;
     white-space: nowrap;
   }
-  .at-status.accepted { color: var(--code-bg); background: #7FB88A; }
-  .at-status.sealed    { color: var(--ink-3); background: var(--code-border); }
+  .at-status.accepted  { color: var(--code-bg); background: #7FB88A; }
+  .at-status.embargoed { color: var(--ink-3); background: var(--code-border); }
   .at-file { color: var(--code-fg); }
   .at-desc { color: var(--ink-3); }
+  .at-redact {
+    display: inline-block;
+    background: var(--ink-4);
+    color: var(--ink-4);
+    border-radius: 2px;
+    user-select: none;
+  }
 
   .at-fm { margin: 0.6rem 0 0.3rem; }
   .at-rule { color: var(--ink-4); }
@@ -364,6 +371,7 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
   .at-val.dim { color: var(--ink-3); }
   .at-val.sev-med  { color: var(--sev-med); }
   .at-val.sev-high { color: var(--sev-high); font-weight: 700; }
+  .at-val.withheld { color: var(--ink-4); font-style: italic; }
   .at-fm a { color: var(--accent-warn); text-decoration: none; border-bottom: 1px dotted var(--accent-warn); }
 
   .at-cursor {

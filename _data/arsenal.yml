@@ -1,8 +1,12 @@
-# Arsenal page entries — one per accepted, published advisory that has a
-# public PoC gist. Do NOT add an entry until both the advisory is published
-# AND the gist is public (not secret/embargoed) — see docs/superpowers for
-# the embargo rule. New entries just append here; the page and terminal
-# component render straight from this list.
+# Arsenal page entries. status: accepted = advisory published AND the PoC
+# gist is public — render normally. status: embargoed = advisory is
+# published (so target/advisory/severity/impact below ARE real, public
+# info) but the PoC gist itself is still secret/withheld — render redacted
+# (desc blacked out, no poc_url/poc_label, cat output says withheld).
+# Do NOT add an embargoed entry for a finding whose ADVISORY isn't public
+# yet (unpublished/draft/triage) — that's a different, unsafe case; don't
+# tease an unfixed bug. New entries just append here; the page and
+# terminal component render straight from this list.
 - file: cve-2026-71429.md
   status: accepted
   desc: "stream-json — O(depth²) path filters block the event loop"
@@ -27,6 +31,17 @@
   status_line: "FIXED — 1.25.1"
   poc_url: "https://gist.github.com/ataberk-xyz/a80e56d278351af58b7ac22a0c6d47a7"
   poc_label: "gist.github.com/ataberk-xyz/a80e56d…"
+- file: cve-2026-73864.md
+  status: embargoed
+  redact: true
+  desc: "████████████████████████████████████"
+  target: "install-artifact-from-github ≤ 1.6.0"
+  advisory: "CVE-2026-73864 · CWE-494"
+  advisory_url: "https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396"
+  severity: "HIGH 7.5"
+  severity_class: "sev-high"
+  impact: "network-downloaded native .node has no integrity check → install-time RCE"
+  status_line: "FIXED — 1.7.0"
 - file: cve-2026-67550.md
   status: accepted
   desc: "node-re2 — OOB heap read via lastIndex on non-ASCII subject"

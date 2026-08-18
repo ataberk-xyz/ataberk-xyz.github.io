@@ -3,6 +3,13 @@
   session. Server-renders the listing + first entry so it's crawlable with
   no JS; the inline script below re-renders on click for the clear+switch
   interaction, reading the same data via json filter (single source).
+
+  Entry status values:
+  - accepted:  advisory published, PoC gist public -> render normally.
+  - embargoed: advisory published (so its fields ARE public info) but the
+    PoC gist is still secret/withheld -> desc renders redacted, poc line
+    reads "withheld" instead of a link. See _data/arsenal.yml's header
+    comment for the rule on what's safe to mark embargoed.
 {%- endcomment -%}
 {%- assign entries = site.data.arsenal -%}
 <div class="arsenal-term">
@@ -12,7 +19,11 @@
   <div class="at-row" data-i="{{ forloop.index0 }}">
     <span class="at-status {{ e.status }}">{{ e.status }}</span>
     <span class="at-file">{{ e.file }}</span>
+    {%- if e.redact -%}
+    <span class="at-desc at-redact">{{ e.desc }}</span>
+    {%- else -%}
     <span class="at-desc">{{ e.desc }}</span>
+    {%- endif -%}
   </div>
   {%- endfor -%}
   <br>
@@ -25,7 +36,11 @@
     <span class="at-key">severity:</span> <span class="at-val {{ first.severity_class }}">{{ first.severity }}</span><br>
     <span class="at-key">impact:</span> <span class="at-val">{{ first.impact }}</span><br>
     <span class="at-key">status:</span> <span class="at-val dim">{{ first.status_line }}</span><br>
+    {%- if first.poc_url -%}
     <span class="at-key">poc:</span> <a href="{{ first.poc_url }}">→ {{ first.poc_label }}</a><br>
+    {%- else -%}
+    <span class="at-key">poc:</span> <span class="at-val withheld">— withheld, pending release —</span><br>
+    {%- endif -%}
     <span class="at-rule">---</span>
   </div>
   <div class="at-prompt" style="margin-top:.4rem"><span class="at-who">ataberk</span><span class="at-sym">@</span><span class="at-host">arsenal</span><span class="at-sym">:~$</span> <span class="at-cursor"></span></div>
@@ -42,20 +57,26 @@
 
   function lsHTML(){
     return entries.map(function(e, i){
+      var descHTML = e.redact
+        ? '<span class="at-desc at-redact">' + esc(e.desc) + '</span>'
+        : '<span class="at-desc">' + esc(e.desc) + '</span>';
       return '<div class="at-row' + (i===active?' active':'') + '" data-i="' + i + '">' +
         '<span class="at-status ' + e.status + '">' + e.status + '</span>' +
         '<span class="at-file">' + esc(e.file) + '</span>' +
-        '<span class="at-desc">' + esc(e.desc) + '</span></div>';
+        descHTML + '</div>';
     }).join('');
   }
   function fmHTML(e){
+    var pocHTML = e.poc_url
+      ? '<span class="at-key">poc:</span> <a href="' + e.poc_url + '">→ ' + esc(e.poc_label) + '</a><br>'
+      : '<span class="at-key">poc:</span> <span class="at-val withheld">— withheld, pending release —</span><br>';
     return '<div class="at-fm"><span class="at-rule">---</span><br>' +
       '<span class="at-key">target:</span> <span class="at-val">' + esc(e.target) + '</span><br>' +
       '<span class="at-key">advisory:</span> <a href="' + e.advisory_url + '">' + esc(e.advisory) + '</a><br>' +
       '<span class="at-key">severity:</span> <span class="at-val ' + e.severity_class + '">' + esc(e.severity) + '</span><br>' +
       '<span class="at-key">impact:</span> <span class="at-val">' + esc(e.impact) + '</span><br>' +
       '<span class="at-key">status:</span> <span class="at-val dim">' + esc(e.status_line) + '</span><br>' +
-      '<span class="at-key">poc:</span> <a href="' + e.poc_url + '">→ ' + esc(e.poc_label) + '</a><br>' +
+      pocHTML +
       '<span class="at-rule">---</span></div>';
   }
   function promptHTML(cmd){
