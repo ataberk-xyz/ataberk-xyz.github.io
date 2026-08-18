@@ -58,25 +58,25 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
     </tr>
     <tr>
       <td>stream-json</td>
-      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">CVE-2026-71429</a></td>
+      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">CVE-2026-71429</a> · <a href="https://gist.github.com/ataberk-xyz/f0ec3110ea3a6a648b782c4ed1501a48">PoC</a></td>
       <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-407</span> quadratic path filters → a small nested JSON blocks the event loop. Fixed in 3.5.0</td>
     </tr>
     <tr>
       <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a> · <a href="https://gist.github.com/ataberk-xyz/db45c80f4e60d4fad3b7ee30a4c7e3f4">PoC</a></td>
       <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-835</span> zero-width global match never advances → infinite loop, unbounded native memory. Fixed in 1.25.2</td>
     </tr>
     <tr>
       <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a> · <a href="https://gist.github.com/ataberk-xyz/09c4f0675b592f30764bfabcc258eece">PoC</a></td>
       <td><span class="sv sv-med">MEDIUM 5.7</span></td>
       <td><span class="cwe">CWE-125</span> attacker-influenced <code>lastIndex</code> on a non-ASCII subject → out-of-bounds heap read, uncatchable crash</td>
     </tr>
     <tr>
       <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">CVE-2026-71430</a></td>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">CVE-2026-71430</a> · <a href="https://gist.github.com/ataberk-xyz/a80e56d278351af58b7ac22a0c6d47a7">PoC</a></td>
       <td><span class="sv sv-med">MEDIUM 6.2</span></td>
       <td><span class="cwe">CWE-617</span> <code>replace</code> with an output-amplifying template aborts Node past V8's max string length</td>
     </tr>

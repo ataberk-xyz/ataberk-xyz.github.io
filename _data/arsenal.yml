@@ -3,6 +3,54 @@
 # AND the gist is public (not secret/embargoed) — see docs/superpowers for
 # the embargo rule. New entries just append here; the page and terminal
 # component render straight from this list.
+- file: cve-2026-71429.md
+  status: accepted
+  desc: "stream-json — O(depth²) path filters block the event loop"
+  target: "stream-json ≤ 3.4.0"
+  advisory: "CVE-2026-71429 · CWE-407"
+  advisory_url: "https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x"
+  severity: "MEDIUM 6.2"
+  severity_class: "sev-med"
+  impact: "small nested JSON blocks the event loop for seconds→minutes"
+  status_line: "FIXED — 3.5.0"
+  poc_url: "https://gist.github.com/ataberk-xyz/f0ec3110ea3a6a648b782c4ed1501a48"
+  poc_label: "gist.github.com/ataberk-xyz/f0ec311…"
+- file: cve-2026-71430.md
+  status: accepted
+  desc: "node-re2 — process abort in Replace"
+  target: "node-re2 ≤ 1.24.1"
+  advisory: "CVE-2026-71430 · CWE-617"
+  advisory_url: "https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp"
+  severity: "MEDIUM 6.2"
+  severity_class: "sev-med"
+  impact: "output-amplifying replace() aborts the process (SIGABRT)"
+  status_line: "FIXED — 1.25.1"
+  poc_url: "https://gist.github.com/ataberk-xyz/a80e56d278351af58b7ac22a0c6d47a7"
+  poc_label: "gist.github.com/ataberk-xyz/a80e56d…"
+- file: cve-2026-67550.md
+  status: accepted
+  desc: "node-re2 — OOB heap read via lastIndex on non-ASCII subject"
+  target: "node-re2 ≤ 1.25.1"
+  advisory: "CVE-2026-67550 · CWE-125"
+  advisory_url: "https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj"
+  severity: "MEDIUM 5.7"
+  severity_class: "sev-med"
+  impact: "attacker-influenced lastIndex → uncatchable crash (SIGSEGV)"
+  status_line: "FIXED — 1.25.2"
+  poc_url: "https://gist.github.com/ataberk-xyz/09c4f0675b592f30764bfabcc258eece"
+  poc_label: "gist.github.com/ataberk-xyz/09c4f06…"
+- file: cve-2026-68499.md
+  status: accepted
+  desc: "node-re2 — global match infinite loop, unbounded memory"
+  target: "node-re2 ≤ 1.25.1"
+  advisory: "CVE-2026-68499 · CWE-835"
+  advisory_url: "https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836"
+  severity: "MEDIUM 6.2"
+  severity_class: "sev-med"
+  impact: "zero-width match never advances → infinite loop"
+  status_line: "FIXED — 1.25.2"
+  poc_url: "https://gist.github.com/ataberk-xyz/db45c80f4e60d4fad3b7ee30a4c7e3f4"
+  poc_label: "gist.github.com/ataberk-xyz/db45c80…"
 - file: cve-2019-19493.md
   status: accepted
   desc: "Kentico CMS — stored XSS via avatar upload"
