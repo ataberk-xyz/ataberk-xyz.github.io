@@ -62,8 +62,6 @@ Sonuç önce. Bir dependency chain içindeki üç npm paketinde beş bulgu; heps
 
 Çalışmanın kapsamı dar bir soruyla belirlendi: yalnızca kendi kodum üzerinde kullanılan multi-agent code-review sistemi [gossipcat](https://github.com/gossipcat-ai/gossipcat-ai), kurulu bağımlılıklara yöneltildiğinde ne bulur? İnceleme zinciri deponun node_modules dizininde doğrulanabilir durumdaydı: gossipcat → re2 (^1.25.0) → install-artifact-from-github. re2'nin seçilme gerekçesi önemlidir: regular-expression denial-of-service riskine karşı kurulan bir paketin binding layer'ı, tam da bu itibarı nedeniyle incelenmeye değerdi. stream-json, her iki paketin de maintainer'ı olan Eugene Lazutkin (uhop) üzerinden kapsama girdi — zincir bir adım daha ileri gitti, re2'nin kendi native-binary fetch işini sessizce devrettiği install-artifact-from-github'a kadar.
 
-Atıfla ilgili bir not düşmek gerekir. re2 bulgularında hangi oturumun hangi zafiyeti ortaya çıkardığı kayıtlarımda ayırt edilememektedir; bu ayrımı sonradan yeniden kurmaya çalışmayacağım. Aşağıda iki rol yer almaktadır: işi dispatch eden ve doğrulayan orkestratör ile ben. Aşağıdaki sıralama yukarıdaki zincire göre değil, her advisory'nin gerçekte açıldığı zamana göre.
-
 ---
 
 ### stream-json'da quadratic path yeniden hesabı

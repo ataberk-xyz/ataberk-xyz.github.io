@@ -60,8 +60,6 @@ The result first. Five findings across three npm packages in one dependency chai
 
 The question that produced them was narrow. I was building [gossipcat](https://github.com/gossipcat-ai/gossipcat-ai), a multi-agent code-review server, and it had only ever been pointed at code I had written. I wanted to know what it would do against the code I install. The chain was verifiable in the repository's own `node_modules`: `gossipcat → re2 (^1.25.0) → install-artifact-from-github`. re2 is the package installed specifically to **avoid** regular-expression denial of service, which is what made its binding layer worth examining. stream-json came in through the maintainer rather than the tree, since Eugene Lazutkin (`uhop`) also maintains it — and the chain went one hop further, into `install-artifact-from-github` itself, the package re2 delegates its own native-binary fetch to.
 
-One note on attribution. For the re2 findings my records do not identify which session surfaced which bug, and I will not reconstruct that after the fact. Two roles appear below: the orchestrator, which dispatched work and verified it, and me. What follows is ordered by when each advisory was actually opened, not by the chain above.
-
 ---
 
 ### Quadratic path recomputation in stream-json
