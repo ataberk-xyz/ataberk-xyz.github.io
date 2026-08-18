@@ -2,8 +2,8 @@
 layout: post
 lang: tr
 title: "AI Orchestration, Episode 1: Five CVEs in the Tree I Was Standing On"
-date: 2026-08-07
-permalink: /tr/ai-research/2026/08/07/five-cves-in-my-own-dependency-tree.html
+date: 2026-08-19
+permalink: /tr/ai-research/2026/08/19/five-cves-in-my-own-dependency-tree.html
 author: ataberk-xyz
 categories: [ai-research]
 tags: [orchestration, gossipcat, npm, cve, fuzzing, supply-chain]
