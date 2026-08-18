@@ -6,10 +6,6 @@ categories: [ai-research]
 tags: [orchestration, gossipcat, npm, cve, fuzzing, supply-chain]
 ledger:
   target: "re2 (node-re2) · stream-json · install-artifact-from-github — ~13.4M downloads/week combined"
-  severity: "HIGH 7.5"
-  vector: "CWE-407 · CWE-617 · CWE-494 · CWE-125 · CWE-835"
-  advisory: "CVE-2026-71429 · 71430 · 73864 · 67550 · 68499"
-  impact: "event-loop DoS, process-level crash, install-time RCE, bounded heap read"
   status: "PATCHED — re2 1.25.2, stream-json 3.5.0, install-artifact-from-github 1.7.0"
   method: "dependency-tree audit → orchestrated review + fuzzing"
 summary: "I pointed my own multi-agent review system at my own dependency tree — re2, stream-json, and the installer re2 delegates its own binary fetch to. Five accepted advisories came out, one of them install-time code execution, and this is the honest account of how, in the order things were actually found, including the parts where the process nearly threw a finding away."
@@ -17,6 +13,46 @@ summary: "I pointed my own multi-agent review system at my own dependency tree �
 ---
 
 > **Episode 1 of a series on AI orchestration applied to real targets rather than demonstrations.**
+
+<div class="adv-wrap">
+<table class="adv">
+  <thead>
+    <tr><th>Advisory</th><th>Package</th><th>Severity</th><th>Impact</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">CVE-2026-71429</a></td>
+      <td>stream-json</td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
+      <td><span class="cwe">CWE-407</span> event-loop DoS</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">CVE-2026-71430</a></td>
+      <td>node-re2</td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
+      <td><span class="cwe">CWE-617</span> process abort</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">CVE-2026-73864</a></td>
+      <td>install-artifact-from-github</td>
+      <td><span class="sv sv-high">HIGH 7.5</span></td>
+      <td><span class="cwe">CWE-494</span> install-time RCE</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a></td>
+      <td>node-re2</td>
+      <td><span class="sv sv-med">MEDIUM 5.7</span></td>
+      <td><span class="cwe">CWE-125</span> OOB read / crash</td>
+    </tr>
+    <tr>
+      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a></td>
+      <td>node-re2</td>
+      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
+      <td><span class="cwe">CWE-835</span> infinite loop / memory DoS</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ### The starting point
 
