@@ -11,10 +11,10 @@ ledger:
   target: "re2 (node-re2) · stream-json · install-artifact-from-github — toplamda haftada ~13,4M indirme"
   status: "PATCHED — re2 1.25.2, stream-json 3.5.0, install-artifact-from-github 1.7.0"
   method: "dependency-tree audit → orchestrated review + fuzzing"
-summary: "Kendi geliştirdiğim multi-agent review sistemini kendi dependency tree'me yönelttim — re2, stream-json ve re2'nin kendi binary fetch işini devrettiği installer. Beşi de kabul edilen advisory olarak çıktı, biri install-time code execution; bu yazı da, gerçekte bulundukları sırayla, sürecin bir bulguyu az kalsın elden çıkardığı anlar dahil, işin nasıl yürüdüğünün dürüst bir anlatısı."
+summary: "Kendi yazdığım multi-agent review sistemini bu sefer kendi dependency tree'me çevirdim — hedefte re2, stream-json, bir de re2'nin binary indirme işini devrettiği installer vardı. Sonuçta beş advisory kabul edildi, biri install-time code execution kadar ciddiydi. Bu yazı bulguları gerçekten bulunma sırasıyla anlatıyor; bir bulguyu neredeyse çöpe atacağımız anlar dahil, işin perde arkasının dürüst bir dökümü."
 ---
 
-> **Gösteri amaçlı örnekler yerine gerçek hedeflere uygulanan AI orkestrasyonu üzerine bir serinin 1. Bölümü.**
+> **Bir serinin 1. Bölümü: AI orkestrasyonunu vitrin örnekleri yerine gerçek hedeflere uyguluyoruz.**
 
 <div class="adv-wrap">
 <table class="adv">
@@ -58,17 +58,17 @@ summary: "Kendi geliştirdiğim multi-agent review sistemini kendi dependency tr
 
 ### Başlangıç noktası
 
-Sonuç önce. Bir dependency chain içindeki üç npm paketinde beş bulgu; hepsi maintainer tarafından kabul edildi, yayımlandı ve yamalandı. Dördü, denetlemeye çıktığım iki pakette, Medium seviyede ve denial-of-service sınıfında. İstisna High — regex engine'de değil, onu getiren tooling'de bulunan bir install-time code execution bug'ı.
+Önce sonucu söyleyeyim: bir dependency chain'deki üç npm paketinde toplam beş bulgu çıktı, hepsi maintainer tarafından kabul edilip yayımlandı ve yamalandı. Dördü, asıl denetlemeyi planladığım iki pakette — Medium seviyede, denial-of-service sınıfında. Beşincisi ise kuralı bozuyor: High seviyede, üstelik regex engine'in kendisinde değil, onu getiren tooling'de çıkan bir install-time code execution açığı.
 
-Çalışmanın kapsamı dar bir soruyla belirlendi: yalnızca kendi kodum üzerinde kullanılan multi-agent code-review sistemi [gossipcat](https://github.com/gossipcat-ai/gossipcat-ai), kurulu bağımlılıklara yöneltildiğinde ne bulur? İnceleme zinciri deponun node_modules dizininde doğrulanabilir durumdaydı: gossipcat → re2 (^1.25.0) → install-artifact-from-github. re2'nin seçilme gerekçesi önemlidir: regular-expression denial-of-service riskine karşı kurulan bir paketin binding layer'ı, tam da bu itibarı nedeniyle incelenmeye değerdi. stream-json, her iki paketin de maintainer'ı olan Eugene Lazutkin (uhop) üzerinden kapsama girdi — zincir bir adım daha ileri gitti, re2'nin kendi native-binary fetch işini sessizce devrettiği install-artifact-from-github'a kadar.
+İşin çıkış noktası tek bir soruydu: gossipcat — şimdiye kadar yalnızca kendi yazdığım kodu incelemiş olan multi-agent code-review sistemim — kurulu bağımlılıklara yöneltilirse ne bulur? Zincir, deponun node_modules'ünde gayet net görünüyordu: gossipcat → re2 (^1.25.0) → install-artifact-from-github. re2'yi seçmemin özel bir sebebi vardı: paket, regular-expression denial-of-service riskinden tam olarak kaçınmak için kuruluyor, binding layer'ının hiç incelenmemiş olması da tam olarak bu itibardan kaynaklanıyordu. stream-json ise farklı bir yoldan girdi kapsama — her iki paketin maintainer'ı da aynı kişi, Eugene Lazutkin (uhop). Zincir orada da durmadı, bir adım daha ileri gitti: re2'nin native-binary indirme işini sessizce devrettiği install-artifact-from-github'a kadar uzandı.
 
 ---
 
 ### stream-json'da quadratic path yeniden hesabı
 
-360KB'lik bir doküman bir event loop'u on iki saniye boyunca bloke etti. İçeriği sıradandı: birkaç bin kez tekrarlanan `{"meta":`, bir `1` ve bunlara karşılık gelen kapanış parantezleri. Verildiği filtreyle hiçbir zaman match etmedi.
+360KB'lik sıradan bir doküman, bir event loop'u tam on iki saniye kilitledi. İçeriğinde göz alıcı hiçbir şey yoktu: `{"meta":` birkaç bin kez tekrarlanmış, bir `1`, bir de karşılık gelen kapanış parantezleri. Üstelik verildiği filtreyle hiçbir zaman eşleşmedi bile.
 
-`stream-json`'ın path filtreleri — `pick`, `ignore`, `filter`, `replace` — kontrol edilebilir her token'da `stack.join(separator)`'ı baştan hesaplar. `stack.length` nesting depth olduğundan, D derinliğindeki bir doküman O(D²) maliyet çıkarır. Etkilenen yüzey, belgelenmiş birincil API'dir: `pick({filter: 'data'})`.
+Sebep şu: `stream-json`'ın path filtreleri — `pick`, `ignore`, `filter`, `replace` — kontrol ettikleri her token'da `stack.join(separator)`'ı sıfırdan yeniden hesaplıyor. `stack.length` doğrudan nesting depth'e karşılık geldiğinden, D derinliğindeki bir doküman O(D²) maliyete çıkıyor. Hem de bu, kütüphanenin belgelenmiş, birincil API'si olan `pick({filter: 'data'})` üzerinden gerçekleşiyor.
 
 | İç içe geçme derinliği | Süre |
 |---|---|
@@ -77,39 +77,39 @@ Sonuç önce. Bir dependency chain içindeki üç npm paketinde beş bulgu; heps
 | 20,000 | 2,511 ms |
 | 40,000 | 11,823 ms |
 
-Her katlamada yaklaşık 4×; beklenen eğri. Bir-iki megabyte dakikalara ulaşır. Çözüm ucuzdur: birleştirilmiş path cache'lenir ve push ile pop'ta güncellenir.
+Her katlamada kabaca 4× artış — beklenen eğri tam olarak bu. Bir-iki megabyte'a gelindiğinde süre dakikalara çıkıyor. Çözümü ise ucuz: birleştirilmiş path'i cache'le, push ve pop'ta güncelle, yeter.
 
-Bu bug, maliyeti *yapının* bir fonksiyonu olduğu, input guard'ları ise *byte'a* göre yazıldığı için ayakta kaldı. 360KB'lik bir payload, endpoint'i koruyan size limiti her neyse onu geçer ve o yol boyunca derinliği sınırlayan hiçbir şey yoktur.
+Bug'ın bugüne kadar fark edilmemesinin sebebi basit: maliyet *yapının* bir fonksiyonu, ama input guard'ları hep *byte* üzerinden yazılmış. 360KB'lik bir payload, endpoint'i koruyan boyut limitini rahatça geçiyor — çünkü o yol boyunca derinliği sınırlayan hiçbir mekanizma yok.
 
-Roller burada en belirgin biçimde ayrışır. Orkestratör filtre kodunu okudu ve taşınabilir bir proof of concept'i temiz bir `stream-json@3.4.0`'a karşı yeniden çalıştırdı; bu, tek bir şüpheli zamanlama değil, yukarıdaki tabloyu üretti. Severity'i belirledim ve raporu 7.5 High olarak gönderdim; maintainer Medium 6.2 olarak yayımladı ve düşük skor savunulabilir, çünkü erişilebilirlik, derecelendirmemin hesaba katmadığı bir biçimde saldırgan kontrolündeki bir dokümana bağlıdır. CVE-2026-71429, CWE-407.
+İş bölümü burada en net haliyle ortaya çıkıyor. Filtre kodunu orkestratör okudu, taşınabilir bir proof of concept'i temiz bir `stream-json@3.4.0` kurulumuna karşı yeniden çalıştırdı — ortaya tek bir şüpheli zamanlama değil, doğrudan yukarıdaki tablo çıktı. Severity'yi ben belirledim, raporu 7.5 High olarak gönderdim; maintainer ise Medium 6.2 olarak yayımladı. Bu düşük skor da savunulabilir aslında, çünkü erişilebilirlik saldırgan kontrolündeki bir dokümana bağlı — benim derecelendirmemin hesaba katmadığı bir ayrıntı. CVE-2026-71429, CWE-407.
 
-> **Ders: maliyet modelinin hangi boyutta olduğu kontrol edilmelidir.** Pahalı olan nicelik, validator'ların sınırladığı nicelik değilse, o validator'lar süsten ibarettir.
+> **Ders: maliyet modelin hangi boyutta işlediğini sorgula.** Pahalı olan şey, validator'ların sınırladığı şey değilse, o validator'lar zaten süsten ibaret.
 
 ---
 
 ### Replace'te process seviyesinde bir abort
 
-Bir crash-fuzzer bu bug'a yaklaşık 150 vaka içinde ulaştı; gerçek binary'yi exit 134 için izliyordu. Onu yeniden üretmek iki nedenle epeyce daha uzun sürdü. PRNG `process.pid`'den seed'leniyordu, dolayısıyla hiçbir çalıştırma bir öncekini replay etmedi. Crash log'u da, crash 89KB'lik girdi gerektirirken girdiyi 400 character'da kesiyordu; arıza girdinin *boyutuna* bağlıydı ve atılan şey tam da boyuttu. Minimize etme de benzer şekilde yanıltıcıydı: emoji, named group'lar ve sticky flag'in hepsi olmazsa olmaz gibi görünüyordu, hiçbiri değildi.
+Bir crash-fuzzer, gerçek binary'yi exit 134 için izlerken bu bug'a yaklaşık 150 denemede ulaştı. Ama yeniden üretmek iki sebepten epey uzun sürdü. Birincisi: PRNG `process.pid`'den seed alıyordu, yani hiçbir çalıştırma bir öncekini tekrar etmiyordu. İkincisi daha can sıkıcıydı — crash log'u girdiyi 400 karakterde kesiyordu, oysa crash'in tetiklenmesi için 89KB'lik bir girdi gerekiyordu; arıza tam olarak girdinin *boyutuna* bağlıydı ve log da elindeki tek değerli bilgiyi, o boyutu, atmıştı. Minimize etme aşaması da aynı derecede yanıltıcı çıktı: emoji, named group'lar, sticky flag — hepsi olmazsa olmaz gibi duruyordu, hiçbiri öyle değildi.
 
-Minimize edilmiş vaka tek satırdır:
+Minimize edilince geriye tek satır kaldı:
 
 ```js
 "a".repeat(50000).replace(new RE2("a", "g"), "$'");   // SIGABRT
 ```
 
-`WrappedRE2::Replace`, bir string `String::kMaxLength`'i aştığında V8'in döndürdüğü boş `MaybeLocal`'ı kontrol etmeden `.ToLocalChecked()` çağırır. Çıktıyı büyüten bir template — `$'` ya da `` $` `` — onu O(input²)'ye şişirir; sınır aşıldığında sonuç `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` ve **SIGABRT** olur — bir JavaScript exception'ı değil, process seviyesinde bir abort; bu nedenle `try`/`catch` onu tutamaz. 30k geçer, 40k crash olur; bu da N²/2'nin 536M'yi geçtiği noktadır.
+Kaynak basit: `WrappedRE2::Replace`, bir string `String::kMaxLength`'i aştığında V8'in döndürdüğü boş `MaybeLocal`'ı hiç kontrol etmeden `.ToLocalChecked()` çağırıyor. `$'` ya da `` $` `` gibi çıktıyı büyüten bir template kullanıldığında sonuç O(input²)'ye şişiyor; sınır aşılınca da ortaya `FATAL ERROR: v8::ToLocalChecked Empty MaybeLocal` ve peşinden **SIGABRT** çıkıyor — bir JavaScript exception değil, doğrudan process seviyesinde bir abort, yani `try`/`catch` hiçbir işe yaramıyor. 30k'da sorun yok, 40k'da crash — sınır da tam olarak N²/2'nin 536M'yi geçtiği nokta.
 
-Bunu belgelenmiş bir sınır değil de bir bug yapan şey karşılaştırmadır: aynı girdide native engine yakalanabilir bir `RangeError` fırlatır, re2 ise abort eder. Orkestratör minimize edilmiş vakayı hem o günkü güncel yayımlanan sürümün temiz bir kurulumunda hem de deponun kendi sürümünde yeniden üretti ve abort'un kendi ağacıma özgü olmadığını doğruladı. C++ kaynak-denetim ajanları bu hedef için sıraya alınmıştı ama hiç dispatch edilmedi, çünkü fuzzing oraya önce ulaştı. CVE-2026-71430, CWE-617, Medium 6.2.
+Peki bu neden belgelenmiş bir sınır değil de gerçek bir bug? Karşılaştırma cevap veriyor: aynı girdide native engine yakalanabilir bir `RangeError` fırlatıyor, re2 ise doğrudan abort ediyor. Orkestratör, minimize edilmiş vakayı hem o günkü güncel sürümün temiz kurulumunda hem de deponun kendi sürümünde yeniden üretti — abort'un sadece benim ağacıma özgü olmadığı böylece doğrulanmış oldu. C++ kaynak-denetim ajanları bu hedef için zaten sıradaydı ama hiç dispatch edilmediler; fuzzing oraya daha önce vardı çünkü. CVE-2026-71430, CWE-617, Medium 6.2.
 
-> **Ders: zor yoldan öğrenilen fuzzing hijyeni.** PRNG seed'i sabit olmalı, asla `process.pid` olmamalıdır. Girdi log'ları tam ve kesilmemiş tutulmalıdır. Minimize işlemi deterministik yürütülmelidir, çünkü ilgi çekici görünen kısımlar çoğu zaman yalnızca süstür.
+> **Ders: fuzzing hijyenini zor yoldan öğrendim.** PRNG seed'i sabitle, asla `process.pid` kullanma. Girdi log'larını tam ve kesilmeden tut. Minimize işlemini deterministik yürüt — çünkü ilgi çekici görünen ayrıntılar çoğunlukla süsten ibaret.
 
 ---
 
-### Hiçbir şeyin doğrulamadığı bir indirilen artifact
+### Doğrulanmadan diske düşen bir indirme
 
-Açılış paragrafındaki zincirin, henüz takip etmediğim üçüncü bir adımı var. re2 varsayılan olarak native binding'ini derlemez — önceden derlenmiş bir `.node` dosyasını indirir; bu indirme işi de ayrı bir pakete, `install-artifact-from-github`'a, `install-from-cache --artifact build/Release/re2.node --host-var RE2_DOWNLOAD_MIRROR ...` üzerinden devredilir. Bu install script'i önüme koyan şey gossipcat'in kendi dependency tree'sini taramaktı — bir fuzzer değil, bir okuma daha.
+Açılıştaki zincirin henüz takip etmediğim bir üçüncü adımı vardı aslında. re2, native binding'ini varsayılan olarak derlemiyor — önceden derlenmiş bir `.node` dosyasını indiriyor, bu işi de `install-from-cache --artifact build/Release/re2.node --host-var RE2_DOWNLOAD_MIRROR ...` üzerinden ayrı bir pakete, `install-artifact-from-github`'a devrediyor. Bu install script'ini önüme getiren şey bir fuzzer değildi — gossipcat'in kendi dependency tree'sini taraması oldu, yani yine bir okuma.
 
-`bin/install-from-cache.js` artifact'ı network üzerinden indirir ve doğrudan diske yazar. Hiçbir checksum, signature ya da SRI yok — paketin tamamında `createHash|sha256|checksum|integrity|digest|signature` için yapılan bir grep hiçbir şey döndürmüyor:
+`bin/install-from-cache.js` artifact'ı network'ten indirip doğrudan diske yazıyor. Checksum yok, signature yok, SRI de yok — paketin tamamında `createHash|sha256|checksum|integrity|digest|signature` için attığım grep sıfır sonuç döndürdü:
 
 ```js
 // bin/install-from-cache.js
@@ -121,11 +121,11 @@ const write = async (name, data) => {
 };
 ```
 
-`mirrorEnvVar` tamamen saldırgan tarafından yönlendirilebilir ve hiçbir host'a pinlenmemiş: re2, `--host-var RE2_DOWNLOAD_MIRROR` geçiyor; dolayısıyla bu değişkeni set edebilen herhangi bir şey — CI config, bir `.npmrc` env passthrough'u, ele geçirilmiş bir CI job'ı, zehirlenmiş bir shell profile'ı — tüm indirmeyi keyfi bir host'a yönlendirir. Transfer ayrıca plaintext `http://`'yi de kabul ediyor ve bir redirect, orijinal scheme'i pinlemek yerine protokolünü yeni URL'den yeniden türetiyor; yani `https://` bir asset'in `http://`'ye 302 ile yönlenmesi sessizce takip ediliyor — hiçbir uyarı, hiçbir downgrade guard'ı yok.
+`mirrorEnvVar` tamamen saldırgan kontrolünde ve hiçbir host'a pinlenmemiş durumda: re2 bu değişkeni `--host-var RE2_DOWNLOAD_MIRROR` olarak geçiyor, yani onu set edebilen her şey — bir CI config'i, `.npmrc`'den sızan bir env passthrough, ele geçirilmiş bir CI job'ı, zehirlenmiş bir shell profile — tüm indirmeyi istediği host'a yönlendirebiliyor. Üstüne üstlük transfer plaintext `http://`'yi de kabul ediyor, bir redirect geldiğinde de orijinal scheme değil yeni URL'nin protokolü esas alınıyor. Yani `https://` bir asset `http://`'ye 302 ile yönlendirilirse bu sessizce takip ediliyor — ne bir uyarı var, ne de downgrade'e karşı bir guard.
 
-Paket bir post-download kontrolü de çalıştırıyor — `verify-build` ya da `npm test` — ama bu, dosya zaten yazıldıktan sonra oluyor; re2 için bu kontrolün ilk satırı da doğrulaması gereken binary'yi `require()` etmek. Native module-init kodu, herhangi bir kontrol çalışana kadar zaten çalışmış oluyor. Bu bir smoke test, bir gate değil.
+Evet, bir post-download kontrolü var — `verify-build` ya da `npm test` — ama bu kontrol dosya zaten yazıldıktan sonra devreye giriyor. re2 özelinde bu kontrolün ilk satırı, doğrulaması gereken binary'yi `require()` etmek. Yani native module-init kodu, herhangi bir kontrol çalışmaya başlamadan çoktan tetiklenmiş oluyor. Bu bir gate değil, olsa olsa bir smoke test.
 
-Proof of concept kasıtlı olarak zararsız: plaintext HTTP üzerinde sentinel byte'lar servis eden bir "mirror" ayağa kaldırıp `RE2_DOWNLOAD_MIRROR`'ı ona yönlendirmek ve servis edilen byte'ların diske değişmeden düştüğünü göstermek yeterli.
+Proof of concept'i bilinçli olarak zararsız tuttum: plaintext HTTP üzerinden sentinel byte'lar servis eden bir "mirror" ayağa kaldırdım, `RE2_DOWNLOAD_MIRROR`'ı ona yönlendirdim, servis edilen byte'ların diske hiç değişmeden düştüğünü gösterdim, o kadar.
 
 ```
 attacker mirror (plaintext http) on 127.0.0.1:PORT
@@ -135,31 +135,31 @@ written  sha256: ec6fdde6...4ebc
 install-from-cache exit: 0
 ```
 
-Kurulum başarıyla tamamlanıyor. Gerçek bir `.node` dosyası, `require()` edildiği anda native init kodunu çalıştırır; dolayısıyla birini yerine koymak, kurulum ya da çalışma sürecinde code execution demektir — bu denetimin asıl konusu olan node-re2'nin kendi kodu daha çalışmadan önce.
+Kurulum sorunsuz tamamlanıyor. Gerçek bir `.node` dosyası `require()` edildiği an native init kodunu çalıştırıyor — yani sahtesini oraya koymak, kurulum veya çalışma anında code execution anlamına geliyor. Hem de bu denetimin asıl hedefi olan node-re2'nin kendi kodu henüz hiç çalışmamışken.
 
-CVE-2026-73864, GHSA-88q3-gch3-5396, CWE-494, High 7.5. Advisory, 2026-07-07 06:07 UTC'de açıldı — yukarıdaki stream-json ve Replace-abort bulgularından sonra, aşağıdaki iki re2 bulgusundan önce.
+CVE-2026-73864, GHSA-88q3-gch3-5396, CWE-494, High 7.5. Advisory 2026-07-07 06:07 UTC'de açıldı — yukarıdaki stream-json ve Replace-abort bulgularından sonra, aşağıda gelecek iki re2 bulgusundan önce.
 
-Teorik de değildi. `install-artifact-from-github`, gerçek ağaçlarda re2'nin altında sıkça yer alıyor ve bu kontrol sırasında pre-fix sürümleri hâlâ birkaç yerde pinliydi: `PostHog/posthog` (37,7k star — `pnpm-lock.yaml`'da `re2@1.22.1`/`1.24.1`), `coralproject/talk` (2k star — `re2@1.21.4`) ve `google-labs-code/stitch-sdk` (1,8k star, bir Google org'u — `re2@1.23.2`). `democratic-csi/democratic-csi` (1,3k star) daha keskin bir örnek: Dockerfile'ı şunu set ediyor:
+Ve bu sadece teoride kalan bir tehlike değildi. `install-artifact-from-github`, gerçek dünyadaki ağaçlarda re2'nin altında sık sık karşımıza çıkıyor; kontrol ettiğim sırada pre-fix sürümleri hâlâ birkaç projede pinliydi: `PostHog/posthog`'da (37,7k star) `pnpm-lock.yaml` içinde `re2@1.22.1`/`1.24.1`; `coralproject/talk`'ta (2k star) `re2@1.21.4`; bir Google org'u olan `google-labs-code/stitch-sdk`'da (1,8k star) `re2@1.23.2`. En çarpıcı örnek ise `democratic-csi/democratic-csi` (1,3k star) — Dockerfile'ında şu satır var:
 
 ```
 ENV RE2_DOWNLOAD_MIRROR="https://grpc-uds-binaries.s3-us-west-2.amazonaws.com/re2"
 ```
 
-— advisory'nin attack surface olarak adlandırdığı değişkenin ta kendisi, gerçek ve tamamen meşru bir build-speed mirror'ı olarak kullanımda. `renovatebot/renovate` (22,3k star) bir dependent değil, ama kendi Docker build'i bu paket için özel yazılmış bir comment taşıyor (`# set npm_config_platform_arch for install-artifact-from-github`) — maintainer'ların bu paketin install davranışı üzerine, bu bug'la ilgisiz şekilde, zaten düşündüğünün kanıtı.
+— advisory'nin attack surface olarak işaret ettiği değişkenin tam da kendisi, hem de gerçek ve tamamen meşru bir build-speed mirror'ı olarak kullanılıyor. `renovatebot/renovate` (22,3k star) doğrudan bir dependent değil, ama kendi Docker build'inde bu paket için özel yazılmış bir yorum satırı var (`# set npm_config_platform_arch for install-artifact-from-github`) — maintainer ekibinin bu paketin install davranışını, bu bug'dan bağımsız olarak, zaten düşünmüş olduğunun kanıtı.
 
-Fix hızlı geldi: 1.7.0, advisory açıldıktan yaklaşık 20,5 saat sonra yayımlandı ve tek satırlık bir patch değil. Tüketen paket artık publish anında kendi `package.json`'ına platform slot başına bir SHA-256 digest damgalıyor; `install-from-cache`, yazmadan önce indirmeyi bu digest'e karşı kontrol ediyor ve uyuşmazlıkta kaynaktan derlemeye düşüyor. Bu, aceleye getirilmiş değil, hızlı ve iyi kapsamlanmış bir yanıt.
+Fix gecikmedi: 1.7.0, advisory açıldıktan yaklaşık 20,5 saat sonra yayımlandı — üstelik tek satırlık bir yama da değildi. Tüketen paket artık publish anında kendi `package.json`'ına, platform slot başına bir SHA-256 digest damgalıyor; `install-from-cache` da yazmadan önce indirdiğini bu digest'e karşı kontrol ediyor, uyuşmazlık varsa kaynaktan derlemeye geri dönüyor. Aceleye getirilmiş bir yama değil bu — hızlı ama iyi düşünülmüş bir yanıt.
 
-Açıkça belirtilmesi gereken bir çekince var, çünkü bu tasarıma bir eleştiri değil, spesifik bir durum: doğrulama yalnızca varsayılan `github.com` kaynağını kapsıyor. Yukarıdaki `RE2_DOWNLOAD_MIRROR` örneğindeki gibi açıkça yapılandırılmış bir mirror, tasarım gereği trust-the-mirror olarak kalıyor, çünkü tüketen paketin kontrol etmediği bir host için önceden bir digest damgalamanın bir yolu yok. `democratic-csi`, 1.7.0'a tamamen güncellense bile, tam da bu yüzden yeni kontrolün kapsamı dışında kalıyor. Keyfi, kullanıcı tarafından yapılandırılmış bir kaynağı doğrulamak, sabit bir kaynağı doğrulamakla aynı problem değil ve fix'i bu şekilde kapsamlamak makul bir karar — ama kapsamı ile gerçek dünyadaki kullanımı tam örtüşmüyor.
+Bir çekincesi de var, açıkça söylemek lazım — ama bu, tasarıma bir eleştiri değil, sadece durumun kendisi: doğrulama yalnızca varsayılan `github.com` kaynağını kapsıyor. Yukarıdaki `RE2_DOWNLOAD_MIRROR` örneğinde olduğu gibi açıkça yapılandırılmış bir mirror kullanılıyorsa, sistem tasarım gereği trust-the-mirror'a geri düşüyor — çünkü tüketen paketin kontrol etmediği bir host için önceden digest damgalamanın bir yolu yok. `democratic-csi`, 1.7.0'a tamamen geçse bile tam da bu yüzden yeni kontrolün kapsamı dışında kalıyor. Keyfi, kullanıcı tanımlı bir kaynağı doğrulamak sabit bir kaynağı doğrulamakla aynı problem değil zaten, fix'i böyle sınırlamak da mantıklı bir tercih — ama sonuçta kapsamı ile gerçek dünyadaki kullanım tam örtüşmüyor.
 
-> **Ders: kodu değil, kodu teslim eden şeyi de denetleyin.** Bir binding layer uçtan uca memory-safe olabilir ve yine de açık olabilir, eğer çalışmadan önce onu oluşturan byte'ları hiçbir şey kontrol etmiyorsa. Install time'da önceden derlenmiş bir artifact indiren her paket, üzerine inşa edenler öyle düşünsün ya da düşünmesin, bir supply-chain edge'idir.
+> **Ders: sadece kodu değil, o kodu sana teslim eden şeyi de denetle.** Bir binding layer uçtan uca memory-safe olsa bile, onu oluşturan byte'ları çalışmadan önce hiçbir şey kontrol etmiyorsa yine de açık kapı bırakır. Install time'da önceden derlenmiş bir artifact indiren her paket — üzerine inşa edenler farkında olsun ya da olmasın — bir supply-chain edge'idir.
 
 ---
 
 ### Bir character index'ini doğrulayan byte uzunluğu
 
-Fuzzer bu bug'ı bulmadı, bulamazdı da. Ona ulaşmak, `re.lastIndex`'in belirli ve yanlış bir değere set edilmesini gerektirir; rastgele girdi üreten bir mekanizmanın o property'ye dokunmak için hiçbir nedeni yoktur. byte-character dönüşüm aritmetiğini okumak bug'ı dakikalar içinde ortaya çıkardı.
+Bu bug'ı fuzzer bulmadı — zaten bulamazdı da. Çünkü ona ulaşmak için `re.lastIndex`'in çok özel, yanlış bir değere set edilmesi gerekiyor; rastgele girdi üreten bir mekanizmanın o property'ye dokunması için hiçbir sebep yok. Beni oraya götüren, byte-character dönüşüm aritmetiğini satır satır okumak oldu — bug birkaç dakikada ortaya çıktı.
 
-`lastIndex` kullanıcı tarafından herhangi bir pozitif tam sayıya set edilebilir. `prepareArgument`, subject'in **UTF-8 byte** sayısını uzunluk olarak saklar; `setIndex` ise kullanıcının **UTF-16** index'ini bu byte sayısına karşı doğrular. ASCII olmayan her subject'te byte sayısı character sayısını aştığından, ikisinin arasına düşen bir index doğrulamadan geçer. Ardından `getUtf16PositionByCounter` o kadar character'ı buffer boyunca hiçbir bounds check yapmadan kat eder.
+`lastIndex`, kullanıcı tarafından herhangi bir pozitif tam sayıya set edilebiliyor. `prepareArgument`, subject'in **UTF-8 byte** sayısını uzunluk diye saklıyor; `setIndex` ise kullanıcının verdiği **UTF-16** index'ini bu byte sayısına karşı doğruluyor. Sorun şu: ASCII olmayan her subject'te byte sayısı character sayısından fazla, dolayısıyla ikisinin arasında kalan bir index doğrulamadan rahatça geçiyor. Ardından `getUtf16PositionByCounter`, o kadar character'ı buffer boyunca hiçbir bounds check yapmadan kat ediyor.
 
 ```js
 const RE2 = require('re2');
@@ -168,21 +168,21 @@ re.lastIndex = 3;               // 3 <= byteLen(4) passes; there are only 2 real
 re.exec('éé');                  // ASAN: heap-buffer-overflow READ
 ```
 
-Yayınlanan binary'de, büyük ve ASCII olmayan bir subject counter'ı buffer'ın çok ötesine, eşlenmemiş belleğe kadar sürükler ve process'i, hiçbir JavaScript handler'ının araya giremeyeceği bir SIGSEGV ile sonlandırır. Aynı `lastIndex` ASCII bir subject'e karşı normal şekilde döner; bu da nedeni boyutta değil, birim uyuşmazlığında konumlandırır. Sınırlı bir information leak'e de ulaşılabilir; ancak gösterdiğim over-read'ler sıfır döndürdüğünden, geçerli etki olarak crash'i raporladım ve bunu advisory'de de belirttim.
+Yayınlanan binary'de, büyük ve ASCII olmayan bir subject verildiğinde counter buffer'ın çok ötesine, eşlenmemiş belleğe kadar sürükleniyor; process de hiçbir JavaScript handler'ının yetişemeyeceği bir SIGSEGV ile çöküyor. Aynı `lastIndex`, ASCII bir subject'e karşı gayet normal dönüyor — bu da meselenin boyutta değil birim uyuşmazlığında olduğunu net biçimde gösteriyor. Sınırlı bir information leak'e de ulaşmak mümkün aslında, ama gösterdiğim over-read'ler hep sıfır döndürdüğü için crash'i asıl etki olarak raporladım, advisory'de de bunu böyle belirttim.
 
-Bug hayatta kaldı çünkü ASCII güvenlidir: byte uzunluğu character sayısına eşittir, guard tesadüfen doğru çalışır ve sıradan testler geçer. CVE-2026-67550, CWE-125, Medium 5.7; o da 1.25.2'de düzeltildi.
+Bug'ın bugüne kadar fark edilmemesinin sebebi de ASCII'nin güvenli olması: byte uzunluğu character sayısına eşit olduğu için guard tesadüfen doğru çalışıyor, sıradan testler de sorunsuz geçiyor. CVE-2026-67550, CWE-125, Medium 5.7 — o da 1.25.2'de düzeltildi.
 
-Bu, kümedeki orkestrasyon açısından en zayıf vakadır ve olduğu gibi ifade edilmelidir: bug'ı kaynak okuma buldu, dispatch bulamazdı. Döngünün katkısı sonradan geldi; rapor dosyalanmadan önce döngü, crash'i güncel yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan bir ASAN build'i üzerinde iki kez yeniden doğruladı.
+Bunu olduğu gibi söylemek lazım: bu, kümedeki orkestrasyon açısından en zayıf vaka. Bug'ı kaynak okuma buldu, dispatch hiçbir zaman bulamayacaktı. Orkestratörün katkısı işin sonunda geldi — rapor dosyalanmadan önce crash'i, güncel sürümün temiz bir kurulumunda, hem yayınlanan binary'de hem de kaynaktan derlenmiş bir ASAN build'inde iki kez daha doğruladı.
 
-> **Ders: bir uzunluğun hangi birimde olduğu sorulmalıdır.** Bir niceliği ölçen bir validator, başka bir niceliği kat eden bir consumer'ı koruyorsa bu bir typo değil, bir bug sınıfıdır. Byte'a karşı character, UTF-8'e karşı UTF-16, count'a karşı size.
+> **Ders: bir uzunluğun hangi birimde olduğunu her zaman sor.** Bir niceliği ölçen validator, başka bir niceliği kat eden consumer'ı koruyorsa bu bir yazım hatası değil, tam bir bug sınıfıdır. Byte'a karşı character, UTF-8'e karşı UTF-16, count'a karşı size — hep aynı hikaye.
 
 ---
 
 ### Global match döngüsünde ilerlemeyen bir cursor
 
-ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` üzerinde yirmi bir dakika boyunca meşguldü ve 2.5GB tutuyordu. Ne bir sanitizer raporu ne de bir crash vardı; dolayısıyla çalıştırma, yavaş bir testten ayırt edilemiyordu.
+ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` deseni üzerinde tam yirmi bir dakikadır uğraşıyordu ve 2.5GB bellek tutuyordu. Ortada ne bir sanitizer raporu ne de bir crash vardı — yani çalıştırma, sadece yavaş bir testten ayırt edilemez haldeydi.
 
-Takılan process'in sample'lanması belirsizliği giderdi: stack, sıkı bir döngü içinde `WrappedRE2::Match` → `RE2::Match` → `DFA::Search` gösteriyordu. Nedeni `match.cc`'deki şu dört satır:
+Takılı kalan process'i sample'layınca durum netleşti: stack, sıkı bir döngü içinde `WrappedRE2::Match` → `RE2::Match` → `DFA::Search` sırasını gösteriyordu. Sebebi de `match.cc`'deki şu dört satırdı:
 
 ```cpp
 while (re2->regexp.Match(str, byteIndex, str.size, anchor, &match, 1)) {
@@ -191,42 +191,42 @@ while (re2->regexp.Match(str, byteIndex, str.size, anchor, &match, 1)) {
 }
 ```
 
-Cursor, az önce bulunan match'in uzunluğu kadar ilerler. Zero-width match'in uzunluğu olmadığından cursor yerinden kımıldamaz ve aynı match süresiz olarak döndürülürken `groups` bir `std::vector<StringPiece>`'i büyütmeye devam eder.
+Cursor, bulunan son match'in uzunluğu kadar ilerliyor. Zero-width bir match'in uzunluğu olmadığı için cursor yerinden kımıldamıyor, aynı match sonsuza dek dönmeye devam ederken `groups` de arkada bir `std::vector<StringPiece>`'i büyütmeyi sürdürüyor.
 
-Patolojik desen tesadüfiydi. Boş string'i match edebilen herhangi bir global RE2 bunu yeniden üretir:
+O karmaşık desen aslında tesadüfiydi — boş string'i match edebilen herhangi bir global RE2, aynı sonucu verir:
 
 ```js
 const RE2 = require('re2');
 'x'.match(new RE2('a*', 'g'));   // never returns
 ```
 
-Yayınlanan binary'de bu, yaklaşık dört saniye içinde 736MB'tan 3.7GB'a çıkar ve süreci ancak dışarıdan gelen bir `SIGKILL` sonlandırır. Çağrı senkron ve native olduğu için thread'i tutar; bu nedenle `try`/`catch`, `AbortController` ve JS timer'larının tamamı işlevsiz kalır — timer'lar, tetiklenmek için hiç sıra bulamadıklarından. V8 aynı deseni 0ms'de işler.
+Yayınlanan binary'de bu, dört saniye gibi kısa bir sürede 736MB'tan 3.7GB'a fırlıyor ve süreci ancak dışarıdan gelen bir `SIGKILL` durdurabiliyor. Çağrı senkron ve native olduğu için thread'i tamamen kilitliyor — `try`/`catch`, `AbortController`, JS timer'ları, hepsi işlevsiz kalıyor; timer'lar tetiklenmek için sıraya bile giremiyor çünkü. V8 aynı deseni 0ms'de çözüyor, bu arada.
 
-Bellek büyümesi, yüklü bir makinenin en kolay uydurabildiği ölçümdür; bu nedenle rakam tek başına kabul edilmedi. Orkestratör vakayı, boş string'i match edemeyen `a+` kontrolüne karşı yeniden çalıştırdı ve her process'in resident set'ini ayrı ayrı sample'ladı: bug 3860MB'a tırmanırken kontrol 44MB'ta sabit kaldı. Ayrıca döngüyü, en son yayımlanan sürümün temiz bir kurulumunda, hem yayınlanan binary hem de kaynaktan derlenmiş bir build üzerinde yeniden doğruladı. Dosyalama ve gönderim bana aitti.
+Bellek büyümesi, yüklü bir makinede en kolay uydurulabilecek ölçümlerden biri — bu yüzden rakamı tek başına kabul etmedik. Orkestratör, vakayı boş string'i hiç match edemeyen `a+` kontrolüne karşı yeniden çalıştırıp her process'in resident set'ini ayrı ayrı sample'ladı: bug 3860MB'a tırmanırken kontrol grubu 44MB'ta sabit kaldı. Üstüne, döngüyü en güncel sürümün temiz bir kurulumunda, hem yayınlanan binary'de hem de kaynaktan derlenmiş bir build'de tekrar doğruladı. Dosyalama ve gönderim kısmı bana kaldı.
 
-node-re2 bu vakayı başka yerlerde zaten ele alır. Üç yol bir subject'i cursor ile kat eder: `split.cc` zero-width match'te bir code point ilerler, `exec` ise `lastIndex` üzerinden ilerler. Guard'ı yalnızca global `Match` yolu atlar. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
+İşin ilginç yanı, node-re2 bu durumu başka yerlerde zaten çözmüş: bir subject'i cursor'la kat eden üç yol var, `split.cc` zero-width match'te bir code point ilerliyor, `exec` de `lastIndex` üzerinden ilerliyor. Guard'ı atlayan tek yol, global `Match`. CVE-2026-68499, CWE-835, Medium 6.2, 1.25.2'de düzeltildi.
 
-> **Ders: aynı yapıyı kat eden alternatif yollar tek tek incelenmelidir.** Bir yapı birden fazla yerde kat ediliyorsa, bu yolların advance ve termination logic'leri karşılaştırılmalıdır. Diğer yolların taşıdığı guard'ı taşımayan yol, bug'ın bulunduğu yoldur; sıfır uzunluklu elemanlar da bunun klasik tetikleyicisidir.
+> **Ders: aynı yapıyı kat eden bütün yolları tek tek incele.** Bir yapı birden fazla yerden kat ediliyorsa, o yolların advance ve termination logic'lerini karşılaştır. Diğerlerinin taşıdığı guard'ı taşımayan yol, bug'ın saklandığı yoldur — sıfır uzunluklu elemanlar da bunun klasik tetikleyicisi.
 
 ---
 
 ### Bir ders daha
 
-**Engine'i değil, marshalling layer'ını denetleyin.** re2, ReDoS'tan *kaçınmak için* kurulur; elle yazılmış C++ N-API layer'ının hiç incelenmemesi de işte bu itibardan ileri gelir. Engine çekirdeği sağlam durdu. node-re2'nin kendi içindeki bütün bug'lar binding'deydi; wrapper orada, engine'in önlemek için var olduğu sınıfı yeniden ortaya çıkarıyordu. Bu, runtime'lar arasında saldırgan kontrolündeki string'leri marshal eden her FFI ya da WASM layer'ı için genellenebilir.
+**Engine'i değil, marshalling layer'ını denetle.** re2, tam olarak ReDoS'tan kaçınmak için kuruluyor — ve elle yazılmış C++ N-API layer'ının hiç incelenmemesinin sebebi de bu itibarın ta kendisi. Oysa engine çekirdeği gayet sağlam çıktı; node-re2'de bulunan bütün bug'lar binding'de saklıydı. Wrapper, engine'in önlemeye çalıştığı sınıfı kendi elleriyle yeniden yaratmıştı. Bu ders taşınabilir: iki runtime arasında saldırgan kontrolündeki string'leri marshal eden her FFI ya da WASM layer'ı için geçerli.
 
 ### İş bölümü
 
-Orkestratör review'ı dispatch etti, bulguları temiz kurulumlarda yeniden üretti ve iddiaları kontrollere karşı sınadı. Hedef seçimi, severity değerlendirmesi, crash minimizasyonu ve advisory'lerin kaleme alınması ise bana düşen kısımdı. İki bug fuzzing'den, üç tanesi okumaktan geldi — install-artifact-from-github bulgusu, bir fuzzing çalıştırması değil, orkestratörün dependency chain üzerindeki kendi review pass'i sırasında ortaya çıktı; bir code-review aracı için gayet yerinde bir bulma şekli. Hiçbirini orkestrasyon tek başına üretmedi ve bu yazı da aksini iddia etmiyor.
+İşin dağılımı şöyleydi: orkestratör review'ı dispatch etti, bulguları temiz kurulumlarda yeniden üretti, iddiaları kontrollere karşı sınadı. Hedef seçimi, severity değerlendirmesi, crash minimizasyonu, advisory yazımı — bunların hepsi bana kaldı. İki bug fuzzing'den çıktı, üçü okumaktan. install-artifact-from-github bulgusu ise ayrı bir yerde duruyor: bir fuzzing çalıştırmasından değil, orkestratörün dependency chain üzerindeki kendi review pass'inden geldi — bir code-review aracı için tam yerinde bir bulma şekli, açıkçası. Hiçbir bulguyu orkestrasyon tek başına üretmedi; bu yazı da tersini iddia etmiyor zaten.
 
-En çok savunacağım kısım çürütmelerdir. stream-json'da dört aday incelendi ve biri raporlandı: prototype pollution, derin-nesting bir stack overflow ve sınırsız string buffering'in her biri çürütüldü; bir ölçüm artefaktı da — event loop'u aç bırakıp bir leak taklidi yapan senkron bir fuzzing döngüsü — kimseye ulaşmadan yakalandı. Bir maintainer'ın gelen kutusuna gürültü olarak hiç düşmeyen dört öğe; bu da yayına giren beş bulgu kadar değerlidir.
+En arkasında durduğum kısım, aslında çürütmeler. stream-json'da dört aday incelendi, sadece biri raporlandı: prototype pollution, derin-nesting bir stack overflow, sınırsız string buffering — üçü de tek tek çürütüldü. Bir ölçüm artefaktı da kimseye ulaşmadan yakalandı — event loop'u açık bırakıp bir leak taklidi yapan senkron bir fuzzing döngüsüydü sadece. Bir maintainer'ın gelen kutusuna hiç düşmeyen bu dört öğe, yayına giren beş bulgu kadar değerli bence.
 
-Skor tablosu da, bir istisna dışında, buna göre mütevazı. Beş bulgunun dördü, node-re2 ve stream-json'ın kendi runtime kodunda, Medium seviyede ve denial-of-service sınıfında — write-primitive denetimi node-re2'nin hiçbir yerinde out-of-bounds write bulmadı, dolayısıyla özelde bu engine için tavan, zayıf bir read'le denial of service. İstisna bu tavanı kırıyor: High seviyede, install-time code execution — ama engine'de değil, binary'yi teslim eden tooling'de; diğer dördün temsil ettiği memory-safety işinde bir delik değil, farklı bir pakette farklı bir bug sınıfı. Sonuç, beş CVE tanımlayıcısı ve advisory'lerde kredi. gossipcat'in kendi dependency chain'i her zafiyetli pin'den kurtuldu — re2, PR #699'da 1.25.0 → 1.26.1'e taşındı, install-artifact-from-github da onunla birlikte 1.7.0'a çekildi — bu da döngüyü kapattı: denetlemeye çıktığım ağaç, yamalanması gereken ağacın ta kendisiydi.
+Skor tablosu da, bir istisna hariç, oldukça mütevazı görünüyor. Beş bulgunun dördü node-re2 ve stream-json'ın kendi runtime kodunda, Medium seviyede, denial-of-service sınıfında — write-primitive denetimi node-re2'de hiçbir yerde out-of-bounds write bulmadı, yani bu engine özelinde tavan zaten zayıf bir read'le sınırlı denial of service. İstisna ise bu tavanı yerle bir ediyor: High seviyede, install-time code execution. Ama dikkat, engine'de değil — binary'yi teslim eden tooling'de, farklı bir pakette, tamamen farklı bir bug sınıfında; diğer dördün temsil ettiği memory-safety çalışmasında bir delik değil bu. Sonuçta ortaya beş CVE ve advisory'lerde kredi çıktı. gossipcat'in kendi dependency chain'i de her zafiyetli pin'den kurtuldu — re2, PR #699'da 1.25.0'dan 1.26.1'e taşındı, install-artifact-from-github da onunla birlikte 1.7.0'a çekildi. Döngü böylece kapandı: denetlemeye çıktığım ağaç, sonunda yamalanması gereken ağaç oldu.
 
 ### Egzersizin ürettikleri
 
-Beşi de upstream'de yamalanmış beş advisory; hepsi de bakmadan çok önce zaten ağacımda olan paketlerde. Asıl kalıcı bulgu, beş CVE tanımlayıcısından daha uzun ömürlüdür ve tek cümleye sığar: re2'yi tam olarak güvenli seçim olduğu için kurmuştum ve binding layer'ı düzeltilmesi gereken bileşen oydu — kendi teslimatını sessizce devrettiği araç ise daha da fazlasına ihtiyaç duyuyordu. Bir dependency, itibarı iyi olduğu için denetlenmez; biri oturup, install script'ine kadar, okuduğu için denetlenir.
+Sonuçta beş advisory, hepsi upstream'de yamalandı — hepsi de daha ben hiç bakmadan zaten ağacımdaydı. Asıl kalıcı olan bulgu ise beş CVE'den çok daha uzun ömürlü ve tek cümleye sığıyor: re2'yi tam olarak güvenli seçim olduğu için kurmuştum, ama düzeltilmesi gereken tam da onun binding layer'ıydı — kendi teslimatını sessizce devrettiği araç ise ondan bile fazlasına ihtiyaç duyuyordu. Bir dependency, itibarı iyi diye denetlenmez; biri oturup — install script'ine kadar — okuduğu için denetlenir.
 
-Yöntem hedeften daha uzağa taşındı. İki re2 memory-safety bug'ı da, codebase'i bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerindeki guard'ı taşımıyor* ve *bu validator, consumer'ın kat ettiği şeye kıyasla hangi birimi ölçüyor*. stream-json bug'ı da aynı alışkanlığın maliyete uygulanmış hâlinden geldi — pahalı olan nicelik, herhangi bir şeyin sınırladığı nicelik değildi. install-artifact-from-github bug'ı ise aynı alışkanlığın trust'a uygulanmasından geldi: *diske düşen byte'ları, çalışmadan önce ne doğruluyor?* Hiçbir şey doğrulamıyordu — var olan tek kontrol, artifact zaten yüklendikten sonra çalışıyordu. Bu soru, ekosistem ya da dil fark etmeksizin, install time'da bir şey indiren her pakete uygulanabilir. Bu sorular taşınır; belirli bug'lar taşınmaz.
+Yöntem, hedeften çok daha öteye taşındı aslında. İki re2 memory-safety bug'ı da, codebase'i hiç bilmeden herhangi bir native binding'e sorulabilecek sorulardan çıktı: *bu yapıyı kat eden alternatif yollardan hangisi diğerlerinin taşıdığı guard'ı taşımıyor*, ve *bu validator, consumer'ın kat ettiğine kıyasla hangi birimi ölçüyor*. stream-json bug'ı aynı alışkanlığın maliyete uygulanmasından geldi — pahalı olan nicelik, hiçbir şeyin sınırladığı nicelik değildi çünkü. install-artifact-from-github bug'ı ise aynı sorgulama alışkanlığının trust'a uygulanmış hali: *diske düşen byte'ları, çalışmadan önce ne doğruluyor?* Cevap hiçbir şeydi — var olan tek kontrol, artifact zaten yüklenip çalıştıktan sonra devreye giriyordu. Bu soru, dil ya da ekosistem fark etmeksizin, install time'da bir şey indiren her pakete sorulabilir. Sorular taşınır, belirli bug'lar taşınmaz — asıl mesele bu.
 
 ---
 
