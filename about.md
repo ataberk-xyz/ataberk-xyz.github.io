@@ -43,7 +43,7 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
 </div>
 
 <h2 class="about-h">Security advisories</h2>
-<p class="about-note">Found and responsibly disclosed in widely-used software.</p>
+<p class="about-note">Found and responsibly disclosed in widely-used software. PoCs for the accepted ones: <a href="/arsenal">Arsenal →</a></p>
 <div class="adv-wrap">
 <table class="adv">
   <thead>

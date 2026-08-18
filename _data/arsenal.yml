@@ -1,0 +1,17 @@
+# Arsenal page entries — one per accepted, published advisory that has a
+# public PoC gist. Do NOT add an entry until both the advisory is published
+# AND the gist is public (not secret/embargoed) — see docs/superpowers for
+# the embargo rule. New entries just append here; the page and terminal
+# component render straight from this list.
+- file: cve-2019-19493.md
+  status: accepted
+  desc: "Kentico CMS — stored XSS via avatar upload"
+  target: "Kentico CMS ≤ 12.0.49"
+  advisory: "CVE-2019-19493 · CWE-434"
+  advisory_url: "https://nvd.nist.gov/vuln/detail/CVE-2019-19493"
+  severity: "MEDIUM 5.4"
+  severity_class: "sev-med"
+  impact: "Content-Type mismatch on avatar upload → stored XSS"
+  status_line: "FIXED — 12.0.50"
+  poc_url: "https://gist.github.com/ataberk-xyz/54a783f6bbd4e7b213c1680a84cc290a"
+  poc_label: "gist.github.com/ataberk-xyz/54a783f…"

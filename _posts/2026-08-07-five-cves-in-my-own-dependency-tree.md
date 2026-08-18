@@ -62,7 +62,7 @@ The question that produced them was narrow. I was building [gossipcat](https://g
 
 ---
 
-### Quadratic path recomputation in stream-json
+### 1. Quadratic path recomputation in stream-json
 
 A 360KB document blocked an event loop for twelve seconds. Its contents were unremarkable: `{"meta":` repeated several thousand times, a `1`, and the matching closing braces. It never matched the filter it was passed to.
 
@@ -85,7 +85,7 @@ The division of labour is clearest here. The orchestrator read the filter code a
 
 ---
 
-### A process abort in Replace
+### 2. A process abort in Replace
 
 A crash-fuzzer reached this defect within approximately 150 cases, watching the real binary for exit 134. Reproducing it took substantially longer, for two reasons. The PRNG was seeded from `process.pid`, so no run replayed another. The crash log also truncated the input at 400 characters when the crash required 89KB of it; the failure was input-*size* dependent, and the size had been discarded. Minimisation was similarly misleading: emoji, named groups and the sticky flag all appeared essential, and none were.
 
@@ -103,7 +103,7 @@ The comparison is what makes this a defect rather than a documented limit: the n
 
 ---
 
-### A downloaded artifact nothing verifies
+### 3. A downloaded artifact nothing verifies
 
 The chain from the opening paragraph has a third hop I hadn't followed yet. re2 doesn't compile its native binding by default — it fetches a prebuilt `.node` file, and that fetch is delegated to a separate package, `install-artifact-from-github`, via `install-from-cache --artifact build/Release/re2.node --host-var RE2_DOWNLOAD_MIRROR ...`. Scanning gossipcat's own dependency tree is what put that install script in front of me — not a fuzzer, another read.
 
@@ -153,7 +153,7 @@ One caveat worth stating plainly, because it's specific rather than a knock on t
 
 ---
 
-### A byte length validating a character index
+### 4. A byte length validating a character index
 
 The fuzzer did not find this defect and would not have found it. Reaching it requires `re.lastIndex` set to a specific incorrect value, and a random input generator has no reason to touch that property. Reading the byte-versus-character conversion arithmetic located it in minutes.
 
@@ -176,7 +176,7 @@ This is the weakest case for orchestration in the set, and it should be stated a
 
 ---
 
-### A non-advancing cursor in the global match loop
+### 5. A non-advancing cursor in the global match loop
 
 A fuzzer running under ASAN had been occupied for twenty-one minutes on `A*((((((((a)?)?))*)*)?)*)*` with the global flag, holding 2.5GB. There was no sanitizer report and no crash, so the run was indistinguishable from a slow test.
 

@@ -64,7 +64,7 @@ summary: "Kendi yazdığım multi-agent review sistemini bu sefer kendi dependen
 
 ---
 
-### stream-json'da quadratic path yeniden hesabı
+### 1. stream-json'da quadratic path yeniden hesabı
 
 360KB'lik sıradan bir doküman, bir event loop'u tam on iki saniye kilitledi. İçeriğinde göz alıcı hiçbir şey yoktu: `{"meta":` birkaç bin kez tekrarlanmış, bir `1`, bir de karşılık gelen kapanış parantezleri. Üstelik verildiği filtreyle hiçbir zaman eşleşmedi bile.
 
@@ -87,7 +87,7 @@ Bug'ın bugüne kadar fark edilmemesinin sebebi basit: maliyet *yapının* bir f
 
 ---
 
-### Replace'te process seviyesinde bir abort
+### 2. Replace'te process seviyesinde bir abort
 
 Bir crash-fuzzer, gerçek binary'yi exit 134 için izlerken bu bug'a yaklaşık 150 denemede ulaştı. Ama yeniden üretmek iki sebepten epey uzun sürdü. Birincisi: PRNG `process.pid`'den seed alıyordu, yani hiçbir çalıştırma bir öncekini tekrar etmiyordu. İkincisi daha can sıkıcıydı — crash log'u girdiyi 400 karakterde kesiyordu, oysa crash'in tetiklenmesi için 89KB'lik bir girdi gerekiyordu; arıza tam olarak girdinin *boyutuna* bağlıydı ve log da elindeki tek değerli bilgiyi, o boyutu, atmıştı. Minimize etme aşaması da aynı derecede yanıltıcı çıktı: emoji, named group'lar, sticky flag — hepsi olmazsa olmaz gibi duruyordu, hiçbiri öyle değildi.
 
@@ -105,7 +105,7 @@ Peki bu neden belgelenmiş bir sınır değil de gerçek bir bug? Karşılaştı
 
 ---
 
-### Doğrulanmadan diske düşen bir indirme
+### 3. Doğrulanmadan diske düşen bir indirme
 
 Açılıştaki zincirin henüz takip etmediğim bir üçüncü adımı vardı aslında. re2, native binding'ini varsayılan olarak derlemiyor — önceden derlenmiş bir `.node` dosyasını indiriyor, bu işi de `install-from-cache --artifact build/Release/re2.node --host-var RE2_DOWNLOAD_MIRROR ...` üzerinden ayrı bir pakete, `install-artifact-from-github`'a devrediyor. Bu install script'ini önüme getiren şey bir fuzzer değildi — gossipcat'in kendi dependency tree'sini taraması oldu, yani yine bir okuma.
 
@@ -155,7 +155,7 @@ Bir çekincesi de var, açıkça söylemek lazım — ama bu, tasarıma bir ele�
 
 ---
 
-### Bir character index'ini doğrulayan byte uzunluğu
+### 4. Bir character index'ini doğrulayan byte uzunluğu
 
 Bu bug'ı fuzzer bulmadı — zaten bulamazdı da. Çünkü ona ulaşmak için `re.lastIndex`'in çok özel, yanlış bir değere set edilmesi gerekiyor; rastgele girdi üreten bir mekanizmanın o property'ye dokunması için hiçbir sebep yok. Beni oraya götüren, byte-character dönüşüm aritmetiğini satır satır okumak oldu — bug birkaç dakikada ortaya çıktı.
 
@@ -178,7 +178,7 @@ Bunu olduğu gibi söylemek lazım: bu, kümedeki orkestrasyon açısından en z
 
 ---
 
-### Global match döngüsünde ilerlemeyen bir cursor
+### 5. Global match döngüsünde ilerlemeyen bir cursor
 
 ASAN altında çalışan bir fuzzer, global flag ile `A*((((((((a)?)?))*)*)?)*)*` deseni üzerinde tam yirmi bir dakikadır uğraşıyordu ve 2.5GB bellek tutuyordu. Ortada ne bir sanitizer raporu ne de bir crash vardı — yani çalıştırma, sadece yavaş bir testten ayırt edilemez haldeydi.
 
