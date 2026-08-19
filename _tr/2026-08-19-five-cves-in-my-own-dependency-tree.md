@@ -58,9 +58,16 @@ summary: "Kendi yazdığım multi-agent review sistemini bu sefer kendi dependen
 
 ### Başlangıç noktası
 
-Önce sonucu söyleyeyim: bir dependency chain'deki üç npm paketinde toplam beş bulgu çıktı, hepsi maintainer tarafından kabul edilip yayımlandı ve yamalandı. Dördü, asıl denetlemeyi planladığım iki pakette, Medium seviyede, denial-of-service sınıfında. Beşincisi ise kuralı bozuyor: High seviyede, üstelik regex engine'in kendisinde değil, onu getiren tooling'de çıkan bir install-time code execution açığı.
+Önce sonucu söyleyeyim: haftada toplam yaklaşık 13,4 milyon indirmeye sahip üç npm paketinde toplam beş bulgu çıktı, hepsi maintainer tarafından kabul edilip yayımlandı ve yamalandı. Dördü, asıl denetlemeyi planladığım iki pakette, Medium seviyede, denial-of-service sınıfında. Beşincisi ise kuralı bozuyor: High seviyede, üstelik regex engine'in kendisinde değil, onu getiren tooling'de çıkan bir install-time code execution açığı.
 
 İşin çıkış noktası tek bir soruydu: gossipcat (şimdiye kadar yalnızca kendi yazdığım kodu incelemiş olan multi-agent code-review sistemim) kurulu bağımlılıklara yöneltilirse ne bulur? Zincir, deponun node_modules'ünde gayet net görünüyordu: gossipcat → re2 (^1.25.0) → install-artifact-from-github. re2'yi seçmemin özel bir sebebi vardı: paket, regular-expression denial-of-service riskinden tam olarak kaçınmak için kuruluyor, binding layer'ının hiç incelenmemiş olması da tam olarak bu itibardan kaynaklanıyordu. stream-json ise farklı bir yoldan girdi kapsama: her iki paketin maintainer'ı da aynı kişi, Eugene Lazutkin (uhop). Zincir orada da durmadı, bir adım daha ileri gitti: re2'nin native-binary indirme işini sessizce devrettiği install-artifact-from-github'a kadar uzandı.
+
+| Paket | Haftalık indirme |
+|---|---|
+| stream-json | ~7,8M |
+| install-artifact-from-github | ~2,8M |
+| re2 | ~2,8M |
+| **Toplam** | **~13,4M** |
 
 ---
 

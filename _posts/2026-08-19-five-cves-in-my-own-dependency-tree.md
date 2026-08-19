@@ -56,9 +56,16 @@ summary: "I pointed my own multi-agent review system at my own dependency tree: 
 
 ### The starting point
 
-The result first. Five findings across three npm packages in one dependency chain, all five accepted by the maintainer, published and patched. Four are Medium, denial-of-service class, in the two packages the audit set out to examine. The exception is High: an install-time code-execution bug, found not in the regex engine but in the tooling that fetches it.
+The result first. Five findings across three npm packages that together move roughly 13.4M downloads a week, all five accepted by the maintainer, published and patched. Four are Medium, denial-of-service class, in the two packages the audit set out to examine. The exception is High: an install-time code-execution bug, found not in the regex engine but in the tooling that fetches it.
 
 The question that produced them was narrow. I was building [gossipcat](https://github.com/gossipcat-ai/gossipcat-ai), a multi-agent code-review server, and it had only ever been pointed at code I had written. I wanted to know what it would do against the code I install. The chain was verifiable in the repository's own `node_modules`: `gossipcat → re2 (^1.25.0) → install-artifact-from-github`. re2 is the package installed specifically to **avoid** regular-expression denial of service, which is what made its binding layer worth examining. stream-json came in through the maintainer rather than the tree, since Eugene Lazutkin (`uhop`) also maintains it. The chain went one hop further still, into `install-artifact-from-github` itself, the package re2 delegates its own native-binary fetch to.
+
+| Package | Downloads/week |
+|---|---|
+| stream-json | ~7.8M |
+| install-artifact-from-github | ~2.8M |
+| re2 | ~2.8M |
+| **Combined** | **~13.4M** |
 
 ---
 
