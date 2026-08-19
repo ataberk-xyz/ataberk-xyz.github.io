@@ -1,7 +1,7 @@
 ---
 layout: post
 lang: tr
-title: "AI Orchestration, Episode 1: Five CVEs in the Tree I Was Standing On"
+title: "AI Orchestration, 1. Bölüm: Ayağımın Altındaki Ağaçta Beş CVE"
 date: 2026-08-19
 permalink: /tr/ai-research/2026/08/19/five-cves-in-my-own-dependency-tree.html
 author: ataberk-xyz
