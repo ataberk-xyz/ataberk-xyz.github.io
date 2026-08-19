@@ -345,7 +345,10 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
     cursor: default;
   }
   .at-row[data-i] { cursor: pointer; }
-  .at-row:hover, .at-row.active { background: var(--accent-soft); }
+  // fixed, not var(--accent-soft): that token flips to a near-white wash in
+  // light mode, which kills the light-gray filename text on this always-dark
+  // surface. Matches --accent-soft's own dark-mode value directly.
+  .at-row:hover, .at-row.active { background: rgba(157, 184, 232, 0.16); }
   .at-status {
     font-size: 0.72rem;
     padding: 0 0.3rem;
