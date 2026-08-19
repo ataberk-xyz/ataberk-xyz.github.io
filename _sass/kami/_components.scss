@@ -355,7 +355,18 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
   .at-status.accepted  { color: var(--code-bg); background: #7FB88A; }
   .at-status.embargoed { color: var(--ink-3); background: var(--code-border); }
   .at-file { color: var(--code-fg); }
-  .at-desc { color: var(--ink-3); }
+  .at-desc { color: var(--ink-3); flex: 1; }
+  // CVSS badge in the ls listing. --sev-high/--sev-med flip per light/dark
+  // site palette, but this row always sits on --code-bg (dark in both) —
+  // same reason .ledger-block's .sev uses fixed hexes instead of the tokens.
+  .at-sev {
+    font-size: 0.7rem;
+    white-space: nowrap;
+    margin-left: auto;
+    padding-left: 0.8rem;
+  }
+  .at-sev.sev-med  { color: #E8B44F; }
+  .at-sev.sev-high { color: #E0655C; font-weight: 700; }
   .at-redact {
     display: inline-block;
     background: var(--ink-4);
@@ -369,8 +380,8 @@ a.ai-row:hover .ai-fill { border-bottom-color: var(--accent); }
   .at-key  { color: var(--accent-on-code); }
   .at-val  { color: var(--code-fg); }
   .at-val.dim { color: var(--ink-3); }
-  .at-val.sev-med  { color: var(--sev-med); }
-  .at-val.sev-high { color: var(--sev-high); font-weight: 700; }
+  .at-val.sev-med  { color: #E8B44F; }
+  .at-val.sev-high { color: #E0655C; font-weight: 700; }
   .at-val.withheld { color: var(--ink-4); font-style: italic; }
   .at-fm a { color: var(--accent-warn); text-decoration: none; border-bottom: 1px dotted var(--accent-warn); }
 

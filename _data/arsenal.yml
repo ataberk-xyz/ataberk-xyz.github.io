@@ -32,9 +32,8 @@
   poc_url: "https://gist.github.com/ataberk-xyz/a80e56d278351af58b7ac22a0c6d47a7"
   poc_label: "gist.github.com/ataberk-xyz/a80e56d…"
 - file: cve-2026-73864.md
-  status: embargoed
-  redact: true
-  desc: "████████████████████████████████████"
+  status: accepted
+  desc: "install-artifact-from-github — install-time RCE, no integrity check"
   target: "install-artifact-from-github ≤ 1.6.0"
   advisory: "CVE-2026-73864 · CWE-494"
   advisory_url: "https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396"
@@ -42,6 +41,8 @@
   severity_class: "sev-high"
   impact: "network-downloaded native .node has no integrity check → install-time RCE"
   status_line: "FIXED — 1.7.0"
+  poc_url: "https://gist.github.com/ataberk-xyz/e28f6d221e4d745da1773f6d17e3b8e4"
+  poc_label: "gist.github.com/ataberk-xyz/e28f6d2…"
 - file: cve-2026-67550.md
   status: accepted
   desc: "node-re2 — OOB heap read via lastIndex on non-ASCII subject"

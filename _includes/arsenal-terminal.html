@@ -24,6 +24,7 @@
     {%- else -%}
     <span class="at-desc">{{ e.desc }}</span>
     {%- endif -%}
+    <span class="at-sev {{ e.severity_class }}">{{ e.severity }}</span>
   </div>
   {%- endfor -%}
   <br>
@@ -63,7 +64,8 @@
       return '<div class="at-row' + (i===active?' active':'') + '" data-i="' + i + '">' +
         '<span class="at-status ' + e.status + '">' + e.status + '</span>' +
         '<span class="at-file">' + esc(e.file) + '</span>' +
-        descHTML + '</div>';
+        descHTML +
+        '<span class="at-sev ' + e.severity_class + '">' + esc(e.severity) + '</span></div>';
     }).join('');
   }
   function fmHTML(e){

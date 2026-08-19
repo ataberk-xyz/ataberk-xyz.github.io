@@ -43,51 +43,14 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
 </div>
 
 <h2 class="about-h">Security advisories</h2>
-<p class="about-note">Found and responsibly disclosed in widely-used software. PoCs for the accepted ones: <a href="/arsenal">Arsenal →</a></p>
-<div class="adv-wrap">
-<table class="adv">
-  <thead>
-    <tr><th>Package</th><th>Advisory</th><th>Severity</th><th>Impact</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>install-artifact-from-github</td>
-      <td><a href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396">CVE-2026-73864</a></td>
-      <td><span class="sv sv-high">HIGH 7.5</span></td>
-      <td><span class="cwe">CWE-494</span> native addon downloaded over the network and loaded with no integrity check → install-time RCE</td>
-    </tr>
-    <tr>
-      <td>stream-json</td>
-      <td><a href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x">CVE-2026-71429</a> · <a href="https://gist.github.com/ataberk-xyz/f0ec3110ea3a6a648b782c4ed1501a48">PoC</a></td>
-      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
-      <td><span class="cwe">CWE-407</span> quadratic path filters → a small nested JSON blocks the event loop. Fixed in 3.5.0</td>
-    </tr>
-    <tr>
-      <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836">CVE-2026-68499</a> · <a href="https://gist.github.com/ataberk-xyz/db45c80f4e60d4fad3b7ee30a4c7e3f4">PoC</a></td>
-      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
-      <td><span class="cwe">CWE-835</span> zero-width global match never advances → infinite loop, unbounded native memory. Fixed in 1.25.2</td>
-    </tr>
-    <tr>
-      <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj">CVE-2026-67550</a> · <a href="https://gist.github.com/ataberk-xyz/09c4f0675b592f30764bfabcc258eece">PoC</a></td>
-      <td><span class="sv sv-med">MEDIUM 5.7</span></td>
-      <td><span class="cwe">CWE-125</span> attacker-influenced <code>lastIndex</code> on a non-ASCII subject → out-of-bounds heap read, uncatchable crash</td>
-    </tr>
-    <tr>
-      <td>node-re2</td>
-      <td><a href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp">CVE-2026-71430</a> · <a href="https://gist.github.com/ataberk-xyz/a80e56d278351af58b7ac22a0c6d47a7">PoC</a></td>
-      <td><span class="sv sv-med">MEDIUM 6.2</span></td>
-      <td><span class="cwe">CWE-617</span> <code>replace</code> with an output-amplifying template aborts Node past V8's max string length</td>
-    </tr>
-    <tr>
-      <td>Kentico CMS</td>
-      <td><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493">CVE-2019-19493</a> · <a href="https://gist.github.com/ataberk-xyz/54a783f6bbd4e7b213c1680a84cc290a">PoC</a></td>
-      <td><span class="sv sv-med">MEDIUM 5.4</span></td>
-      <td><span class="cwe">CWE-434</span> upload whose Content-Type disagrees with its extension → stored XSS (≤ 12.0.49). Fixed in 12.0.50</td>
-    </tr>
-  </tbody>
-</table>
+<p class="about-note">Found and responsibly disclosed in widely-used software. Full writeups and PoCs: <a href="/arsenal">Arsenal →</a></p>
+<div class="about-index">
+  <a class="ai-row" href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396"><span class="ai-name">install-artifact-from-github — install-time RCE, no integrity check</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-73864</span></a>
+  <a class="ai-row" href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x"><span class="ai-name">stream-json — quadratic path filters block the event loop</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-71429</span></a>
+  <a class="ai-row" href="https://github.com/uhop/node-re2/security/advisories/GHSA-6hxr-mr5r-9836"><span class="ai-name">node-re2 — global match infinite loop, unbounded memory</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-68499</span></a>
+  <a class="ai-row" href="https://github.com/uhop/node-re2/security/advisories/GHSA-ff84-5f28-78qj"><span class="ai-name">node-re2 — OOB heap read via lastIndex, uncatchable crash</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-67550</span></a>
+  <a class="ai-row" href="https://github.com/uhop/node-re2/security/advisories/GHSA-8hcv-x26h-mcgp"><span class="ai-name">node-re2 — process abort in replace()</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-71430</span></a>
+  <a class="ai-row" href="https://nvd.nist.gov/vuln/detail/CVE-2019-19493"><span class="ai-name">Kentico CMS — stored XSS via avatar upload</span><span class="ai-fill"></span><span class="ai-tag">CVE-2019-19493</span></a>
 </div>
 
 <h2 class="about-h">Skills</h2>
