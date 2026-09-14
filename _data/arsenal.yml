@@ -67,6 +67,18 @@
   status_line: "FIXED — 1.25.2"
   poc_url: "https://gist.github.com/ataberk-xyz/09c4f0675b592f30764bfabcc258eece"
   poc_label: "gist.github.com/ataberk-xyz/09c4f06…"
+- file: cve-2026-84567.md
+  status: accepted
+  desc: "Apple macOS — cd9660 Rock Ridge NM-handler underflow, kernel panic"
+  target: "macOS ≤ 26.6 (cd9660.kext)"
+  advisory: "CVE-2026-84567 · CWE-191"
+  advisory_url: "https://support.apple.com/en-us/149035"
+  severity: "MEDIUM 5.5"
+  severity_class: "sev-med"
+  impact: "malformed Rock Ridge NM record → unsigned integer underflow → kernel panic (DoS)"
+  status_line: "FIXED — macOS 27 (Golden Gate)"
+  poc_url: "https://gist.github.com/ataberk-xyz/2c387bbc201a6ab0d6ed0c4cb610d86a"
+  poc_label: "gist.github.com/ataberk-xyz/2c387bbc2…"
 - file: cve-2019-19493.md
   status: accepted
   desc: "Kentico CMS — stored XSS via avatar upload"
