@@ -88,7 +88,7 @@
   severity: "MEDIUM 5.5"
   severity_class: "sev-med"
   impact: "malformed Rock Ridge NM record → unsigned integer underflow → kernel panic (DoS)"
-  status_line: "FIXED — macOS 27 (Golden Gate)"
+  status_line: "FIXED — macOS 27 (Golden Gate), Sequoia 15.8, Tahoe 26.7"
   poc_url: "https://gist.github.com/ataberk-xyz/2c387bbc201a6ab0d6ed0c4cb610d86a"
   poc_label: "gist.github.com/ataberk-xyz/2c387bbc2…"
 - file: cve-2019-19493.md
