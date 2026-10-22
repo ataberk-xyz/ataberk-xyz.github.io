@@ -19,6 +19,18 @@
   status_line: "FIXED — 1.7.0"
   poc_url: "https://gist.github.com/ataberk-xyz/e28f6d221e4d745da1773f6d17e3b8e4"
   poc_label: "gist.github.com/ataberk-xyz/e28f6d2…"
+- file: ghsa-ppr3-83x7-g97w.md
+  status: accepted
+  desc: "Kata Containers — Dragonball guest-to-host escape via virtio OOB write"
+  target: "kata-containers (runtime-rs + Dragonball) ≤ 4.2.0"
+  advisory: "GHSA-ppr3-83x7-g97w · CWE-787"
+  advisory_url: "https://github.com/kata-containers/kata-containers/security/advisories/GHSA-ppr3-83x7-g97w"
+  severity: "MEDIUM 6.4"
+  severity_class: "sev-med"
+  impact: "missing size checks in several Dragonball virtio drivers → host-memory OOB write → guest-to-host escape"
+  status_line: "FIXED — 4.3.0 (PR #13661)"
+  poc_url: "https://gist.github.com/ataberk-xyz/d39605777cccffe79a1f066f3548c5f8"
+  poc_label: "gist.github.com/ataberk-xyz/d396057…"
 - file: cve-2026-71429.md
   status: accepted
   desc: "stream-json — O(depth²) path filters block the event loop"

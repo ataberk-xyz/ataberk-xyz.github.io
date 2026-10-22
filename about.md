@@ -45,6 +45,7 @@ description: "Senior Security Engineer at Midas. 7+ years across smart contract 
 <h2 class="about-h">Security advisories</h2>
 <p class="about-note">Found and responsibly disclosed in widely-used software. Full writeups and PoCs: <a href="/arsenal">Arsenal →</a></p>
 <div class="about-index">
+  <a class="ai-row" href="https://github.com/kata-containers/kata-containers/security/advisories/GHSA-ppr3-83x7-g97w"><span class="ai-name">Kata Containers — Dragonball guest-to-host escape via virtio OOB write</span><span class="ai-fill"></span><span class="ai-tag">GHSA-ppr3-83x7-g97w</span></a>
   <a class="ai-row" href="https://support.apple.com/en-us/149035"><span class="ai-name">Apple macOS — cd9660 kernel crash via crafted disk image</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-84567</span></a>
   <a class="ai-row" href="https://github.com/uhop/install-artifact-from-github/security/advisories/GHSA-88q3-gch3-5396"><span class="ai-name">install-artifact-from-github — install-time RCE, no integrity check</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-73864</span></a>
   <a class="ai-row" href="https://github.com/uhop/stream-json/security/advisories/GHSA-528h-pc64-c93x"><span class="ai-name">stream-json — quadratic path filters block the event loop</span><span class="ai-fill"></span><span class="ai-tag">CVE-2026-71429</span></a>
